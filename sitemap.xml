@@ -2,6 +2,125 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaolin.site/categories/index.html</loc>
+    
+    <lastmod>2016-07-18T10:05:06.866Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/tags/index.html</loc>
+    
+    <lastmod>2016-07-18T09:55:14.044Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/07/18/categories/</loc>
+    
+    <lastmod>2016-07-18T09:02:07.297Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/07/17/redis/</loc>
+    
+    <lastmod>2016-07-18T07:35:46.480Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/01/15/be_simple/</loc>
+    
+    <lastmod>2016-07-18T07:35:21.291Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/06/05/one_year-review/</loc>
+    
+    <lastmod>2016-07-18T07:34:50.786Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/31/cache/</loc>
+    
+    <lastmod>2016-07-18T07:34:06.661Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/30/jvm/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.997Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/30/jvm-optimal/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.992Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/26/java_basic1/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.984Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/29/java-thread/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.979Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/29/java-reflection/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.974Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/30/java-generic/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.969Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/29/java-dynamic-proxy/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.964Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/28/java-basic2/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.955Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/19/java-annotation/</loc>
+    
+    <lastmod>2016-07-18T07:33:51.944Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/05/05/how-browsers-work/</loc>
+    
+    <lastmod>2016-07-18T07:33:44.473Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaolin.site/about/index.html</loc>
     
     <lastmod>2016-07-18T06:12:12.783Z</lastmod>
@@ -9,100 +128,9 @@
   </url>
   
   <url>
-    <loc>http://xiaolin.site/2016/07/17/redis/</loc>
-    
-    <lastmod>2016-07-17T09:45:11.664Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/06/05/one_year-review/</loc>
-    
-    <lastmod>2016-06-16T13:46:36.926Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/29/java-dynamic-proxy/</loc>
-    
-    <lastmod>2016-06-15T10:21:34.563Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/19/java-annotation/</loc>
-    
-    <lastmod>2016-06-15T10:21:18.013Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/29/java-reflection/</loc>
-    
-    <lastmod>2016-06-15T09:56:36.512Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/05/how-browsers-work/</loc>
-    
-    <lastmod>2016-06-11T13:39:45.513Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaolin.site/2016/04/30/db_optimization/</loc>
     
     <lastmod>2016-06-11T09:27:03.564Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/31/cache/</loc>
-    
-    <lastmod>2016-06-01T09:47:24.003Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/30/jvm-optimal/</loc>
-    
-    <lastmod>2016-06-01T07:09:33.933Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/26/java_basic1/</loc>
-    
-    <lastmod>2016-06-01T07:09:06.559Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/28/java-basic2/</loc>
-    
-    <lastmod>2016-06-01T07:08:55.659Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/30/java-generic/</loc>
-    
-    <lastmod>2016-06-01T07:08:46.071Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/30/jvm/</loc>
-    
-    <lastmod>2016-06-01T07:08:15.122Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/05/29/java-thread/</loc>
-    
-    <lastmod>2016-06-01T07:07:48.552Z</lastmod>
     
   </url>
   
@@ -117,13 +145,6 @@
     <loc>http://xiaolin.site/2016/04/24/use_crawler4j/</loc>
     
     <lastmod>2016-05-01T07:23:29.909Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/01/15/be_simple/</loc>
-    
-    <lastmod>2016-05-01T07:22:01.103Z</lastmod>
     
   </url>
   

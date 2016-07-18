@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>XiaoLin&#39;s Blog</title>
-  <subtitle>亲爱的小肥羊，欢迎光临啊</subtitle>
+  <subtitle>回首向来萧瑟处，归去，也无风雨也无晴</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://xiaolin.site/"/>
-  <updated>2016-07-17T09:45:11.664Z</updated>
+  <updated>2016-07-18T09:02:07.297Z</updated>
   <id>http://xiaolin.site/</id>
   
   <author>
@@ -16,11 +16,27 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>categories</title>
+    <link href="http://xiaolin.site/2016/07/18/categories/"/>
+    <id>http://xiaolin.site/2016/07/18/categories/</id>
+    <published>2016-07-18T09:02:07.000Z</published>
+    <updated>2016-07-18T09:02:07.297Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>使用redis</title>
     <link href="http://xiaolin.site/2016/07/17/redis/"/>
     <id>http://xiaolin.site/2016/07/17/redis/</id>
     <published>2016-07-17T08:10:42.000Z</published>
-    <updated>2016-07-17T09:45:11.664Z</updated>
+    <updated>2016-07-18T07:35:46.480Z</updated>
     
     <content type="html">&lt;h4 id=&quot;Redis-介绍&quot;&gt;&lt;a href=&quot;#Redis-介绍&quot; class=&quot;headerlink&quot; title=&quot;Redis 介绍&quot;&gt;&lt;/a&gt;Redis 介绍&lt;/h4&gt;
 &lt;p&gt;Redis(REmote DIctionary Server)&lt;/p&gt;
@@ -64,7 +80,7 @@
     
     </summary>
     
-      <category term="NoSQL" scheme="http://xiaolin.site/categories/NoSQL/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="redis" scheme="http://xiaolin.site/tags/redis/"/>
@@ -76,7 +92,7 @@
     <link href="http://xiaolin.site/2016/06/05/one_year-review/"/>
     <id>http://xiaolin.site/2016/06/05/one_year-review/</id>
     <published>2016-06-05T14:49:36.000Z</published>
-    <updated>2016-06-16T13:46:36.926Z</updated>
+    <updated>2016-07-18T07:34:50.786Z</updated>
     
     <content type="html">&lt;p&gt;&amp;emsp;&amp;emsp;今天是入职搜房网满一年的日子。经前辈指点和自我反思，发现自己过去对于工作这件事情的认识确实还很不够深刻，故重新思考和整理经验和教训如下：&lt;/p&gt;
 &lt;font size=&quot;6px&quot;&gt;一个职场人最重要的素质和能力（重要性依次递减）&lt;/font&gt;
@@ -107,7 +123,7 @@
     
     </summary>
     
-      <category term="思考" scheme="http://xiaolin.site/categories/%E6%80%9D%E8%80%83/"/>
+      <category term="随笔" scheme="http://xiaolin.site/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
       <category term="思考" scheme="http://xiaolin.site/tags/%E6%80%9D%E8%80%83/"/>
@@ -119,7 +135,7 @@
     <link href="http://xiaolin.site/2016/05/31/cache/"/>
     <id>http://xiaolin.site/2016/05/31/cache/</id>
     <published>2016-05-31T14:14:20.000Z</published>
-    <updated>2016-06-01T09:47:24.003Z</updated>
+    <updated>2016-07-18T07:34:06.661Z</updated>
     
     <content type="html">&lt;h4 id=&quot;什么是缓存？&quot;&gt;&lt;a href=&quot;#什么是缓存？&quot; class=&quot;headerlink&quot; title=&quot;什么是缓存？&quot;&gt;&lt;/a&gt;什么是缓存？&lt;/h4&gt;
 &lt;p&gt;&amp;emsp;&amp;emsp;Web缓存是指一个Web资源（如html页面，图片，js，数据等）存在于Web服务器和客户端（浏览器）之间的副本。缓存会根据进来的请求保存输出内容的副本；当下一个请求来到的时候，如果是相同的URL，缓存会根据缓存机制决定是直接使用副本响应访问请求，还是向源服务器再次发送请求。比较常见的就是浏览器会缓存访问过网站的网页，当再次访问这个URL地址的时候，如果网页没有更新，就不会再次下载网页，而是直接使用本地缓存的网页。只有当网站明确标识资源已经更新，浏览器才会再次下载网页。&lt;/p&gt;
@@ -248,7 +264,7 @@
     
     </summary>
     
-      <category term="Web开发" scheme="http://xiaolin.site/categories/Web%E5%BC%80%E5%8F%91/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="缓存" scheme="http://xiaolin.site/tags/%E7%BC%93%E5%AD%98/"/>
@@ -260,7 +276,7 @@
     <link href="http://xiaolin.site/2016/05/30/jvm-optimal/"/>
     <id>http://xiaolin.site/2016/05/30/jvm-optimal/</id>
     <published>2016-05-30T13:47:38.000Z</published>
-    <updated>2016-06-01T07:09:33.933Z</updated>
+    <updated>2016-07-18T07:33:51.992Z</updated>
     
     <content type="html">&lt;p&gt;&amp;emsp;&amp;emsp;之前的文章&lt;a href=&quot;http://xiaolin.site/2016/05/30/jvm/&quot;&gt;《java基础拾遗——JVM垃圾回收原理》&lt;/a&gt;中已经介绍过年轻代、年老代、永生代，本文主要讲讲如何运用这些区域，为系统性能提供更好的帮助。本文不再赘述这些概念，直接进入主题。&lt;/p&gt;
 &lt;h4 id=&quot;如何将新对象预留在年轻代&quot;&gt;&lt;a href=&quot;#如何将新对象预留在年轻代&quot; class=&quot;headerlink&quot; title=&quot;如何将新对象预留在年轻代&quot;&gt;&lt;/a&gt;如何将新对象预留在年轻代&lt;/h4&gt;
@@ -388,7 +404,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="http://xiaolin.site/tags/java/"/>
@@ -400,7 +416,7 @@
     <link href="http://xiaolin.site/2016/05/30/jvm/"/>
     <id>http://xiaolin.site/2016/05/30/jvm/</id>
     <published>2016-05-30T08:20:10.000Z</published>
-    <updated>2016-06-01T07:08:15.122Z</updated>
+    <updated>2016-07-18T07:33:51.997Z</updated>
     
     <content type="html">&lt;h4 id=&quot;垃圾回收是个什么鬼？&quot;&gt;&lt;a href=&quot;#垃圾回收是个什么鬼？&quot; class=&quot;headerlink&quot; title=&quot;垃圾回收是个什么鬼？&quot;&gt;&lt;/a&gt;垃圾回收是个什么鬼？&lt;/h4&gt;
 &lt;p&gt;&amp;emsp;&amp;emsp;拥有自动垃圾回收机制可以说是Java与C++的一项显著区别。在C++语言中，程序员必须小心谨慎地处理每一项内存分配，且内存使用完后必须手工释放曾经占用的内存空间。当内存释放不够完全时，即存在分配但永不释放的内存块，就会引起内存泄漏，严重时甚至导致程序瘫痪，而java拥有自带的垃圾回收器可以自动释放没用的对象并清除内存记录碎片以减轻编程的负担。&lt;/p&gt;
@@ -559,7 +575,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="http://xiaolin.site/tags/java/"/>
@@ -571,7 +587,7 @@
     <link href="http://xiaolin.site/2016/05/30/java-generic/"/>
     <id>http://xiaolin.site/2016/05/30/java-generic/</id>
     <published>2016-05-30T02:50:10.000Z</published>
-    <updated>2016-06-01T07:08:46.071Z</updated>
+    <updated>2016-07-18T07:33:51.969Z</updated>
     
     <content type="html">&lt;h4 id=&quot;什么是泛型？&quot;&gt;&lt;a href=&quot;#什么是泛型？&quot; class=&quot;headerlink&quot; title=&quot;什么是泛型？&quot;&gt;&lt;/a&gt;什么是泛型？&lt;/h4&gt;
 &lt;p&gt;&amp;emsp;&amp;emsp;Java泛型（generics）是JDK 5中引入的一个新特性，允许在定义类和接口的时候使用类型参数（type parameter）。声明的类型参数在使用时用具体的类型来替换。泛型最主要的应用是在JDK 5中的新集合类框架中。对于泛型概念的引入，开发社区的观点是褒贬不一。从好的方面来说，泛型的引入可以解决之前的集合类框架在使用过程中通常会出现的运行时刻类型错误，因为编译器可以在编译时刻就发现很多明显的错误。而从不好的地方来说，为了保证与旧有版本的兼容性，Java泛型的实现上存在着一些不够优雅的地方。当然这也是任何有历史的编程语言所需要承担的历史包袱。后续的版本更新会为早期的设计缺陷所累。&lt;br&gt;&amp;emsp;&amp;emsp;开发人员在使用泛型的时候，很容易根据自己的直觉而犯一些错误。比如一个方法如果接收List&lt;object&gt;作为形式参数，那么如果尝试将一个List&lt;string&gt;的对象作为实际参数传进去，却发现无法通过编译。虽然从直觉上来说，Object是String的父类，这种类型转换应该是合理的。但是实际上这会产生隐含的类型转换问题，因此编译器直接就禁止这样的行为。本文试图对Java泛型做一个概括性的说明。&lt;/string&gt;&lt;/object&gt;&lt;/p&gt;
@@ -699,7 +715,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="http://xiaolin.site/tags/java/"/>
@@ -711,7 +727,7 @@
     <link href="http://xiaolin.site/2016/05/29/java-dynamic-proxy/"/>
     <id>http://xiaolin.site/2016/05/29/java-dynamic-proxy/</id>
     <published>2016-05-29T09:04:34.000Z</published>
-    <updated>2016-06-15T10:21:34.563Z</updated>
+    <updated>2016-07-18T07:33:51.964Z</updated>
     
     <content type="html">&lt;h4 id=&quot;什么是动态代理？&quot;&gt;&lt;a href=&quot;#什么是动态代理？&quot; class=&quot;headerlink&quot; title=&quot;什么是动态代理？&quot;&gt;&lt;/a&gt;什么是动态代理？&lt;/h4&gt;
 &lt;p&gt;① 首先你要明白静态代理的作用&lt;br&gt;我们有一个字体提供类，有多种实现（从磁盘，从网络，从系统）&lt;/p&gt;
@@ -760,7 +776,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="http://xiaolin.site/tags/java/"/>
@@ -772,7 +788,7 @@
     <link href="http://xiaolin.site/2016/05/29/java-reflection/"/>
     <id>http://xiaolin.site/2016/05/29/java-reflection/</id>
     <published>2016-05-29T05:05:39.000Z</published>
-    <updated>2016-06-15T09:56:36.512Z</updated>
+    <updated>2016-07-18T07:33:51.974Z</updated>
     
     <content type="html">&lt;h4 id=&quot;什么是反射？&quot;&gt;&lt;a href=&quot;#什么是反射？&quot; class=&quot;headerlink&quot; title=&quot;什么是反射？&quot;&gt;&lt;/a&gt;什么是反射？&lt;/h4&gt;
 &lt;p&gt;&lt;strong&gt;Java 反射机制主要提供了以下功能：&lt;/strong&gt;&lt;/p&gt;
@@ -820,7 +836,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="http://xiaolin.site/tags/java/"/>
@@ -832,7 +848,7 @@
     <link href="http://xiaolin.site/2016/05/29/java-thread/"/>
     <id>http://xiaolin.site/2016/05/29/java-thread/</id>
     <published>2016-05-29T01:42:47.000Z</published>
-    <updated>2016-06-01T07:07:48.552Z</updated>
+    <updated>2016-07-18T07:33:51.979Z</updated>
     
     <content type="html">&lt;h4 id=&quot;什么是线程？&quot;&gt;&lt;a href=&quot;#什么是线程？&quot; class=&quot;headerlink&quot; title=&quot;什么是线程？&quot;&gt;&lt;/a&gt;什么是线程？&lt;/h4&gt;
 &lt;p&gt;&amp;emsp;&amp;emsp;简单的说进程就是在某种程度上相互隔离的、独立运行的程序，而线程也称作轻量级进程。就象进程一样，线程在程序中是独立的、并发的执行路径，是CPU调度的基本单位，每个线程有它自己的堆栈、自己的程序计数器和自己的局部变量。但是，与分隔的进程相比，进程中的线程之间的隔离程度要小。它们共享内存、文件句柄和其它每个进程应有的状态。&lt;br&gt;&amp;emsp;&amp;emsp;进程可以支持多个线程，它们看似同时执行，但互相之间并不同步。一个进程中的多个线程共享相同的内存地址空间，这就意味着它们可以访问相同的变量和对象，而且它们从同一堆中分配对象。尽管这让线程之间共享信息变得更容易，但你必须小心，确保它们不会妨碍同一进程里的其它线程。&lt;/p&gt;
@@ -961,7 +977,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="多线程" scheme="http://xiaolin.site/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
@@ -973,7 +989,7 @@
     <link href="http://xiaolin.site/2016/05/28/java-basic2/"/>
     <id>http://xiaolin.site/2016/05/28/java-basic2/</id>
     <published>2016-05-28T02:54:53.000Z</published>
-    <updated>2016-06-01T07:08:55.659Z</updated>
+    <updated>2016-07-18T07:33:51.955Z</updated>
     
     <content type="html">&lt;h4 id=&quot;流&quot;&gt;&lt;a href=&quot;#流&quot; class=&quot;headerlink&quot; title=&quot;流&quot;&gt;&lt;/a&gt;流&lt;/h4&gt;
 &lt;p&gt;简单的来说，流是一个连续的字节的序列。输入流是用来读取这个序列，而输出流则构建这个序列。&lt;br&gt;InputStream和OutputStream所操纵的基本单元就是字节。每次读取和写入单个字节或是字节数组。如果从字节的层次来处理数据类型的话，操作会非常繁琐。可以用更易使用的流实现来包装基本的字节流。如果想读取或输出Java的基本数据类型，可以使用DataInputStream和DataOutputStream。它们所提供的类似readFloat和writeDouble这样的方法，会让处理基本数据类型变得很简单。如果希望读取或写入的是Java中的对象的话，可以使用ObjectInputStream和ObjectOutputStream。它们与对象的序列化机制一起，可以实现Java对象状态的持久化和数据传递。基本流所提供的对于输入和输出的控制比较弱。InputStream只提供了顺序读取、跳过部分字节和标记/重置的支持，而OutputStream则只能顺序输出。&lt;/p&gt;
@@ -1072,7 +1088,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="http://xiaolin.site/tags/java/"/>
@@ -1084,7 +1100,7 @@
     <link href="http://xiaolin.site/2016/05/26/java_basic1/"/>
     <id>http://xiaolin.site/2016/05/26/java_basic1/</id>
     <published>2016-05-26T13:40:42.000Z</published>
-    <updated>2016-06-01T07:09:06.559Z</updated>
+    <updated>2016-07-18T07:33:51.984Z</updated>
     
     <content type="html">&lt;h4 id=&quot;String-StringBuffer与StringBuilder的区别&quot;&gt;&lt;a href=&quot;#String-StringBuffer与StringBuilder的区别&quot; class=&quot;headerlink&quot; title=&quot;String,StringBuffer与StringBuilder的区别?&quot;&gt;&lt;/a&gt;String,StringBuffer与StringBuilder的区别?&lt;/h4&gt;
 &lt;p&gt;&lt;strong&gt;String 字符串常量&lt;/strong&gt;&lt;br&gt;&lt;strong&gt;StringBuffer 字符串变量（线程安全）&lt;/strong&gt;&lt;br&gt;&lt;strong&gt;StringBuilder 字符串变量（非线程安全）&lt;/strong&gt;&lt;/p&gt;
@@ -1311,7 +1327,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="http://xiaolin.site/tags/java/"/>
@@ -1323,7 +1339,7 @@
     <link href="http://xiaolin.site/2016/05/19/java-annotation/"/>
     <id>http://xiaolin.site/2016/05/19/java-annotation/</id>
     <published>2016-05-19T09:51:25.000Z</published>
-    <updated>2016-06-15T10:21:18.013Z</updated>
+    <updated>2016-07-18T07:33:51.944Z</updated>
     
     <content type="html">&lt;h4 id=&quot;注解的作用&quot;&gt;&lt;a href=&quot;#注解的作用&quot; class=&quot;headerlink&quot; title=&quot;注解的作用&quot;&gt;&lt;/a&gt;注解的作用&lt;/h4&gt;
 &lt;p&gt;&amp;emsp;&amp;emsp;在开发Java程序，尤其是Java EE应用的时候，总是免不了与各种配置文件打交道。以Java EE中典型的S(pring)S(truts)H(ibernate)架构来说，Spring、Struts和Hibernate这三个框架都有自己的XML格式的配置文件。这些配置文件需要与Java源代码保存同步，否则的话就可能出现错误。而且这些错误有可能到了运行时刻才被发现。把同一份信息保存在两个地方，总是个坏的主意。理想的情况是在一个地方维护这些信息就好了。其它部分所需的信息则通过自动的方式来生成。JDK
@@ -1403,7 +1419,7 @@
     
     </summary>
     
-      <category term="Java基础" scheme="http://xiaolin.site/categories/Java%E5%9F%BA%E7%A1%80/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="java" scheme="http://xiaolin.site/tags/java/"/>
@@ -1415,7 +1431,7 @@
     <link href="http://xiaolin.site/2016/05/05/how-browsers-work/"/>
     <id>http://xiaolin.site/2016/05/05/how-browsers-work/</id>
     <published>2016-05-05T08:36:26.000Z</published>
-    <updated>2016-06-11T13:39:45.513Z</updated>
+    <updated>2016-07-18T07:33:44.473Z</updated>
     
     <content type="html">&lt;h4 id=&quot;我们要讨论的浏览器&quot;&gt;&lt;a href=&quot;#我们要讨论的浏览器&quot; class=&quot;headerlink&quot; title=&quot;我们要讨论的浏览器&quot;&gt;&lt;/a&gt;我们要讨论的浏览器&lt;/h4&gt;
 &lt;p&gt;&amp;emsp;&amp;emsp;目前主流浏览器有五个：Internet Explorer、Firefox、Safari、Chrome 浏览器和 Opera。根据 StatCounter 浏览器统计数据，目前（2011 年 8 月）Firefox、Safari 和 Chrome 浏览器的总市场占有率将近 60%。由此可见，如今开放源代码浏览器在浏览器市场中占据了非常坚实的部分。&lt;/p&gt;
@@ -1981,10 +1997,68 @@
     
     </summary>
     
-      <category term="前端" scheme="http://xiaolin.site/categories/%E5%89%8D%E7%AB%AF/"/>
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
       <category term="翻译" scheme="http://xiaolin.site/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>全栈工程师的价值</title>
+    <link href="http://xiaolin.site/2016/04/30/full_stack/"/>
+    <id>http://xiaolin.site/2016/04/30/full_stack/</id>
+    <published>2016-04-30T02:14:29.000Z</published>
+    <updated>2016-05-28T16:08:39.596Z</updated>
+    
+    <content type="html">&lt;p&gt;&amp;emsp;&amp;emsp;之前看网上有个新闻说“Facebook只招全栈工程师”，闻之比较诧异。因为全栈工程师在我工作的圈子里，大家普遍对其的评价并不高，很多时候只是茶余饭后用来调侃的对象。网上甚至有段子说全栈工程师就是懂系统、懂网络、懂研发、懂数据库、还懂架构、就是没有女朋友的屌丝战斗机。突然觉得自己也被黑了，所以忍不住站出来，替全栈工程师们说句公道话。&lt;/p&gt;
+&lt;h4 id=&quot;什么样才算是全栈&quot;&gt;&lt;a href=&quot;#什么样才算是全栈&quot; class=&quot;headerlink&quot; title=&quot;什么样才算是全栈&quot;&gt;&lt;/a&gt;什么样才算是全栈&lt;/h4&gt;
+&lt;p&gt;有的人说是精通前端，精通后端，又精通一个产品从设计到上线的全过程&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;按照这个标准，地球上估计已经找不出几个人了&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;有的人说是懂前端，懂后端&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;按照这个标准，我估计大部分目前做后端都可以称为“全栈工程师”了，毕竟哪个写后台的一个页面都没写过啊？大部分目前做app的也可以算“全栈工程师”，毕竟哪个做app的完全不知道后端怎么写啊？ 但如果这就是“全栈工程师”了，我未免觉得全栈工程师都滥大街了&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;所以，如何定义“全栈工程师”就是一个很难的问题。我个人倾向于所谓的“全栈工程师”，应该是“精某端，懂另外一端”，“精”自然就是精通，能够游刃有余，熟悉各种机制；“懂”就是知道怎么一回事，知道能够完成什么工作，知道常见的功能如何完成。&lt;/p&gt;
+&lt;h4 id=&quot;全栈工程师与专家的区别和联系&quot;&gt;&lt;a href=&quot;#全栈工程师与专家的区别和联系&quot; class=&quot;headerlink&quot; title=&quot;全栈工程师与专家的区别和联系&quot;&gt;&lt;/a&gt;全栈工程师与专家的区别和联系&lt;/h4&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;有人做过一个很有意思的研究就是如果依赖于20/80法则的话，那么成为专家和全栈的学习时间是相当的。在最开始的时候，我们要在我们的全栈工程和专家都在某个技术领域达到80分的水平。那么专家，还需要80%的时间去深入这个技术领域。而全栈工程师，则可以依赖于这80%的时候去开拓四个新的领域：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://o6fmcea8z.bkt.clouddn.com/blog/image/expert-vs-fullstack.png&quot; alt=&quot;expert-vs-fullstack.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;到了一定程度，越往上走每提升一步所花费的代价就往往会更大。我们熟悉某件事物只需要花费我们20%的时间和精力，而为了达到精通，我们则需要花费另外80%的努力。对于编程特别是如此，全栈工程师就是那掌握20%常用技能的人，但这20%的技能会有80%的几率被用到，剩下那80%不常用的直接Google就好了。而专家则是要求尽可能在这一纵深领域达到100%的透彻，难度可想而知。&lt;br&gt;&amp;emsp;&amp;emsp;另外，现在很多专家们也在强调“一专多长”。因为单纯依靠于一个领域的技术而存在的专家已经很少了，技术专家们不得不依据于公司的需求去开拓不同的领域。毕竟公司是以盈利为目的而设立的一种组织形式，所以很多时候专家也是身不由己地需要学习很多自己领域之外的东西。&lt;/p&gt;
+&lt;h4 id=&quot;全栈工程师的价值&quot;&gt;
+  &lt;a href=&quot;#全栈工程师的价值&quot; class=&quot;headerlink&quot; title=&quot;全栈工程师的价值&quot;&gt;&lt;/a&gt;全栈工程师的价值&lt;/h4&gt;
+  &lt;p&gt;&amp;emsp;&amp;emsp;有人可能会说，你再能牛逼，你一个人能干10个人的活么？要知道现在一个真正的商业级应用往往是非常复杂的，会涉及到很多模块，设计、编码、测试、上线的各个环节都很复杂，所以这时分工合作就显得特别重要。很多大公司在这些环节上岗位划分非常之细，导致人浮于事的情况经常发生，导致做软件这种高大上技术活在他们那里已经沦落成了简单的钉螺丝的人海战术了。这个时候再谈全栈不是一种历史的倒退吗？&lt;br&gt;&amp;emsp;&amp;emsp;这里我要澄清的是首先我绝不反对分工明确的这种现代常见的软件开发模式，我说的是全栈工程师的价值不在于分工合作的狭窄领域，而在于全局思维、灵活性、快速反映上。&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;全局性思维&lt;/strong&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p&gt;现代项目的开发，很少说只用到一两种技术的，特别是移动互联网大潮下。随便一个互联网项目中用到的技术，就会需要用到后端开发、前端开发、界面设计、产品设计、数据库、各种移动客户端、三屏兼容、RestFul API设计和OAuth权限等等，一些比较前卫的项目，可能会用到Single Page Application、Web Socket、HTML5/CSS3这些技术，还有第三方应用平台开发，像微信公众号、微博应用等等。&lt;br&gt;Web前端也远远不是从前的切个图用个jQuery上个AJAX兼容各种浏览器那么简单了。现代的Web前端，你需要用到模块化开发、多屏兼容、MVC，各种复杂的交互与优化，甚至你需要用到Node.js来协助前端的开发。&lt;br&gt;所以说一个现代化的项目，是一个非常复杂的构成，我们需要一个人来掌控全局，他不需要是各种技术的资深专家，但他需要熟悉到各种技术。对于一个团队特别是互联网企业来说，有一个全局性思维的人是非常非常重要的。&lt;br&gt;像如果是我经手的项目，我肯定会注意到网页优化，也会考虑到API来兼容各种客户端，更会考虑到三屏兼容的问题。不会说项目中完全使用AJAX而不顾SEO，也不会为了功能性而忽略访问速度，我会很好的把握这个平衡，因为我知道它们的权重与实现成本。&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;沟通成本&lt;/strong&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p&gt;项目越大，沟通成本越高，做过项目管理的人都知道，项目中的人力是1+1&amp;lt;2的，人越多效率越低。因为沟通是需要成本的，不同技术的人各说各话，前端和后端是一定会掐架的。每个人都会为自己的利益而战，毫不为已的人是不存在的。&lt;br&gt;而全栈工程师的成本几乎为零，因为各种技术都懂，胸有成竹，一不小心自己就全做了。即使是在团队协作中，与不同技术人员的沟通也会容易得多，你让一个后端和一个前端去沟通，那完全是鸡同鸭讲，更不用说设计师与后端了。但如果有一个人懂产品懂设计懂前端懂后端，那沟通的结果显然不一样，因为他们讲的，彼此都能听得懂。&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;创业公司&lt;/strong&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p&gt;对于创业公司来说，全端工程师的价值是非常大的，创业公司不可能像大公司一样，各方面的人才都有。所以我们需要一个多面手，各种活都能一肩挑，独挡多面的万金油。对于创业公司，不可能说DBA前端后端客户端各种人才全都备齐了，很多工作请人又不饱和，不请人又没法做，外包又不放心质量，所以全端工程师是省钱的一妙招。虽然说全端工程师工资会比一般的工程师会高很多，但综合下来，成本会低很多。&lt;/p&gt;
+  &lt;h4 id=&quot;全栈工程师的未来&quot;&gt;&lt;a href=&quot;#全栈工程师的未来&quot; class=&quot;headerlink&quot; title=&quot;全栈工程师的未来&quot;&gt;&lt;/a&gt;全栈工程师的未来&lt;/h4&gt;
+  &lt;p&gt;&amp;emsp;&amp;emsp;技术在过去的几十年里进步很快，也将在未来的几十年里发展得更快。今天技术的门槛下降得越来越快，原本需要一个团队做出来的Web应用，现在只需要一两个人就可以了。同时，由于公司组织结构的变迁，技术的升级换代，外部市场环境的变化，也决定了每个开发者都不可能抱守自己的一片小天地就安安稳稳地活下去，要学的东西将会越来越多。所以尽管我们看到工厂化精细化分工所带来的优势，也应该看到精益思想带来的变革。正是这种变革让越来越多的专家走向全栈，让组织内部有更好的交流。&lt;br&gt;&amp;emsp;&amp;emsp;优秀的全栈工程师本身不应该仅仅局限于前端和后台的开发，而应该去&lt;strong&gt;尝试开拓更广泛的领域&lt;/strong&gt;——因为全栈本身依赖于工程师强大的学习能力，而这种优秀的学习能力也可以让他们应用到更广泛的领域中去。&lt;br&gt;&amp;emsp;&amp;emsp;很多优秀的全栈工程师本身也是公司的技术领导，除了保证技术上没有致命的短板外，还应该培养自己的&lt;strong&gt;产品思维&lt;/strong&gt;。在国内，产品经理是非常核心的角色，然而在硅谷，工程师才是灵魂，拥有产品设计的决策权。你如果招到了好的工程师，而这些工程师有好的产品思维，你的公司组织就精简了，会议沟通就少了，效率就随之提高了。&lt;/p&gt;
+  &lt;blockquote&gt;
+    &lt;p&gt;小团队大杠杆&lt;br&gt;工程师常常兼具产品思维&lt;br&gt;产品经理同时开发多个项目&lt;/p&gt;
+  &lt;/blockquote&gt;
+  &lt;p&gt;&amp;emsp;&amp;emsp;传统的大公司们都是这么做的：每个工程师会负责固定的一些系统，每个系统都有明确的界限。这里面有一个很大的问题：假如有新的优秀人才加入，他有一些很好的想法想更新一些东西，他就必须说服每个系统的负责人，这个沟通要花很多时间，也非常困难。而现在有一种更好的全栈式代码管理方式，Facebook就是这样做的：所有人轮岗，任何人都可能成为任何系统的专家，任何一个人都能够对任何一个系统提出更好的框架和方法。你以前改变一个产品，需要把每个系统的人叫来，但是全栈式管理，让三五个全栈工程师，就能把这10个系统全改了，然后推出产品，这是自组织的代码管理方式，而我相信这也将是未来中国互联网软件开发的主流方式之一。&lt;br&gt;&amp;emsp;&amp;emsp;时代在进步，社会在发展。作为软件工程师的我们也要与时俱进，寻找最适合自己发展的道路。专家
+    OR 全栈？你的选择是什么？&lt;/p&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&amp;emsp;&amp;emsp;之前看网上有个新闻说“Facebook只招全栈工程师”，闻之比较诧异。因为全栈工程师在我工作的圈子里，大家普遍对其的评价并不高，很多时候只是茶余饭后用来调侃的对象。网上甚至有段子说全栈工程师就是懂系统、懂网络、懂研发、懂数据库、还懂架构、就是没有女朋
+    
+    </summary>
+    
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="全栈" scheme="http://xiaolin.site/tags/%E5%85%A8%E6%A0%88/"/>
     
   </entry>
   
@@ -2196,64 +2270,6 @@
   </entry>
   
   <entry>
-    <title>全栈工程师的价值</title>
-    <link href="http://xiaolin.site/2016/04/30/full_stack/"/>
-    <id>http://xiaolin.site/2016/04/30/full_stack/</id>
-    <published>2016-04-30T02:14:29.000Z</published>
-    <updated>2016-05-28T16:08:39.596Z</updated>
-    
-    <content type="html">&lt;p&gt;&amp;emsp;&amp;emsp;之前看网上有个新闻说“Facebook只招全栈工程师”，闻之比较诧异。因为全栈工程师在我工作的圈子里，大家普遍对其的评价并不高，很多时候只是茶余饭后用来调侃的对象。网上甚至有段子说全栈工程师就是懂系统、懂网络、懂研发、懂数据库、还懂架构、就是没有女朋友的屌丝战斗机。突然觉得自己也被黑了，所以忍不住站出来，替全栈工程师们说句公道话。&lt;/p&gt;
-&lt;h4 id=&quot;什么样才算是全栈&quot;&gt;&lt;a href=&quot;#什么样才算是全栈&quot; class=&quot;headerlink&quot; title=&quot;什么样才算是全栈&quot;&gt;&lt;/a&gt;什么样才算是全栈&lt;/h4&gt;
-&lt;p&gt;有的人说是精通前端，精通后端，又精通一个产品从设计到上线的全过程&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;按照这个标准，地球上估计已经找不出几个人了&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;有的人说是懂前端，懂后端&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;按照这个标准，我估计大部分目前做后端都可以称为“全栈工程师”了，毕竟哪个写后台的一个页面都没写过啊？大部分目前做app的也可以算“全栈工程师”，毕竟哪个做app的完全不知道后端怎么写啊？ 但如果这就是“全栈工程师”了，我未免觉得全栈工程师都滥大街了&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;&amp;emsp;&amp;emsp;所以，如何定义“全栈工程师”就是一个很难的问题。我个人倾向于所谓的“全栈工程师”，应该是“精某端，懂另外一端”，“精”自然就是精通，能够游刃有余，熟悉各种机制；“懂”就是知道怎么一回事，知道能够完成什么工作，知道常见的功能如何完成。&lt;/p&gt;
-&lt;h4 id=&quot;全栈工程师与专家的区别和联系&quot;&gt;&lt;a href=&quot;#全栈工程师与专家的区别和联系&quot; class=&quot;headerlink&quot; title=&quot;全栈工程师与专家的区别和联系&quot;&gt;&lt;/a&gt;全栈工程师与专家的区别和联系&lt;/h4&gt;
-&lt;p&gt;&amp;emsp;&amp;emsp;有人做过一个很有意思的研究就是如果依赖于20/80法则的话，那么成为专家和全栈的学习时间是相当的。在最开始的时候，我们要在我们的全栈工程和专家都在某个技术领域达到80分的水平。那么专家，还需要80%的时间去深入这个技术领域。而全栈工程师，则可以依赖于这80%的时候去开拓四个新的领域：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://o6fmcea8z.bkt.clouddn.com/blog/image/expert-vs-fullstack.png&quot; alt=&quot;expert-vs-fullstack.png&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&amp;emsp;&amp;emsp;到了一定程度，越往上走每提升一步所花费的代价就往往会更大。我们熟悉某件事物只需要花费我们20%的时间和精力，而为了达到精通，我们则需要花费另外80%的努力。对于编程特别是如此，全栈工程师就是那掌握20%常用技能的人，但这20%的技能会有80%的几率被用到，剩下那80%不常用的直接Google就好了。而专家则是要求尽可能在这一纵深领域达到100%的透彻，难度可想而知。&lt;br&gt;&amp;emsp;&amp;emsp;另外，现在很多专家们也在强调“一专多长”。因为单纯依靠于一个领域的技术而存在的专家已经很少了，技术专家们不得不依据于公司的需求去开拓不同的领域。毕竟公司是以盈利为目的而设立的一种组织形式，所以很多时候专家也是身不由己地需要学习很多自己领域之外的东西。&lt;/p&gt;
-&lt;h4 id=&quot;全栈工程师的价值&quot;&gt;
-  &lt;a href=&quot;#全栈工程师的价值&quot; class=&quot;headerlink&quot; title=&quot;全栈工程师的价值&quot;&gt;&lt;/a&gt;全栈工程师的价值&lt;/h4&gt;
-  &lt;p&gt;&amp;emsp;&amp;emsp;有人可能会说，你再能牛逼，你一个人能干10个人的活么？要知道现在一个真正的商业级应用往往是非常复杂的，会涉及到很多模块，设计、编码、测试、上线的各个环节都很复杂，所以这时分工合作就显得特别重要。很多大公司在这些环节上岗位划分非常之细，导致人浮于事的情况经常发生，导致做软件这种高大上技术活在他们那里已经沦落成了简单的钉螺丝的人海战术了。这个时候再谈全栈不是一种历史的倒退吗？&lt;br&gt;&amp;emsp;&amp;emsp;这里我要澄清的是首先我绝不反对分工明确的这种现代常见的软件开发模式，我说的是全栈工程师的价值不在于分工合作的狭窄领域，而在于全局思维、灵活性、快速反映上。&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;全局性思维&lt;/strong&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-  &lt;p&gt;现代项目的开发，很少说只用到一两种技术的，特别是移动互联网大潮下。随便一个互联网项目中用到的技术，就会需要用到后端开发、前端开发、界面设计、产品设计、数据库、各种移动客户端、三屏兼容、RestFul API设计和OAuth权限等等，一些比较前卫的项目，可能会用到Single Page Application、Web Socket、HTML5/CSS3这些技术，还有第三方应用平台开发，像微信公众号、微博应用等等。&lt;br&gt;Web前端也远远不是从前的切个图用个jQuery上个AJAX兼容各种浏览器那么简单了。现代的Web前端，你需要用到模块化开发、多屏兼容、MVC，各种复杂的交互与优化，甚至你需要用到Node.js来协助前端的开发。&lt;br&gt;所以说一个现代化的项目，是一个非常复杂的构成，我们需要一个人来掌控全局，他不需要是各种技术的资深专家，但他需要熟悉到各种技术。对于一个团队特别是互联网企业来说，有一个全局性思维的人是非常非常重要的。&lt;br&gt;像如果是我经手的项目，我肯定会注意到网页优化，也会考虑到API来兼容各种客户端，更会考虑到三屏兼容的问题。不会说项目中完全使用AJAX而不顾SEO，也不会为了功能性而忽略访问速度，我会很好的把握这个平衡，因为我知道它们的权重与实现成本。&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;沟通成本&lt;/strong&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-  &lt;p&gt;项目越大，沟通成本越高，做过项目管理的人都知道，项目中的人力是1+1&amp;lt;2的，人越多效率越低。因为沟通是需要成本的，不同技术的人各说各话，前端和后端是一定会掐架的。每个人都会为自己的利益而战，毫不为已的人是不存在的。&lt;br&gt;而全栈工程师的成本几乎为零，因为各种技术都懂，胸有成竹，一不小心自己就全做了。即使是在团队协作中，与不同技术人员的沟通也会容易得多，你让一个后端和一个前端去沟通，那完全是鸡同鸭讲，更不用说设计师与后端了。但如果有一个人懂产品懂设计懂前端懂后端，那沟通的结果显然不一样，因为他们讲的，彼此都能听得懂。&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;创业公司&lt;/strong&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-  &lt;p&gt;对于创业公司来说，全端工程师的价值是非常大的，创业公司不可能像大公司一样，各方面的人才都有。所以我们需要一个多面手，各种活都能一肩挑，独挡多面的万金油。对于创业公司，不可能说DBA前端后端客户端各种人才全都备齐了，很多工作请人又不饱和，不请人又没法做，外包又不放心质量，所以全端工程师是省钱的一妙招。虽然说全端工程师工资会比一般的工程师会高很多，但综合下来，成本会低很多。&lt;/p&gt;
-  &lt;h4 id=&quot;全栈工程师的未来&quot;&gt;&lt;a href=&quot;#全栈工程师的未来&quot; class=&quot;headerlink&quot; title=&quot;全栈工程师的未来&quot;&gt;&lt;/a&gt;全栈工程师的未来&lt;/h4&gt;
-  &lt;p&gt;&amp;emsp;&amp;emsp;技术在过去的几十年里进步很快，也将在未来的几十年里发展得更快。今天技术的门槛下降得越来越快，原本需要一个团队做出来的Web应用，现在只需要一两个人就可以了。同时，由于公司组织结构的变迁，技术的升级换代，外部市场环境的变化，也决定了每个开发者都不可能抱守自己的一片小天地就安安稳稳地活下去，要学的东西将会越来越多。所以尽管我们看到工厂化精细化分工所带来的优势，也应该看到精益思想带来的变革。正是这种变革让越来越多的专家走向全栈，让组织内部有更好的交流。&lt;br&gt;&amp;emsp;&amp;emsp;优秀的全栈工程师本身不应该仅仅局限于前端和后台的开发，而应该去&lt;strong&gt;尝试开拓更广泛的领域&lt;/strong&gt;——因为全栈本身依赖于工程师强大的学习能力，而这种优秀的学习能力也可以让他们应用到更广泛的领域中去。&lt;br&gt;&amp;emsp;&amp;emsp;很多优秀的全栈工程师本身也是公司的技术领导，除了保证技术上没有致命的短板外，还应该培养自己的&lt;strong&gt;产品思维&lt;/strong&gt;。在国内，产品经理是非常核心的角色，然而在硅谷，工程师才是灵魂，拥有产品设计的决策权。你如果招到了好的工程师，而这些工程师有好的产品思维，你的公司组织就精简了，会议沟通就少了，效率就随之提高了。&lt;/p&gt;
-  &lt;blockquote&gt;
-    &lt;p&gt;小团队大杠杆&lt;br&gt;工程师常常兼具产品思维&lt;br&gt;产品经理同时开发多个项目&lt;/p&gt;
-  &lt;/blockquote&gt;
-  &lt;p&gt;&amp;emsp;&amp;emsp;传统的大公司们都是这么做的：每个工程师会负责固定的一些系统，每个系统都有明确的界限。这里面有一个很大的问题：假如有新的优秀人才加入，他有一些很好的想法想更新一些东西，他就必须说服每个系统的负责人，这个沟通要花很多时间，也非常困难。而现在有一种更好的全栈式代码管理方式，Facebook就是这样做的：所有人轮岗，任何人都可能成为任何系统的专家，任何一个人都能够对任何一个系统提出更好的框架和方法。你以前改变一个产品，需要把每个系统的人叫来，但是全栈式管理，让三五个全栈工程师，就能把这10个系统全改了，然后推出产品，这是自组织的代码管理方式，而我相信这也将是未来中国互联网软件开发的主流方式之一。&lt;br&gt;&amp;emsp;&amp;emsp;时代在进步，社会在发展。作为软件工程师的我们也要与时俱进，寻找最适合自己发展的道路。专家
-    OR 全栈？你的选择是什么？&lt;/p&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&amp;emsp;&amp;emsp;之前看网上有个新闻说“Facebook只招全栈工程师”，闻之比较诧异。因为全栈工程师在我工作的圈子里，大家普遍对其的评价并不高，很多时候只是茶余饭后用来调侃的对象。网上甚至有段子说全栈工程师就是懂系统、懂网络、懂研发、懂数据库、还懂架构、就是没有女朋
-    
-    </summary>
-    
-      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="全栈" scheme="http://xiaolin.site/tags/%E5%85%A8%E6%A0%88/"/>
-    
-  </entry>
-  
-  <entry>
     <title>记一次开源爬虫crawler4j的应用</title>
     <link href="http://xiaolin.site/2016/04/24/use_crawler4j/"/>
     <id>http://xiaolin.site/2016/04/24/use_crawler4j/</id>
@@ -2322,7 +2338,7 @@
     <link href="http://xiaolin.site/2016/01/15/be_simple/"/>
     <id>http://xiaolin.site/2016/01/15/be_simple/</id>
     <published>2016-01-15T14:17:29.000Z</published>
-    <updated>2016-05-01T07:22:01.103Z</updated>
+    <updated>2016-07-18T07:35:21.291Z</updated>
     
     <content type="html">&lt;blockquote&gt;
   &lt;p&gt;其实想要过好一生并没有什么特别复杂的道理，都是些简单的，但却难以坚持的东西。比如：坚持锻炼、坚持阅读、坚持自我更新每天进步一点点。&lt;/p&gt;
@@ -2345,7 +2361,7 @@
     
     </summary>
     
-      <category term="思考" scheme="http://xiaolin.site/categories/%E6%80%9D%E8%80%83/"/>
+      <category term="随笔" scheme="http://xiaolin.site/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
       <category term="习惯养成" scheme="http://xiaolin.site/tags/%E4%B9%A0%E6%83%AF%E5%85%BB%E6%88%90/"/>

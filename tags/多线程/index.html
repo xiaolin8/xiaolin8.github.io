@@ -1,12 +1,19 @@
-<!DOCTYPE HTML>
-<html lang="zh-CN">
+<!doctype html>
+<html class="theme-next pisces use-motion">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="google-site-verification" content="zo1hRA1JFAQXW4rIvduGGzeUnKq0s29R8K0L9IE7weA">
-  <title>标签 : 多线程 | XiaoLin&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-  <meta name="author" content="XiaoLin">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+  <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+  <meta name="keywords" content="Hexo, NexT">
+  <link rel="alternate" href="/atom.xml" title="XiaoLin's Blog" type="application/atom+xml">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
   <meta name="description" content="XiaoLin&apos;s Blog">
   <meta property="og:type" content="website">
   <meta property="og:title" content="XiaoLin's Blog">
@@ -16,129 +23,119 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="XiaoLin's Blog">
   <meta name="twitter:description" content="XiaoLin&apos;s Blog">
-  <link rel="alternative" href="/atom.xml" title="XiaoLin&#39;s Blog" type="application/atom+xml">
-  <link rel="icon" href="/img/favicon.ico">
-  <link rel="apple-touch-icon" href="/img/jacman.jpg">
-  <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
-  <link rel="stylesheet" href="/css/style.css">
+  <script type="text/javascript" id="hexo.configuration">
+    var NexT = window.NexT || {},
+      CONFIG = {
+        scheme: "Pisces",
+        sidebar: {
+          position: "left",
+          display: "post"
+        },
+        fancybox: !0,
+        motion: !0,
+        duoshuo: {
+          userId: 0,
+          author: "博主"
+        }
+      }
+  </script>
   <link rel="canonical" href="http://xiaolin.site/tags/多线程/">
+  <title>标签: 多线程 | XiaoLin's Blog</title>
 </head>
 
-</html>
-
-<body>
-  <header>
-    <!--[if lt IE 9]><div style="background-color:#f1c40f;padding-bottom:1.5em;color:#fff;padding-top:1.5em;text-align:center"><strong>你的浏览器都成古董了!</strong> 为什么不 <a href="http://www.firefox.com.cn/download/">升级一下</a>以便享受更好的体验呢?</div><![endif]-->
-    <div>
-      <div id="imglogo">
-        <a href="/"><img src="/img/logo.png" alt="XiaoLin&#39;s Blog" title="XiaoLin&#39;s Blog"></a>
-      </div>
-      <div id="textlogo">
-        <h1 class="site-name"><a href="/" title="XiaoLin&#39;s Blog">XiaoLin&#39;s Blog</a></h1>
-        <h2 class="blog-motto">亲爱的小肥羊，欢迎光临啊</h2></div>
-      <div class="navbar">
-        <a class="navbutton navmobile" href="#" title="菜单"></a>
-      </div>
-      <nav class="animated">
-        <ul>
-          <ul>
-            <li><a href="/">主页 | Home</a></li>
-            <li><a href="/archives">归档 | Archives</a></li>
-            <li><a href="/about">简介 | About</a></li>
-            <li>
-              <form class="search" action="/search/index.html" method="get" accept-charset="utf-8"><label>Search</label><input type="text" id="search" class="st-default-search-input" maxlength="20" placeholder="Search"></form>
-            </li>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container one-collumn sidebar-position-left">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+        <div class="site-meta">
+          <div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">XiaoLin's Blog</span> <span class="logo-line-after"><i></i></span></a></div>
+          <p class="site-subtitle">回首向来萧瑟处，归去，也无风雨也无晴</p>
+        </div>
+        <div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div>
+        <nav class="site-nav">
+          <ul id="menu" class="menu">
+            <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li>
+            <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li>
+            <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li>
+            <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li>
+            <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li>
           </ul>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <div id="container">
-    <div class="archive-title">
-      <h2 class="tag-icon">多线程</h2></div>
-    <div id="main" class="archive-part clearfix">
-      <div id="archive-page">
-        <section class="post" itemscope itemprop="blogPost"><a href="/2016/05/29/java-thread/" title="java基础拾遗——多线程" itemprop="url"><time datetime="2016-05-29T01:42:47.000Z" itemprop="datePublished">2016-05-29</time><h1 itemprop="name">java基础拾遗——多线程</h1></a></section>
+        </nav>
       </div>
-    </div>
+    </header>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            <div id="posts" class="posts-collapse">
+              <div class="collection-title">
+                <h2>多线程 <small>标签</small></h2></div>
+              <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+                <header class="post-header">
+                  <h1 class="post-title"><a class="post-title-link" href="/2016/05/29/java-thread/" itemprop="url"><span itemprop="name">java基础拾遗——多线程</span></a></h1>
+                  <div class="post-meta"><time class="post-time" itemprop="dateCreated" datetime="2016-05-29T09:42:47+08:00" content="2016-05-29">05-29</time></div>
+                </header>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+          <div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div>
+        </div>
+        <aside id="sidebar" class="sidebar">
+          <div class="sidebar-inner">
+            <section class="site-overview sidebar-panel sidebar-panel-active">
+              <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="http://o6fmcea8z.bkt.clouddn.com/blog/image/me.png" alt="XiaoLin">
+                <p class="site-author-name" itemprop="name">XiaoLin</p>
+                <p class="site-description motion-element" itemprop="description">XiaoLin's Blog</p>
+              </div>
+              <nav class="site-state motion-element">
+                <div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">18</span> <span class="site-state-item-name">日志</span></a></div>
+                <div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">2</span> <span class="site-state-item-name">分类</span></a></div>
+                <div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">10</span> <span class="site-state-item-name">标签</span></a></div>
+              </nav>
+              <div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div>
+              <div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/xiaolin8" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i> GitHub </a></span><span class="links-of-author-item"><a href="http://www.zhihu.com/people/wuxun-yi" target="_blank" title="知乎"><i class="fa fa-fw fa-globe"></i> 知乎</a></span></div>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2016</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">XiaoLin</span></div>
+        <div class="powered-by">Erstellt mit <a class="theme-link" href="http://hexo.io">Hexo</a></div>
+        <div class="theme-info">Theme - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a></div>
+      </div>
+    </footer>
+    <div class="back-to-top"><i class="fa fa-arrow-up"></i></div>
   </div>
-  <footer>
-    <div id="footer">
-      <div class="line"><span></span>
-        <div class="author"></div>
-      </div>
-      <section class="info">
-        <p>Hello ,I&#39;m XiaoLin.<br>This is my blog,welcome!</p>
-      </section>
-      <div class="social-font" class="clearfix">
-        <a href="https://github.com/xiaolin8" target="_blank" class="icon-github" title="github"></a>
-        <a href="https://www.linkedin.com/in/孝林-胡-19634ba0" target="_blank" class="icon-linkedin" title="linkedin"></a>
-        <a href="http://www.zhihu.com/people/wuxun-yi" target="_blank" class="icon-zhihu" title="知乎"></a>
-        <a href="mailto:hu_xiao_lin@163.com" target="_blank" class="icon-email" title="Email Me"></a>
-      </div>
-      <p class="copyright">All right reserved © 2016 <a href="/about" target="_blank" title="XiaoLin">XiaoLin</a></p>
-      <script type="text/javascript">
-        ! function(t, e, n, s, c, i, o) {
-          t.SwiftypeObject = c, t[c] = t[c] || function() {
-            (t[c].q = t[c].q || []).push(arguments)
-          }, i = e.createElement(n), o = e.getElementsByTagName(n)[0], i.async = 1, i.src = s, o.parentNode.insertBefore(i, o)
-        }(window, document, "script", "//s.swiftypecdn.com/install/v2/st.js", "_st"), _st("install", "xboTgqPs9MSHz8WAFgnF", "2.0.0")
-      </script>
-    </div>
-  </footer>
-  <script src="/js/jquery-2.0.3.min.js"></script>
-  <script src="/js/jquery.imagesloaded.min.js"></script>
-  <script src="/js/gallery.js"></script>
-  <script src="/js/jquery.qrcode-0.12.0.min.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
-      function e() {
-        "number" == typeof window.innerWidth ? n = window.innerWidth : document.documentElement && document.documentElement.clientWidth && (n = document.documentElement.clientWidth)
-      }
-      $(".navbar").click(function() {
-        $("header nav").toggleClass("shownav")
-      });
-      var n = 0,
-        s = $("#main"),
-        a = $("#asidepart"),
-        o = $(".closeaside"),
-        d = $(".openaside");
-      o.click(function() {
-        a.addClass("fadeOut").css("display", "none"), d.css("display", "block").addClass("fadeIn"), s.addClass("moveMain")
-      }), d.click(function() {
-        d.css("display", "none").removeClass("beforeFadeIn"), a.css("display", "block").removeClass("fadeOut").addClass("fadeIn"), s.removeClass("moveMain")
-      }), $(window).scroll(function() {
-        d.css("top", Math.max(80, 260 - $(this).scrollTop()))
-      }), $(window).resize(function() {
-        e(), n >= 1024 ? $("header nav").removeClass("shownav") : (s.removeClass("moveMain"), a.css("display", "block").removeClass("fadeOut"), d.css("display", "none"))
-      })
-    })
+    "[object Function]" !== Object.prototype.toString.call(window.Promise) && (window.Promise = null)
   </script>
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
-      $(".article-content").each(function(a) {
-        $(this).find("img").each(function() {
-          if (!$(this).parent().hasClass("fancybox")) {
-            var a = this.alt;
-            a && $(this).after('<span class="caption">' + a + "</span>"), $(this).wrap('<a href="' + this.src + '" title="' + a + '" class="fancybox"></a>')
-          }
-        }), $(this).find(".fancybox").each(function() {
-          $(this).attr("rel", "article" + a)
-        })
-      }), $.fancybox && $(".fancybox").fancybox()
-    })
+    var duoshuoQuery = {
+      short_name: "xiaolin"
+    };
+    ! function() {
+      var t = document.createElement("script");
+      t.type = "text/javascript", t.async = !0, t.id = "duoshuo-script", t.src = ("https:" == document.location.protocol ? "https:" : "http:") + "//static.duoshuo.com/embed.js", t.charset = "UTF-8", (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(t)
+    }()
   </script>
-  <script type="text/javascript">
-    ! function(e, a, n, t, c, i, o) {
-      e.GoogleAnalyticsObject = c, e[c] = e[c] || function() {
-        (e[c].q = e[c].q || []).push(arguments)
-      }, e[c].l = 1 * new Date, i = a.createElement(n), o = a.getElementsByTagName(n)[0], i.async = 1, i.src = t, o.parentNode.insertBefore(i, o)
-    }(window, document, "script", "//www.google-analytics.com/analytics.js", "ga"), ga("create", "UA-75883223-1", "xiaolin8.github.io"), ga("send", "pageview")
-  </script>
-  <div id="totop">
-    <a title="返回顶部"><img src="/img/scrollup.png"></a>
-  </div>
-  <script src="/js/totop.js"></script>
+  <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+  <script src="/js/src/hook-duoshuo.js"></script>
 </body>
+
+</html>
