@@ -1735,7 +1735,7 @@ pre .keyword {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #fff99a
+  background: #b0af5b
 }
 
 .links-of-blogroll {
@@ -2829,4 +2829,8 @@ body {
   .post-body {
     text-align: justify
   }
+}
+
+.ds-powered-by {
+  display: none
 }
