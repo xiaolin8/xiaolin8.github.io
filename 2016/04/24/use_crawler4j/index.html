@@ -1,0 +1,322 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-site-verification" content="zo1hRA1JFAQXW4rIvduGGzeUnKq0s29R8K0L9IE7weA">
+  <title>记一次开源爬虫crawler4j的应用 | XiaoLin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <meta name="author" content="XiaoLin">
+  <meta name="description" content="crawler4j是一个开源的Java爬虫框架，通过使用其简单的接口就可以实现网站资源的多线程爬取。">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="记一次开源爬虫crawler4j的应用">
+  <meta property="og:url" content="http://xiaolin.site/2016/04/24/use_crawler4j/index.html">
+  <meta property="og:site_name" content="XiaoLin's Blog">
+  <meta property="og:description" content="crawler4j是一个开源的Java爬虫框架，通过使用其简单的接口就可以实现网站资源的多线程爬取。">
+  <meta property="og:image" content="http://o6fmcea8z.bkt.clouddn.com/blog/image/classmates.jpg">
+  <meta property="og:updated_time" content="2016-05-01T07:23:29.909Z">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="记一次开源爬虫crawler4j的应用">
+  <meta name="twitter:description" content="crawler4j是一个开源的Java爬虫框架，通过使用其简单的接口就可以实现网站资源的多线程爬取。">
+  <meta name="twitter:image" content="http://o6fmcea8z.bkt.clouddn.com/blog/image/classmates.jpg">
+  <link rel="alternative" href="/atom.xml" title="XiaoLin&#39;s Blog" type="application/atom+xml">
+  <link rel="icon" href="/img/favicon.ico">
+  <link rel="apple-touch-icon" href="/img/jacman.jpg">
+  <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="canonical" href="http://xiaolin.site/2016/04/24/use_crawler4j/">
+</head>
+
+</html>
+
+<body>
+  <header>
+    <!--[if lt IE 9]><div style="background-color:#f1c40f;padding-bottom:1.5em;color:#fff;padding-top:1.5em;text-align:center"><strong>你的浏览器都成古董了!</strong> 为什么不 <a href="http://www.firefox.com.cn/download/">升级一下</a>以便享受更好的体验呢?</div><![endif]-->
+    <div>
+      <div id="imglogo">
+        <a href="/"><img src="/img/logo.png" alt="XiaoLin&#39;s Blog" title="XiaoLin&#39;s Blog"></a>
+      </div>
+      <div id="textlogo">
+        <h1 class="site-name"><a href="/" title="XiaoLin&#39;s Blog">XiaoLin&#39;s Blog</a></h1>
+        <h2 class="blog-motto">亲爱的小肥羊，欢迎光临啊</h2></div>
+      <div class="navbar">
+        <a class="navbutton navmobile" href="#" title="菜单"></a>
+      </div>
+      <nav class="animated">
+        <ul>
+          <ul>
+            <li><a href="/">主页 | Home</a></li>
+            <li><a href="/archives">归档 | Archives</a></li>
+            <li><a href="/about">简介 | About</a></li>
+            <li>
+              <form class="search" action="/search/index.html" method="get" accept-charset="utf-8"><label>Search</label><input type="text" id="search" class="st-default-search-input" maxlength="20" placeholder="Search"></form>
+            </li>
+          </ul>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <div id="container">
+    <div id="main" class="post" itemscope itemprop="blogPost">
+      <article itemprop="articleBody">
+        <header class="article-info clearfix">
+          <h1 itemprop="name"><a href="/2016/04/24/use_crawler4j/" title="记一次开源爬虫crawler4j的应用" itemprop="url">记一次开源爬虫crawler4j的应用</a></h1>
+          <p class="article-author">By <a href="/about" title="XiaoLin" target="_blank" itemprop="author">XiaoLin</a></p>
+          <p class="article-time"><time datetime="2016-04-24T14:17:00.000Z" itemprop="datePublished">发表于 2016-04-24</time></p>
+        </header>
+        <div class="article-content">
+          <div id="toc" class="toc-article"><strong class="toc-title">文章目录</strong>
+            <ol class="toc">
+              <li class="toc-item toc-level-3"><a class="toc-link" href="#爬虫的原理"><span class="toc-number">1.</span> <span class="toc-text">爬虫的原理</span></a></li>
+            </ol>
+          </div>
+          <p>crawler4j是一个开源的Java爬虫框架，通过使用其简单的接口就可以实现网站资源的多线程爬取。</p>
+          <a id="more"></a>
+          <p>使用起来非常简单：</p>
+          <p>只需要在Java项目的pom文件中添加以下片段即可：</p>
+          <figure class="highlight xml">
+            <table>
+              <tr>
+                <td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td>
+                <td class="code"><pre><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>edu.uci.ics<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>crawler4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td>
+              </tr>
+            </table>
+          </figure>
+          <p>以下是我使用crawler4j爬取我<a href="http://www.petrosoftware-class.com" title="石油软件班" target="_blank" rel="external">石油软件班</a>历届帅哥美女们头像的例子：</p>
+          <figure class="highlight java">
+            <table>
+              <tr>
+                <td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td>
+                <td
+                  class="code"><pre><div class="line">String rootFolder = <span class="string">"d:/data2"</span>;<span class="comment">//设置初始化目录</span></div><div class="line"><span class="keyword">int</span> numberOfCrawlers = <span class="number">8</span>;<span class="comment">//设置爬虫的数量</span></div><div class="line">String storageFolder = <span class="string">"d:/data2/img2"</span>;<span class="comment">//设置图片的存储路径</span></div><div class="line"></div><div class="line">CrawlConfig config = <span class="keyword">new</span> CrawlConfig();</div><div class="line"></div><div class="line">config.setCrawlStorageFolder(rootFolder);</div><div class="line"></div><div class="line">config.setPolitenessDelay(<span class="number">1000</span>);<span class="comment">//设置每次爬取时间间隔</span></div><div class="line"><span class="comment">/*</span></div><div class="line"> * Since images are binary content, we need to set this parameter to</div><div class="line"> * true to make sure they are included in the crawl.</div><div class="line"> */</div><div class="line">config.setIncludeBinaryContentInCrawling(<span class="keyword">true</span>);</div><div class="line"></div><div class="line">config.setUserAgentString(<span class="string">"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0"</span>);</div><div class="line"><span class="comment">//https://www.zhihu.com/question/28521492</span></div><div class="line"></div><div class="line"><span class="comment">//http://www.petrosoftware-class.com/</span></div><div class="line">String[] crawlDomains = &#123;<span class="string">"http://www.petrosoftware-class.com/"</span>&#125;;</div><div class="line"></div><div class="line">PageFetcher pageFetcher = <span class="keyword">new</span> PageFetcher(config);</div><div class="line">RobotstxtConfig robotstxtConfig = <span class="keyword">new</span> RobotstxtConfig();</div><div class="line">RobotstxtServer robotstxtServer = <span class="keyword">new</span> RobotstxtServer(robotstxtConfig, pageFetcher);</div><div class="line">CrawlController controller = <span class="keyword">new</span> CrawlController(config, pageFetcher, robotstxtServer);</div><div class="line"><span class="keyword">for</span> (String domain : crawlDomains) &#123;</div><div class="line">  controller.addSeed(domain);</div><div class="line">&#125;</div><div class="line"></div><div class="line">ImageCrawler.configure(crawlDomains, storageFolder);</div><div class="line"></div><div class="line">controller.start(ImageCrawler.class, numberOfCrawlers);</div></pre></td>
+              </tr>
+            </table>
+          </figure>
+          <p><img src="http://o6fmcea8z.bkt.clouddn.com/blog/image/classmates.jpg" alt="classmates.jpg"></p>
+          <h3 id="爬虫的原理"><a href="#爬虫的原理" class="headerlink" title="爬虫的原理"></a>爬虫的原理</h3>
+          <p>1）首先你要明白爬虫怎样工作</p>
+          <p>想象你是一只蜘蛛，现在你被放到了互联“网”上。那么，你需要把所有的网页都看一遍。怎么办呢？没问题呀，你就随便从某个地方开始，比如说人民日报的首页，这个叫initial pages，用$表示吧。</p>
+          <p>在人民日报的首页，你看到那个页面引向的各种链接。于是你很开心地从爬到了“国内新闻”那个页面。太好了，这样你就已经爬完了俩页面（首页和国内新闻）！暂且不用管爬下来的页面怎么处理的，你就想象你把这个页面完完整整抄成了个html放到了你身上。</p>
+          <p>突然你发现， 在国内新闻这个页面上，有一个链接链回“首页”。作为一只聪明的蜘蛛，你肯定知道你不用爬回去的吧，因为你已经看过了啊。所以，你需要用你的脑子，存下你已经看过的页面地址。这样，每次看到一个可能需要爬的新链接，你就先查查你脑子里是不是已经去过这个页面地址。如果去过，那就别去了。</p>
+          <p>好的，理论上如果所有的页面可以从initial page达到的话，那么可以证明你一定可以爬完所有的网页。</p>
+          <p>2）效率<br>如果你就这样爬的话，你会发现要爬的网页实在太多了。设想全网有N个网站，那么分析一下判重的复杂度就是N*log(N)，因为所有网页要遍历一次，而每次判重用set的话需要log(N)的复杂度。通常的判重做法是怎样呢？Bloom Filter. 简单讲它仍然是一种hash的方法，但是它的特点是，它可以使用固定的内存（不随url的数量而增长）以O(1)的效率判定url是否已经在set中。可惜天下没有白吃的午餐，它的唯一问题在于，如果这个url不在set中，BF可以100%确定这个url没有看过。但是如果这个url在set中，它会告诉你：这个url应该已经出现过，不过我有2%的不确定性。注意这里的不确定性在你分配的内存足够大的时候，可以变得很小很少。一个简单的教程:
+            <a href="http%3A//billmill.org/bloomfilter-tutorial/" title="Bloom Filters by Example">Bloom Filters by Example</a>好，现在已经接近处理判重最快的方法了。另外一个瓶颈——你只有一台机器。不管你的带宽有多大，只要你的机器下载网页的速度是瓶颈的话，那么你只有加快这个速度。用一台机子不够的话——用很多台吧！当然，我们假设每台机子都已经进了最大的效率——使用多线程.</p>
+          <p>3）集群化抓取</p>
+          <p>据统计2013年豆瓣的page量已经达到了几百万个，如果用100多台机器昼夜不停地运行，那么需要一个月时间左右才能爬完。想象如果只用一台机子你就得运行100个月了…</p>
+          <p>那么，假设你现在有100台机器可以用，怎么实现一个分布式的爬取算法呢？</p>
+          <p>我们把这100台中的99台运算能力较小的机器叫作slave，另外一台较大的机器叫作master，那么回顾上面代码中的url_queue，如果我们能把这个queue放到这台master机器上，所有的slave都可以通过网络跟master联通，每当一个slave完成下载一个网页，就向master请求一个新的网页来抓取。而每次slave新抓到一个网页，就把这个网页上所有的链接送到master的queue里去。同样，bloom filter也放到master上，但是现在master只发送确定没有被访问过的url给slave。Bloom
+            Filter放到master的内存里，而被访问过的url放到运行在master上的Redis里，这样保证所有操作都是O(1)。（至少平摊是O(1)，Redis的访问效率见:<a href="http%3A//redis.io/commands/linsert" title="LINSERT – Redis">LINSERT – Redis</a></p>
+          <p>4）展望及后续处理</p>
+          <p>虽然上面用很多“简单”，但是真正要实现一个商业规模可用的爬虫并不是一件容易的事。上面的代码用来爬一个整体的网站几乎没有太大的问题。</p>
+          <p>但是如果附加上你需要这些后续处理，比如</p>
+          <p>有效地存储（数据库应该怎样安排）</p>
+          <p>有效地判重（这里指网页判重，咱可不想把人民日报和抄袭它的大民日报都爬一遍）</p>
+          <p>有效地信息抽取（比如怎么样抽取出网页上所有的地址抽取出来，“朝阳区奋进路中华道”），搜索引擎通常不需要存储所有的信息，比如图片我存来干嘛…</p>
+          <p>及时更新（预测这个网页多久会更新一次）</p>
+          <p>如你所想，这里每一个点都可以供很多研究者十数年的研究。虽然如此，<br>“路漫漫其修远兮,吾将上下而求索”。</p>
+        </div>
+        <footer class="article-footer clearfix">
+          <div class="article-catetags">
+            <div class="article-categories"><span></span> <a class="article-category-link" href="/categories/技术/">技术</a></div>
+            <div class="article-tags"><span></span> <a href="/tags/爬虫/">爬虫</a></div>
+          </div>
+          <div class="article-share" id="share">
+            <div data-url="http://xiaolin.site/2016/04/24/use_crawler4j/" data-title="记一次开源爬虫crawler4j的应用 | XiaoLin&#39;s Blog" data-tsina="undefined" class="share clearfix"></div>
+          </div>
+        </footer>
+      </article>
+      <nav class="article-nav clearfix">
+        <div class="prev"><a href="/2016/04/30/full_stack/" title="全栈工程师的价值"><strong>上一篇：</strong><br><span>全栈工程师的价值</span></a></div>
+        <div class="next"><a href="/2016/01/15/be_simple/" title="忍受简单的能力"><strong>下一篇：</strong><br><span>忍受简单的能力</span></a></div>
+      </nav>
+      <section id="comments" class="comment">
+        <div class="ds-thread" data-thread-key="2016/04/24/use_crawler4j/" data-title="记一次开源爬虫crawler4j的应用" data-url="http://xiaolin.site/2016/04/24/use_crawler4j/"></div>
+      </section>
+    </div>
+    <div class="openaside">
+      <a class="navbutton" href="#" title="显示侧边栏"></a>
+    </div>
+    <div id="toc" class="toc-aside"><strong class="toc-title">文章目录</strong>
+      <ol class="toc">
+        <li class="toc-item toc-level-3"><a class="toc-link" href="#爬虫的原理"><span class="toc-number">1.</span> <span class="toc-text">爬虫的原理</span></a></li>
+      </ol>
+    </div>
+    <div id="asidepart">
+      <div class="closeaside">
+        <a class="closebutton" href="#" title="隐藏侧边栏"></a>
+      </div>
+      <aside class="clearfix">
+        <div class="github-card">
+          <p class="asidetitle">Github 名片</p>
+          <div class="github-card" data-github="xiaolin8" data-width="220" data-height="119" data-theme="medium">
+            <script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+          </div>
+        </div>
+        <div class="categorieslist">
+          <p class="asidetitle">分类</p>
+          <ul>
+            <li><a href="/categories/Java基础/" title="Java基础">Java基础<sup>9</sup></a></li>
+            <li><a href="/categories/NoSQL/" title="NoSQL">NoSQL<sup>1</sup></a></li>
+            <li><a href="/categories/Web开发/" title="Web开发">Web开发<sup>1</sup></a></li>
+            <li><a href="/categories/前端/" title="前端">前端<sup>1</sup></a></li>
+            <li><a href="/categories/思考/" title="思考">思考<sup>2</sup></a></li>
+            <li><a href="/categories/技术/" title="技术">技术<sup>3</sup></a></li>
+          </ul>
+        </div>
+        <div class="tagslist">
+          <p class="asidetitle">标签</p>
+          <ul class="clearfix">
+            <li><a href="/tags/java/" title="java">java<sup>8</sup></a></li>
+            <li><a href="/tags/习惯养成/" title="习惯养成">习惯养成<sup>1</sup></a></li>
+            <li><a href="/tags/缓存/" title="缓存">缓存<sup>1</sup></a></li>
+            <li><a href="/tags/数据库/" title="数据库">数据库<sup>1</sup></a></li>
+            <li><a href="/tags/全栈/" title="全栈">全栈<sup>1</sup></a></li>
+            <li><a href="/tags/翻译/" title="翻译">翻译<sup>1</sup></a></li>
+            <li><a href="/tags/多线程/" title="多线程">多线程<sup>1</sup></a></li>
+            <li><a href="/tags/redis/" title="redis">redis<sup>1</sup></a></li>
+            <li><a href="/tags/思考/" title="思考">思考<sup>1</sup></a></li>
+            <li><a href="/tags/爬虫/" title="爬虫">爬虫<sup>1</sup></a></li>
+          </ul>
+        </div>
+        <div class="rsspart"><a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a></div>
+      </aside>
+    </div>
+  </div>
+  <footer>
+    <div id="footer">
+      <div class="line"><span></span>
+        <div class="author"></div>
+      </div>
+      <section class="info">
+        <p>Hello ,I&#39;m XiaoLin.<br>This is my blog,welcome!</p>
+      </section>
+      <div class="social-font" class="clearfix">
+        <a href="https://github.com/xiaolin8" target="_blank" class="icon-github" title="github"></a>
+        <a href="https://www.linkedin.com/in/孝林-胡-19634ba0" target="_blank" class="icon-linkedin" title="linkedin"></a>
+        <a href="http://www.zhihu.com/people/wuxun-yi" target="_blank" class="icon-zhihu" title="知乎"></a>
+        <a href="mailto:hu_xiao_lin@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+      </div>
+      <p class="copyright">All right reserved © 2016 <a href="/about" target="_blank" title="XiaoLin">XiaoLin</a></p>
+      <script type="text/javascript">
+        ! function(t, e, n, s, c, i, o) {
+          t.SwiftypeObject = c, t[c] = t[c] || function() {
+            (t[c].q = t[c].q || []).push(arguments)
+          }, i = e.createElement(n), o = e.getElementsByTagName(n)[0], i.async = 1, i.src = s, o.parentNode.insertBefore(i, o)
+        }(window, document, "script", "//s.swiftypecdn.com/install/v2/st.js", "_st"), _st("install", "xboTgqPs9MSHz8WAFgnF", "2.0.0")
+      </script>
+    </div>
+  </footer>
+  <script src="/js/jquery-2.0.3.min.js"></script>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+  <script src="/js/gallery.js"></script>
+  <script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      function e() {
+        "number" == typeof window.innerWidth ? n = window.innerWidth : document.documentElement && document.documentElement.clientWidth && (n = document.documentElement.clientWidth)
+      }
+      $(".navbar").click(function() {
+        $("header nav").toggleClass("shownav")
+      });
+      var n = 0,
+        s = $("#main"),
+        a = $("#asidepart"),
+        o = $(".closeaside"),
+        d = $(".openaside");
+      o.click(function() {
+        a.addClass("fadeOut").css("display", "none"), d.css("display", "block").addClass("fadeIn"), s.addClass("moveMain")
+      }), d.click(function() {
+        d.css("display", "none").removeClass("beforeFadeIn"), a.css("display", "block").removeClass("fadeOut").addClass("fadeIn"), s.removeClass("moveMain")
+      }), $(window).scroll(function() {
+        d.css("top", Math.max(80, 260 - $(this).scrollTop()))
+      }), $(window).resize(function() {
+        e(), n >= 1024 ? $("header nav").removeClass("shownav") : (s.removeClass("moveMain"), a.css("display", "block").removeClass("fadeOut"), d.css("display", "none"), $("#toc.toc-aside").css("display", "none"))
+      })
+    })
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var c = $(".article-content>iframe"),
+        n = $(".article-content>embed"),
+        o = ($("#toc"), $("#toc.toc-aside")),
+        e = $(".openaside"),
+        i = $(".closeaside");
+      c.length > 0 && c.wrap('<div class="video-container" />'), n.length > 0 && n.wrap('<div class="video-container" />'), i.click(function() {
+        o.css("display", "block").addClass("fadeIn")
+      }), e.click(function() {
+        o.css("display", "none")
+      }), $(window).scroll(function() {
+        o.css("top", Math.max(140, 320 - $(this).scrollTop()))
+      })
+    })
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      function e() {
+        "number" == typeof window.innerWidth ? n = window.innerWidth : document.documentElement && document.documentElement.clientWidth && (n = document.documentElement.clientWidth);
+        var e = n > 1024 ? 200 : 100,
+          t = {
+            render: "image",
+            size: e,
+            fill: "#2ca6cb",
+            text: r,
+            radius: .5,
+            quiet: 1
+          },
+          a = $(".article-share-qrcode").position();
+        $(".hoverqrcode").empty().css("width", e).css("height", e).css("left", a.left - e / 2 + 20).css("top", a.top - e - 10).qrcode(t)
+      }
+      var t = $(".share"),
+        r = t.attr("data-url"),
+        a = encodeURIComponent(r),
+        i = t.attr("data-title"),
+        c = t.attr("data-tsina"),
+        o = (t.attr("description"), ['<div class="hoverqrcode clearfix"></div>', '<a class="overlay" id="qrcode"></a>', '<a href="https://www.facebook.com/sharer.php?u=' + a + '" class="article-share-facebook" target="_blank" title="Facebook"></a>', '<a href="https://twitter.com/intent/tweet?url=' + a + '" class="article-share-twitter" target="_blank" title="Twitter"></a>', '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>', '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + a + "&srcUrl=" + a + "&title=" + i + '" class="article-share-renren" target="_blank" title="人人"></a>', '<a href="http://service.weibo.com/share/share.php?title=' + i + "&url=" + a + "&ralateUid=" + c + '&searchPic=true&style=number" class="article-share-weibo" target="_blank" title="微博"></a>', '<span title="Share to"></span>'].join(""));
+      t.append(o), $(".hoverqrcode").hide();
+      var n = 0;
+      $(window).resize(function() {
+        $(".hoverqrcode").hide()
+      }), $(".article-share-qrcode").click(function() {
+        e(), $(".hoverqrcode").toggle()
+      }), $(".article-share-qrcode").hover(function() {}, function() {
+        $(".hoverqrcode").hide()
+      })
+    })
+  </script>
+  <script type="text/javascript">
+    var duoshuoQuery = {
+      short_name: "xiaolin"
+    };
+    ! function() {
+      var e = document.createElement("script");
+      e.type = "text/javascript", e.async = !0, e.src = "//static.duoshuo.com/embed.js", e.charset = "UTF-8", (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(e)
+    }()
+  </script>
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".article-content").each(function(a) {
+        $(this).find("img").each(function() {
+          if (!$(this).parent().hasClass("fancybox")) {
+            var a = this.alt;
+            a && $(this).after('<span class="caption">' + a + "</span>"), $(this).wrap('<a href="' + this.src + '" title="' + a + '" class="fancybox"></a>')
+          }
+        }), $(this).find(".fancybox").each(function() {
+          $(this).attr("rel", "article" + a)
+        })
+      }), $.fancybox && $(".fancybox").fancybox()
+    })
+  </script>
+  <script type="text/javascript">
+    ! function(e, a, n, t, c, i, o) {
+      e.GoogleAnalyticsObject = c, e[c] = e[c] || function() {
+        (e[c].q = e[c].q || []).push(arguments)
+      }, e[c].l = 1 * new Date, i = a.createElement(n), o = a.getElementsByTagName(n)[0], i.async = 1, i.src = t, o.parentNode.insertBefore(i, o)
+    }(window, document, "script", "//www.google-analytics.com/analytics.js", "ga"), ga("create", "UA-75883223-1", "xiaolin8.github.io"), ga("send", "pageview")
+  </script>
+  <div id="totop">
+    <a title="返回顶部"><img src="/img/scrollup.png"></a>
+  </div>
+  <script src="/js/totop.js"></script>
+</body>
