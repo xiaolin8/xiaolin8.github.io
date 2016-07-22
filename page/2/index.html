@@ -1,1 +1,318 @@
-<!doctype html><html class="theme-next pisces use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="Hexo, NexT"><link rel="alternate" href="/atom.xml" title="XiaoLin's Blog" type="application/atom+xml"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1"><meta name="description" content="XiaoLin&apos;s Blog"><meta property="og:type" content="website"><meta property="og:title" content="XiaoLin's Blog"><meta property="og:url" content="http://xiaolin.site/page/2/index.html"><meta property="og:site_name" content="XiaoLin's Blog"><meta property="og:description" content="XiaoLin&apos;s Blog"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="XiaoLin's Blog"><meta name="twitter:description" content="XiaoLin&apos;s Blog"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Pisces",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}}</script><link rel="canonical" href="http://xiaolin.site/page/2/"><title>XiaoLin's Blog</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container one-collumn sidebar-position-left page-home"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">XiaoLin's Blog</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">回首向来萧瑟处，归去，也无风雨也无晴</p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li></ul></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><section id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/30/jvm/" itemprop="url">java基础拾遗——JVM垃圾回收原理</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-30T16:20:10+08:00" content="2016-05-30">2016-05-30 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span> </a></span></span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/30/jvm/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/jvm/" itemprop="commentsCount"></span> </a></span><span id="/2016/05/30/jvm/" class="leancloud_visitors" data-flag-title="java基础拾遗——JVM垃圾回收原理">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span><span class="leancloud-visitors-count"></span></span></div></header><div class="post-body" itemprop="articleBody">垃圾回收是个什么鬼？ &emsp;&emsp;拥有自动垃圾回收机制可以说是Java与C++的一项显著区别。在C++语言中，程序员必须小心谨慎地处理每一项内存分配，且内存使用完后必须手工释放曾经占用的内存空间。当内存释放不够完全时，即存在分配但永不释放的内存块，就会引起内存泄漏，严重时甚至导致程序瘫痪 ...<div class="post-more-link text-center"><a class="btn" href="/2016/05/30/jvm/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/30/java-generic/" itemprop="url">java基础拾遗——泛型</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-30T10:50:10+08:00" content="2016-05-30">2016-05-30 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span> </a></span></span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/30/java-generic/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/java-generic/" itemprop="commentsCount"></span> </a></span><span id="/2016/05/30/java-generic/" class="leancloud_visitors" data-flag-title="java基础拾遗——泛型">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span><span class="leancloud-visitors-count"></span></span></div></header><div class="post-body" itemprop="articleBody">什么是泛型？ &emsp;&emsp;Java泛型（generics）是JDK 5中引入的一个新特性，允许在定义类和接口的时候使用类型参数（type parameter）。声明的类型参数在使用时用具体的类型来替换。泛型最主要的应用是在JDK 5中的新集合类框架中。对于泛型概念的引入，开发社区的观点是 ...<div class="post-more-link text-center"><a class="btn" href="/2016/05/30/java-generic/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/29/java-dynamic-proxy/" itemprop="url">Java基础拾遗——动态代理</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-29T17:04:34+08:00" content="2016-05-29">2016-05-29 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span> </a></span></span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/29/java-dynamic-proxy/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/29/java-dynamic-proxy/" itemprop="commentsCount"></span> </a></span><span id="/2016/05/29/java-dynamic-proxy/" class="leancloud_visitors" data-flag-title="Java基础拾遗——动态代理">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span><span class="leancloud-visitors-count"></span></span></div></header><div class="post-body" itemprop="articleBody">什么是动态代理？ ① 首先你要明白静态代理的作用我们有一个字体提供类，有多种实现（从磁盘，从网络，从系统） 1234567891011121314151617 public interface FontProvider &#123; Font getF ...<div class="post-more-link text-center"><a class="btn" href="/2016/05/29/java-dynamic-proxy/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/29/java-reflection/" itemprop="url">java基础拾遗——反射</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-29T13:05:39+08:00" content="2016-05-29">2016-05-29 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span> </a></span></span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/29/java-reflection/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/29/java-reflection/" itemprop="commentsCount"></span> </a></span><span id="/2016/05/29/java-reflection/" class="leancloud_visitors" data-flag-title="java基础拾遗——反射">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span><span class="leancloud-visitors-count"></span></span></div></header><div class="post-body" itemprop="articleBody">什么是反射？ Java 反射机制主要提供了以下功能： 在运行时判断任意一个对象所属的类。 在运行时构造任意一个类的对象。 在运行时判断任意一个类所具有的成员变量和方法。 在运行时调用任意一个对象的方法。 &emsp;&emsp;正如英文单词reflection的含义一样，使用反射 ...<div class="post-more-link text-center"><a class="btn" href="/2016/05/29/java-reflection/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/29/java-thread/" itemprop="url">java基础拾遗——多线程</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-29T09:42:47+08:00" content="2016-05-29">2016-05-29 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span> </a></span></span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/29/java-thread/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/29/java-thread/" itemprop="commentsCount"></span> </a></span><span id="/2016/05/29/java-thread/" class="leancloud_visitors" data-flag-title="java基础拾遗——多线程">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span><span class="leancloud-visitors-count"></span></span></div></header><div class="post-body" itemprop="articleBody">什么是线程？ &emsp;&emsp;简单的说进程就是在某种程度上相互隔离的、独立运行的程序，而线程也称作轻量级进程。就象进程一样，线程在程序中是独立的、并发的执行路径，是CPU调度的基本单位，每个线程有它自己的堆栈、自己的程序计数器和自己的局部变量。但是，与分隔的进程相比，进程中的线程之间的隔离程 ...<div class="post-more-link text-center"><a class="btn" href="/2016/05/29/java-thread/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article></section><nav class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a> <a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a></nav></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><section class="site-overview sidebar-panel sidebar-panel-active"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="http://o6fmcea8z.bkt.clouddn.com/blog/image/me.png" alt="XiaoLin"><p class="site-author-name" itemprop="name">XiaoLin</p><p class="site-description motion-element" itemprop="description">XiaoLin's Blog</p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">18</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">3</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">11</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/xiaolin8" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i> GitHub </a></span><span class="links-of-author-item"><a href="http://www.zhihu.com/people/wuxun-yi" target="_blank" title="知乎"><i class="fa fa-fw fa-globe"></i> 知乎</a></span></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; <span itemprop="copyrightYear">2016</span> <span class="with-love"><i class="fa fa-heart"></i> </span><a class="author" itemprop="copyrightHolder" href="/about">XiaoLin</a></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var duoshuoQuery={short_name:"xiaolin"};!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.id="duoshuo-script",t.src=("https:"==document.location.protocol?"https:":"http:")+"//static.duoshuo.com/embed.js",t.charset="UTF-8",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(t)}()</script><script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script><script src="/js/src/hook-duoshuo.js"></script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("8ea8d1qFz1ngcfqFfHDtD9OK-gzGzoHsz","oqupQn89j1bemr3K6Xp9SpS5")</script><script>function showTime(e){var t=new AV.Query(e),n=[],o=$(".leancloud_visitors");o.each(function(){n.push($(this).attr("id").trim())}),t.containedIn("url",n),t.find().done(function(e){var t=".leancloud-visitors-count";if(0===e.length)return void o.find(t).text(0);for(var i=0;i<e.length;i++){var r=e[i],s=r.get("url"),l=r.get("time"),c=document.getElementById(s);$(c).find(t).text(l)}for(var i=0;i<n.length;i++){var s=n[i],c=document.getElementById(s),u=$(c).find(t);""==u.text()&&u.text(0)}}).fail(function(e,t){console.log("Error: "+t.code+" "+t.message)})}function addCount(e){var t=$(".leancloud_visitors"),n=t.attr("id").trim(),o=t.attr("data-flag-title").trim(),i=new AV.Query(e);i.equalTo("url",n),i.find({success:function(t){if(t.length>0){var i=t[0];i.fetchWhenSave(!0),i.increment("time"),i.save(null,{success:function(e){var t=$(document.getElementById(n));t.find(".leancloud-visitors-count").text(e.get("time"))},error:function(e,t){console.log("Failed to save Visitor num, with error message: "+t.message)}})}else{var r=new e,s=new AV.ACL;s.setPublicReadAccess(!0),s.setPublicWriteAccess(!0),r.setACL(s),r.set("title",o),r.set("url",n),r.set("time",1),r.save(null,{success:function(e){var t=$(document.getElementById(n));t.find(".leancloud-visitors-count").text(e.get("time"))},error:function(e,t){console.log("Failed to create")}})}},error:function(e){console.log("Error:"+e.code+" "+e.message)}})}$(function(){var e=AV.Object.extend("Counter");1==$(".leancloud_visitors").length?addCount(e):$(".post-title-link").length>1&&showTime(e)})</script></body></html>
+<!doctype html>
+<html class="theme-next pisces use-motion">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+  <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css">
+  <meta name="keywords" content="Hexo, NexT">
+  <link rel="alternate" href="/atom.xml" title="XiaoLin's Blog" type="application/atom+xml">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
+  <meta name="description" content="XiaoLin&apos;s Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="XiaoLin's Blog">
+  <meta property="og:url" content="http://xiaolin.site/page/2/index.html">
+  <meta property="og:site_name" content="XiaoLin's Blog">
+  <meta property="og:description" content="XiaoLin&apos;s Blog">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="XiaoLin's Blog">
+  <meta name="twitter:description" content="XiaoLin&apos;s Blog">
+  <script type="text/javascript" id="hexo.configuration">
+    var NexT = window.NexT || {},
+      CONFIG = {
+        scheme: "Pisces",
+        sidebar: {
+          position: "left",
+          display: "post"
+        },
+        fancybox: !0,
+        motion: !0,
+        duoshuo: {
+          userId: 0,
+          author: "博主"
+        }
+      }
+  </script>
+  <link rel="canonical" href="http://xiaolin.site/page/2/">
+  <title>XiaoLin's Blog</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container one-collumn sidebar-position-left page-home">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+        <div class="site-meta">
+          <div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">XiaoLin's Blog</span> <span class="logo-line-after"><i></i></span></a></div>
+          <p class="site-subtitle">回首向来萧瑟处，归去，也无风雨也无晴</p>
+        </div>
+        <div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div>
+        <nav class="site-nav">
+          <ul id="menu" class="menu">
+            <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li>
+            <li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li>
+            <li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li>
+            <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li>
+            <li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            <section id="posts" class="posts-expand">
+              <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+                <header class="post-header">
+                  <h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/31/cache/" itemprop="url">Web缓存概述（一）</a></h1>
+                  <div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-31T22:14:20+08:00" content="2016-05-31">2016-05-31 </time></span>
+                    <span
+                      class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span>                      </a>
+                      </span>
+                      </span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/31/cache/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/31/cache/" itemprop="commentsCount"></span>                      </a>
+                      </span><span id="/2016/05/31/cache/" class="leancloud_visitors" data-flag-title="Web缓存概述（一）">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span><span class="leancloud-visitors-count"></span></span>
+                  </div>
+                </header>
+                <div class="post-body" itemprop="articleBody">什么是缓存？ &emsp;&emsp;Web缓存是指一个Web资源（如html页面，图片，js，数据等）存在于Web服务器和客户端（浏览器）之间的副本。缓存会根据进来的请求保存输出内容的副本；当下一个请求来到的时候，如果是相同的URL，缓存会根据缓存机制决定是直接使用副本响应访问请求，还是向源服务器 ...
+                  <div class="post-more-link text-center"><a class="btn" href="/2016/05/31/cache/#more" rel="contents">阅读全文 &raquo;</a></div>
+                </div>
+                <div></div>
+                <div></div>
+                <footer class="post-footer">
+                  <div class="post-eof"></div>
+                </footer>
+              </article>
+              <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+                <header class="post-header">
+                  <h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/30/jvm-optimal/" itemprop="url">java基础拾遗——JVM优化经验总结</a></h1>
+                  <div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-30T21:47:38+08:00" content="2016-05-30">2016-05-30 </time></span>
+                    <span
+                      class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span>                      </a>
+                      </span>
+                      </span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/30/jvm-optimal/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/jvm-optimal/" itemprop="commentsCount"></span>                      </a>
+                      </span><span id="/2016/05/30/jvm-optimal/" class="leancloud_visitors" data-flag-title="java基础拾遗——JVM优化经验总结">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span>
+                      <span
+                        class="leancloud-visitors-count"></span>
+                        </span>
+                  </div>
+                </header>
+                <div class="post-body" itemprop="articleBody">&emsp;&emsp;之前的文章《java基础拾遗——JVM垃圾回收原理》中已经介绍过年轻代、年老代、永生代，本文主要讲讲如何运用这些区域，为系统性能提供更好的帮助。本文不再赘述这些概念，直接进入主题。 如何将新对象预留在年轻代 &emsp;&emsp;众所周知，由于 Full GC 的成本远远高 ...
+                  <div class="post-more-link text-center"><a class="btn" href="/2016/05/30/jvm-optimal/#more" rel="contents">阅读全文 &raquo;</a></div>
+                </div>
+                <div></div>
+                <div></div>
+                <footer class="post-footer">
+                  <div class="post-eof"></div>
+                </footer>
+              </article>
+              <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+                <header class="post-header">
+                  <h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/30/jvm/" itemprop="url">java基础拾遗——JVM垃圾回收原理</a></h1>
+                  <div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-30T16:20:10+08:00" content="2016-05-30">2016-05-30 </time></span>
+                    <span
+                      class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span>                      </a>
+                      </span>
+                      </span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/30/jvm/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/jvm/" itemprop="commentsCount"></span> </a>
+                      </span><span id="/2016/05/30/jvm/" class="leancloud_visitors" data-flag-title="java基础拾遗——JVM垃圾回收原理">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span><span class="leancloud-visitors-count"></span></span>
+                  </div>
+                </header>
+                <div class="post-body" itemprop="articleBody">垃圾回收是个什么鬼？ &emsp;&emsp;拥有自动垃圾回收机制可以说是Java与C++的一项显著区别。在C++语言中，程序员必须小心谨慎地处理每一项内存分配，且内存使用完后必须手工释放曾经占用的内存空间。当内存释放不够完全时，即存在分配但永不释放的内存块，就会引起内存泄漏，严重时甚至导致程序瘫痪 ...
+                  <div class="post-more-link text-center"><a class="btn" href="/2016/05/30/jvm/#more" rel="contents">阅读全文 &raquo;</a></div>
+                </div>
+                <div></div>
+                <div></div>
+                <footer class="post-footer">
+                  <div class="post-eof"></div>
+                </footer>
+              </article>
+              <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+                <header class="post-header">
+                  <h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/30/java-generic/" itemprop="url">java基础拾遗——泛型</a></h1>
+                  <div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-30T10:50:10+08:00" content="2016-05-30">2016-05-30 </time></span>
+                    <span
+                      class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span>                      </a>
+                      </span>
+                      </span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/30/java-generic/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/30/java-generic/" itemprop="commentsCount"></span>                      </a>
+                      </span><span id="/2016/05/30/java-generic/" class="leancloud_visitors" data-flag-title="java基础拾遗——泛型">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span>
+                      <span
+                        class="leancloud-visitors-count"></span>
+                        </span>
+                  </div>
+                </header>
+                <div class="post-body" itemprop="articleBody">什么是泛型？ &emsp;&emsp;Java泛型（generics）是JDK 5中引入的一个新特性，允许在定义类和接口的时候使用类型参数（type parameter）。声明的类型参数在使用时用具体的类型来替换。泛型最主要的应用是在JDK 5中的新集合类框架中。对于泛型概念的引入，开发社区的观点是 ...
+                  <div class="post-more-link text-center"><a class="btn" href="/2016/05/30/java-generic/#more" rel="contents">阅读全文 &raquo;</a></div>
+                </div>
+                <div></div>
+                <div></div>
+                <footer class="post-footer">
+                  <div class="post-eof"></div>
+                </footer>
+              </article>
+              <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+                <header class="post-header">
+                  <h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/2016/05/29/java-dynamic-proxy/" itemprop="url">Java基础拾遗——动态代理</a></h1>
+                  <div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-05-29T17:04:34+08:00" content="2016-05-29">2016-05-29 </time></span>
+                    <span
+                      class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span>                      </a>
+                      </span>
+                      </span><span class="post-comments-count">&nbsp; | &nbsp; <a href="/2016/05/29/java-dynamic-proxy/#comments" itemprop="discussionUrl"><span class="post-comments-count ds-thread-count" data-thread-key="2016/05/29/java-dynamic-proxy/" itemprop="commentsCount"></span>                      </a>
+                      </span><span id="/2016/05/29/java-dynamic-proxy/" class="leancloud_visitors" data-flag-title="Java基础拾遗——动态代理">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">阅读次数 </span>
+                      <span
+                        class="leancloud-visitors-count"></span>
+                        </span>
+                  </div>
+                </header>
+                <div class="post-body" itemprop="articleBody">什么是动态代理？ ① 首先你要明白静态代理的作用我们有一个字体提供类，有多种实现（从磁盘，从网络，从系统） 1234567891011121314151617 public interface FontProvider &#123; Font getF ...
+                  <div class="post-more-link text-center"><a class="btn" href="/2016/05/29/java-dynamic-proxy/#more" rel="contents">阅读全文 &raquo;</a></div>
+                </div>
+                <div></div>
+                <div></div>
+                <footer class="post-footer">
+                  <div class="post-eof"></div>
+                </footer>
+              </article>
+            </section>
+            <nav class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a>
+              <a
+                class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+            </nav>
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+          <div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div>
+        </div>
+        <aside id="sidebar" class="sidebar">
+          <div class="sidebar-inner">
+            <section class="site-overview sidebar-panel sidebar-panel-active">
+              <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="http://o6fmcea8z.bkt.clouddn.com/blog/image/me.png" alt="XiaoLin">
+                <p class="site-author-name" itemprop="name">XiaoLin</p>
+                <p class="site-description motion-element" itemprop="description">XiaoLin's Blog</p>
+              </div>
+              <nav class="site-state motion-element">
+                <div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">20</span> <span class="site-state-item-name">日志</span></a></div>
+                <div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">4</span> <span class="site-state-item-name">分类</span></a></div>
+                <div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">12</span> <span class="site-state-item-name">标签</span></a></div>
+              </nav>
+              <div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div>
+              <div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/xiaolin8" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i> GitHub </a></span><span class="links-of-author-item"><a href="http://www.zhihu.com/people/wuxun-yi" target="_blank" title="知乎"><i class="fa fa-fw fa-globe"></i> 知乎</a></span></div>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2016</span> <span class="with-love"><i class="fa fa-heart"></i> </span><a class="author" itemprop="copyrightHolder" href="/about">XiaoLin</a></div>
+      </div>
+    </footer>
+    <div class="back-to-top"><i class="fa fa-arrow-up"></i></div>
+  </div>
+  <script type="text/javascript">
+    "[object Function]" !== Object.prototype.toString.call(window.Promise) && (window.Promise = null)
+  </script>
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+  <script type="text/javascript">
+    var duoshuoQuery = {
+      short_name: "xiaolin"
+    };
+    ! function() {
+      var t = document.createElement("script");
+      t.type = "text/javascript", t.async = !0, t.id = "duoshuo-script", t.src = ("https:" == document.location.protocol ? "https:" : "http:") + "//static.duoshuo.com/embed.js", t.charset = "UTF-8", (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(t)
+    }()
+  </script>
+  <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+  <script src="/js/src/hook-duoshuo.js"></script>
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>
+    AV.initialize("8ea8d1qFz1ngcfqFfHDtD9OK-gzGzoHsz", "oqupQn89j1bemr3K6Xp9SpS5")
+  </script>
+  <script>
+    function showTime(e) {
+      var t = new AV.Query(e),
+        n = [],
+        o = $(".leancloud_visitors");
+      o.each(function() {
+        n.push($(this).attr("id").trim())
+      }), t.containedIn("url", n), t.find().done(function(e) {
+        var t = ".leancloud-visitors-count";
+        if (0 === e.length) return void o.find(t).text(0);
+        for (var i = 0; i < e.length; i++) {
+          var r = e[i],
+            s = r.get("url"),
+            l = r.get("time"),
+            c = document.getElementById(s);
+          $(c).find(t).text(l)
+        }
+        for (var i = 0; i < n.length; i++) {
+          var s = n[i],
+            c = document.getElementById(s),
+            u = $(c).find(t);
+          "" == u.text() && u.text(0)
+        }
+      }).fail(function(e, t) {
+        console.log("Error: " + t.code + " " + t.message)
+      })
+    }
+
+    function addCount(e) {
+      var t = $(".leancloud_visitors"),
+        n = t.attr("id").trim(),
+        o = t.attr("data-flag-title").trim(),
+        i = new AV.Query(e);
+      i.equalTo("url", n), i.find({
+        success: function(t) {
+          if (t.length > 0) {
+            var i = t[0];
+            i.fetchWhenSave(!0), i.increment("time"), i.save(null, {
+              success: function(e) {
+                var t = $(document.getElementById(n));
+                t.find(".leancloud-visitors-count").text(e.get("time"))
+              },
+              error: function(e, t) {
+                console.log("Failed to save Visitor num, with error message: " + t.message)
+              }
+            })
+          } else {
+            var r = new e,
+              s = new AV.ACL;
+            s.setPublicReadAccess(!0), s.setPublicWriteAccess(!0), r.setACL(s), r.set("title", o), r.set("url", n), r.set("time", 1), r.save(null, {
+              success: function(e) {
+                var t = $(document.getElementById(n));
+                t.find(".leancloud-visitors-count").text(e.get("time"))
+              },
+              error: function(e, t) {
+                console.log("Failed to create")
+              }
+            })
+          }
+        },
+        error: function(e) {
+          console.log("Error:" + e.code + " " + e.message)
+        }
+      })
+    }
+    $(function() {
+      var e = AV.Object.extend("Counter");
+      1 == $(".leancloud_visitors").length ? addCount(e) : $(".post-title-link").length > 1 && showTime(e)
+    })
+  </script>
+</body>
+
+</html>

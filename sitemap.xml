@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://xiaolin.site/2016/07/19/use_angularjs/</loc>
+    <loc>http://xiaolin.site/2016/07/22/learn-study/</loc>
     
-    <lastmod>2016-07-19T04:09:54.580Z</lastmod>
+    <lastmod>2016-07-22T06:29:24.907Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/07/19/SublimeText/</loc>
+    
+    <lastmod>2016-07-19T08:54:43.673Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaolin.site/404.html</loc>
     
-    <lastmod>2016-07-19T01:46:37.096Z</lastmod>
+    <lastmod>2016-07-19T08:36:08.484Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/07/19/use_angularjs/</loc>
+    
+    <lastmod>2016-07-19T04:09:54.580Z</lastmod>
     
   </url>
   
