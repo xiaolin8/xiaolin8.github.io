@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaolin.site/2016/07/19/use_angularjs/</loc>
+    
+    <lastmod>2016-07-22T07:16:05.595Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaolin.site/2016/07/22/learn-study/</loc>
     
     <lastmod>2016-07-22T06:29:24.907Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://xiaolin.site/404.html</loc>
     
     <lastmod>2016-07-19T08:36:08.484Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaolin.site/2016/07/19/use_angularjs/</loc>
-    
-    <lastmod>2016-07-19T04:09:54.580Z</lastmod>
     
   </url>
   
