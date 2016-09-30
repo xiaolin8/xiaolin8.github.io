@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaolin.site/2016/09/30/mysql-index/</loc>
+    
+    <lastmod>2016-09-30T08:57:46.900Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/09/07/front-optimize-js/</loc>
+    
+    <lastmod>2016-09-07T11:14:46.362Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaolin.site/2016/08/29/intellij-idea-tutorial/</loc>
+    
+    <lastmod>2016-08-29T10:22:49.383Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaolin.site/2016/07/19/use_angularjs/</loc>
     
     <lastmod>2016-07-22T07:16:05.595Z</lastmod>
