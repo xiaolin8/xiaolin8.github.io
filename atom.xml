@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://xiaolin.site/"/>
-  <updated>2016-09-30T08:57:46.900Z</updated>
+  <updated>2016-09-30T09:09:04.910Z</updated>
   <id>http://xiaolin.site/</id>
   
   <author>
@@ -20,10 +20,12 @@
     <link href="http://xiaolin.site/2016/09/30/mysql-index/"/>
     <id>http://xiaolin.site/2016/09/30/mysql-index/</id>
     <published>2016-09-30T02:26:32.000Z</published>
-    <updated>2016-09-30T08:57:46.900Z</updated>
+    <updated>2016-09-30T09:09:04.910Z</updated>
     
-    <content type="html">&lt;h5 id=&quot;索引基础&quot;&gt;&lt;a href=&quot;#索引基础&quot; class=&quot;headerlink&quot; title=&quot;索引基础&quot;&gt;&lt;/a&gt;索引基础&lt;/h5&gt;
-&lt;p&gt;索引优化应该是对查询优化最有效的手段了。MySQL索引可以类比于一本书的目录或索引部分，你可以通过已经排序好的关键字直接找到特定记录所在的位置，而不用全表扫描。也就是说MySQL先在索引上按值进行查找，然后返回所有包含该值的数据行。&lt;/p&gt;
+    <content type="html">&lt;p&gt;索引优化应该是对查询优化最有效的手段了。索引能轻易将查询性能提高几个数量级，所以，了解MySQL索引的原理对于优化数据库的查询性能至关重要。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h5 id=&quot;索引基础&quot;&gt;&lt;a href=&quot;#索引基础&quot; class=&quot;headerlink&quot; title=&quot;索引基础&quot;&gt;&lt;/a&gt;索引基础&lt;/h5&gt;
+&lt;p&gt;MySQL索引可以类比于一本书的目录或索引部分，你可以通过已经排序好的关键字直接找到特定记录所在的位置，而不用进行全表扫描。也就是说MySQL先在索引上按值进行查找，然后返回所有包含该值的数据行。&lt;/p&gt;
 &lt;p&gt;索引的优点:&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;索引大大减少了服务器需要扫描的数据量；&lt;/li&gt;
@@ -37,9 +39,10 @@
 &lt;p&gt;如图所示，根节点中存放了指向子节点的指针，而叶子节点比较特殊，它们的指针指向的是被索引的数据。&lt;/p&gt;
 &lt;p&gt;因为B-Tree对索引列是顺序存放的，所以很适合查找范围数据。&lt;/p&gt;
 &lt;h5 id=&quot;索引的最左前缀匹配原则&quot;&gt;&lt;a href=&quot;#索引的最左前缀匹配原则&quot; class=&quot;headerlink&quot; title=&quot;索引的最左前缀匹配原则&quot;&gt;&lt;/a&gt;索引的最左前缀匹配原则&lt;/h5&gt;
-&lt;p&gt;请注意，B-Tree联合索引的排序是CREATE TABLE时定义索引的列的顺序，假设有定义索引key(last_name,name,age)，那么索引会先按last_name排序，再次按name排序，最后按age排序。&lt;br&gt;根据B-Tree联合索引的这一性质导致了我们使用索引的时候需要注意“索引的最左前缀匹配”。关于这一原则的具体描述：&lt;/p&gt;
+&lt;p&gt;请注意，B-Tree联合索引的排序是CREATE TABLE时定义索引的列的顺序，假设有定义索引key(last_name,name,age)，那么索引会先按last_name排序，再次按name排序，最后按age排序。&lt;br&gt;根据B-Tree联合索引的这一性质导致了我们使用索引的时候需要注意“
+  &lt;font color=&quot;red&quot;&gt;索引的最左前缀匹配原则&lt;/font&gt;”。关于这一原则的具体描述：&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;如果不是按索引的最左列开始查找，则无法使用索引；&lt;/li&gt;
+  &lt;li&gt;如果不是按索引的最左列开始查找，则MySQL无法使用索引；&lt;/li&gt;
   &lt;li&gt;不能跳过索引的列；&lt;/li&gt;
   &lt;li&gt;如果查询中有某个列的范围查询（BETWEEN、LIKE），则其右边所有列都无法使用索引优化查找。如果范围查询的列值数量有限，那么可以通过IN关键字来代替范围条件；&lt;/li&gt;
 &lt;/ul&gt;
@@ -111,8 +114,7 @@
     
     <summary type="html">
     
-      &lt;h5 id=&quot;索引基础&quot;&gt;&lt;a href=&quot;#索引基础&quot; class=&quot;headerlink&quot; title=&quot;索引基础&quot;&gt;&lt;/a&gt;索引基础&lt;/h5&gt;
-&lt;p&gt;索引优化应该是对查询优化最有效的手段了。MySQL索引可以类比于一本书的目录或索引部分，你可以通过已经排序好的关键字直接找
+      &lt;p&gt;索引优化应该是对查询优化最有效的手段了。索引能轻易将查询性能提高几个数量级，所以，了解MySQL索引的原理对于优化数据库的查询性能至关重要。&lt;/p&gt;
     
     </summary>
     
@@ -120,42 +122,6 @@
     
     
       <category term="mysql" scheme="http://xiaolin.site/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>前端优化——JS篇</title>
-    <link href="http://xiaolin.site/2016/09/07/front-optimize-js/"/>
-    <id>http://xiaolin.site/2016/09/07/front-optimize-js/</id>
-    <published>2016-09-07T10:28:05.000Z</published>
-    <updated>2016-09-07T11:14:46.362Z</updated>
-    
-    <content type="html"></content>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="前端" scheme="http://xiaolin.site/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-      <category term="优化" scheme="http://xiaolin.site/tags/%E4%BC%98%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>intellij-idea-tutorial</title>
-    <link href="http://xiaolin.site/2016/08/29/intellij-idea-tutorial/"/>
-    <id>http://xiaolin.site/2016/08/29/intellij-idea-tutorial/</id>
-    <published>2016-08-29T10:22:49.000Z</published>
-    <updated>2016-08-29T10:22:49.383Z</updated>
-    
-    <content type="html"></content>
-    
-    <summary type="html">
-    
-    </summary>
-    
     
   </entry>
   
@@ -2294,6 +2260,277 @@
     
     
       <category term="全栈" scheme="http://xiaolin.site/tags/%E5%85%A8%E6%A0%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库优化经验总结</title>
+    <link href="http://xiaolin.site/2016/04/30/db_optimization/"/>
+    <id>http://xiaolin.site/2016/04/30/db_optimization/</id>
+    <published>2016-04-30T02:14:29.000Z</published>
+    <updated>2016-06-11T09:27:03.564Z</updated>
+    
+    <content type="html">&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;首先应考虑在 where 及 order by 涉及的列上建立索引以尽量避免全表扫描&lt;/strong&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;应尽量避免在 where 子句中对字段进行 null 值判断&lt;/strong&gt;，否则将导致引擎放弃使用索引而进行全表扫描，如：&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight sql&quot;&gt;
+  &lt;table&gt;
+    &lt;tr&gt;
+      &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;null&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/figure&gt;
+&lt;p&gt;&amp;emsp;&amp;emsp;最好不要给数据库留NULL，尽可能的使用 NOT NULL填充数据库。备注、描述、评论之类的可以设置为 NULL，其他的，最好不要使用NULL。不要以为 NULL 不需要空间，比如：char(100) 型，在字段建立时，空间就固定了， 不管是否插入值（NULL也包含在内），都是占用 100个字符的空间的，当然如果是varchar这样的变长字段，null 不占用空间。&lt;br&gt;&amp;emsp;&amp;emsp;可以在num上设置默认值0，确保表中num列没有null值，然后这样查询：&lt;/p&gt;
+&lt;figure class=&quot;highlight sql&quot;&gt;
+  &lt;table&gt;
+    &lt;tr&gt;
+      &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;应尽量避免在 where 子句中使用 != 或 &amp;lt;&amp;gt; 操作符&lt;/strong&gt;，否则查询引擎将放弃使用索引而进行全表扫描。&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;应尽量避免在 where 子句中使用 or 来连接条件，可以用union替代&lt;/strong&gt;，如果一个字段有索引，一个字段没有索引，将导致引擎放弃使用索引而进行全表扫描，如：&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt;=&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;Name&lt;/span&gt; = &lt;span class=&quot;string&quot;&gt;&#39;admin&#39;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;p&gt;可以这样查询：&lt;/p&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; = &lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;union&lt;/span&gt; all&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;Name&lt;/span&gt; = &lt;span class=&quot;string&quot;&gt;&#39;admin&#39;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;in 和 not in 也要慎用&lt;/strong&gt;，否则会导致全表扫描，如：&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt;(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;对于连续的数值，能用 between 就不要用 in 了&lt;/strong&gt;：&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;很多时候用 exists 代替 in 是一个好的选择&lt;/strong&gt;：&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; a &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; b)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;p&gt;可以用下面的语句替换：&lt;/p&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; a &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;exists&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; b &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt;=a.num)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;尽可能地用全文检索替代Like模糊查询，以避免低效的全表扫描&lt;/strong&gt;：&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;%abc%&#39;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;如果在 where 子句中使用参数，也会导致全表扫描&lt;/strong&gt;。因为SQL只有在运行时才会解析局部变量，但优化程序不能将访问计划的选择推迟到运行时；它必须在编译时进行选择。然而，如果在编译时建立访问计划，变量的值还是未知的，因而无法作为索引选择的输入项。如下面语句将进行全表扫描：&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; = @&lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;p&gt;可以改为强制查询使用索引：&lt;/p&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;index&lt;/span&gt;(索引名)) &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt; = @&lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;应尽量避免在where子句中对字段进行函数、算数运算或表达式操作&lt;/strong&gt;，否则系统将可能无法正确使用索引而进行全表扫描。如：&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;num&lt;/span&gt;/&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt; = &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;substring&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;name&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;) = &lt;span class=&quot;string&quot;&gt;&#39;abc&#39;&lt;/span&gt;       -–&lt;span class=&quot;keyword&quot;&gt;name&lt;/span&gt;以abc开头的&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;datediff&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;day&lt;/span&gt;,createdate,&lt;span class=&quot;string&quot;&gt;&#39;2005-11-30&#39;&lt;/span&gt;) = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;p&gt;应改为:&lt;/p&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;like&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&#39;abc%&#39;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; t &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; createdate &amp;gt;= &lt;span class=&quot;string&quot;&gt;&#39;2005-11-30&#39;&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;and&lt;/span&gt; createdate &amp;lt; &lt;span class=&quot;string&quot;&gt;&#39;2005-12-1&#39;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;p&gt;根据&lt;strong&gt;索引的前缀匹配原则&lt;/strong&gt;，在使用索引字段作为条件时，如果该索引是复合索引，那么必须使用到该索引中的第一个字段作为条件时才能保证系统使用该索引，否则该索引将不会被使用，并且应尽可能的让字段顺序与索引顺序相一致。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Update语句，如果只更改1、2个字段，不要Update全部字段&lt;/strong&gt;，否则频繁调用会引起明显的性能消耗，同时带来大量日志。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;对于多张大数据量（这里几百条就算大了）的表JOIN，要&lt;strong&gt;先分页再JOIN&lt;/strong&gt;，否则逻辑读会很高，性能很差。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;select count(*) from table；这样&lt;strong&gt;不带任何条件的count会引起全表扫描&lt;/strong&gt;，并且没有任何业务意义，是一定要杜绝的。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;索引并不是越多越好&lt;/strong&gt;，索引固然可以提高相应的 select 的效率，但同时也降低了 insert 及 update 的效率，因为 insert 或 update 时有可能会重建索引，所以怎样建索引需要慎重考虑，视具体情况而定。一个表的索引数最好不要超过6个，若太多则应考虑一些不常使用到的列上建的索引是否有必要。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;应尽可能的避免更新 clustered 索引数据列&lt;/strong&gt;，因为 clustered 索引数据列的顺序就是表记录的物理存储顺序，一旦该列值改变将导致整个表记录的顺序的调整，会耗费相当大的资源。若应用系统需要频繁更新 clustered 索引数据列，那么需要考虑是否应将该索引建为 clustered 索引。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;尽量使用数字型字段，若只含数值信息的字段尽量不要设计为字符型，这会降低查询和连接的性能，并会增加存储开销&lt;/strong&gt;。这是因为引擎在处理查询和连 接时会逐个比较字符串中每一个字符，而对于数字型而言只需要比较一次就够了。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;尽可能的使用 varchar/nvarchar 代替 char/nchar &lt;/strong&gt;，因为首先变长字段存储空间小，可以节省存储空间，其次对于查询来说，在一个相对较小的字段内搜索效率显然要高些。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;任何地方都不要使用 select * from t ，用具体的字段列表代替*&lt;/strong&gt;，不要返回用不到的任何字段。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;拆分大的 DELETE 或INSERT 语句，批量提交SQL语句&lt;/strong&gt;。如果你需要在一个在线的网站上去执行一个大的DELETE或INSERT查询，你需要非常小心，要避免你的操作让你的整个网站停止响应。因为这两个操作是会锁表的，表一锁住了，别的操作都进不来了。如果你把你的表锁上一段时间，比如30秒钟，那么对于一个有很高访问量的站点来说，这30秒所积累的访问进程/线程，数据库链接，打开的文件数，可能不仅仅会让你的WEB服务崩溃，还可能会让你的整台服务器马上挂了。所以，如果你有一个很瞬间很大的处理请求，你一定把其拆分。（建议使用消息队列）&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;figure class=&quot;highlight sql&quot;&gt;
+    &lt;table&gt;
+      &lt;tr&gt;
+        &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+        &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;delete&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;logs&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; log_date &amp;lt;= ’&lt;span class=&quot;number&quot;&gt;2012&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;-11&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;-01&lt;/span&gt;’ &lt;span class=&quot;keyword&quot;&gt;limit&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;-- 每次只删除1000条&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/figure&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;首先应考虑在 where 及 order by 涉及的列上建立索引以尽量避免全表扫描&lt;/strong&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;应尽量避免在 where 子句中对字段进行 null
+    
+    </summary>
+    
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="数据库" scheme="http://xiaolin.site/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>记一次开源爬虫crawler4j的应用</title>
+    <link href="http://xiaolin.site/2016/04/24/use_crawler4j/"/>
+    <id>http://xiaolin.site/2016/04/24/use_crawler4j/</id>
+    <published>2016-04-24T14:17:00.000Z</published>
+    <updated>2016-05-01T07:23:29.909Z</updated>
+    
+    <content type="html">&lt;p&gt;crawler4j是一个开源的Java爬虫框架，通过使用其简单的接口就可以实现网站资源的多线程爬取。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;使用起来非常简单：&lt;/p&gt;
+&lt;p&gt;只需要在Java项目的pom文件中添加以下片段即可：&lt;/p&gt;
+&lt;figure class=&quot;highlight xml&quot;&gt;
+  &lt;table&gt;
+    &lt;tr&gt;
+      &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;edu.uci.ics&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;crawler4j&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;4.2&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;dependency&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/figure&gt;
+&lt;p&gt;以下是我使用crawler4j爬取我&lt;a href=&quot;http://www.petrosoftware-class.com&quot; title=&quot;石油软件班&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;石油软件班&lt;/a&gt;历届帅哥美女们头像的例子：&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;
+  &lt;table&gt;
+    &lt;tr&gt;
+      &lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;19&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;20&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;21&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;22&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;23&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;24&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;25&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;26&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;27&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;28&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;29&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;30&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;31&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;32&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+      &lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;String rootFolder = &lt;span class=&quot;string&quot;&gt;&quot;d:/data2&quot;&lt;/span&gt;;&lt;span class=&quot;comment&quot;&gt;//设置初始化目录&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; numberOfCrawlers = &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;;&lt;span class=&quot;comment&quot;&gt;//设置爬虫的数量&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;String storageFolder = &lt;span class=&quot;string&quot;&gt;&quot;d:/data2/img2&quot;&lt;/span&gt;;&lt;span class=&quot;comment&quot;&gt;//设置图片的存储路径&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;CrawlConfig config = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; CrawlConfig();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;config.setCrawlStorageFolder(rootFolder);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;config.setPolitenessDelay(&lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);&lt;span class=&quot;comment&quot;&gt;//设置每次爬取时间间隔&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * Since images are binary content, we need to set this parameter to&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; * true to make sure they are included in the crawl.&lt;/div&gt;&lt;div class=&quot;line&quot;&gt; */&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;config.setIncludeBinaryContentInCrawling(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;config.setUserAgentString(&lt;span class=&quot;string&quot;&gt;&quot;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//https://www.zhihu.com/question/28521492&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//http://www.petrosoftware-class.com/&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;String[] crawlDomains = &amp;#123;&lt;span class=&quot;string&quot;&gt;&quot;http://www.petrosoftware-class.com/&quot;&lt;/span&gt;&amp;#125;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;PageFetcher pageFetcher = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; PageFetcher(config);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;RobotstxtConfig robotstxtConfig = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; RobotstxtConfig();&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;RobotstxtServer robotstxtServer = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; RobotstxtServer(robotstxtConfig, pageFetcher);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;CrawlController controller = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; CrawlController(config, pageFetcher, robotstxtServer);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String domain : crawlDomains) &amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  controller.addSeed(domain);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;ImageCrawler.configure(crawlDomains, storageFolder);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;controller.start(ImageCrawler.class, numberOfCrawlers);&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/figure&gt;
+&lt;p&gt;&lt;img src=&quot;http://o6fmcea8z.bkt.clouddn.com/blog/image/classmates.jpg&quot; alt=&quot;classmates.jpg&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;爬虫的原理&quot;&gt;&lt;a href=&quot;#爬虫的原理&quot; class=&quot;headerlink&quot; title=&quot;爬虫的原理&quot;&gt;&lt;/a&gt;爬虫的原理&lt;/h3&gt;
+&lt;p&gt;1）首先你要明白爬虫怎样工作&lt;/p&gt;
+&lt;p&gt;想象你是一只蜘蛛，现在你被放到了互联“网”上。那么，你需要把所有的网页都看一遍。怎么办呢？没问题呀，你就随便从某个地方开始，比如说人民日报的首页，这个叫initial pages，用$表示吧。&lt;/p&gt;
+&lt;p&gt;在人民日报的首页，你看到那个页面引向的各种链接。于是你很开心地从爬到了“国内新闻”那个页面。太好了，这样你就已经爬完了俩页面（首页和国内新闻）！暂且不用管爬下来的页面怎么处理的，你就想象你把这个页面完完整整抄成了个html放到了你身上。&lt;/p&gt;
+&lt;p&gt;突然你发现， 在国内新闻这个页面上，有一个链接链回“首页”。作为一只聪明的蜘蛛，你肯定知道你不用爬回去的吧，因为你已经看过了啊。所以，你需要用你的脑子，存下你已经看过的页面地址。这样，每次看到一个可能需要爬的新链接，你就先查查你脑子里是不是已经去过这个页面地址。如果去过，那就别去了。&lt;/p&gt;
+&lt;p&gt;好的，理论上如果所有的页面可以从initial page达到的话，那么可以证明你一定可以爬完所有的网页。&lt;/p&gt;
+&lt;p&gt;2）效率&lt;br&gt;如果你就这样爬的话，你会发现要爬的网页实在太多了。设想全网有N个网站，那么分析一下判重的复杂度就是N*log(N)，因为所有网页要遍历一次，而每次判重用set的话需要log(N)的复杂度。通常的判重做法是怎样呢？Bloom Filter. 简单讲它仍然是一种hash的方法，但是它的特点是，它可以使用固定的内存（不随url的数量而增长）以O(1)的效率判定url是否已经在set中。可惜天下没有白吃的午餐，它的唯一问题在于，如果这个url不在set中，BF可以100%确定这个url没有看过。但是如果这个url在set中，它会告诉你：这个url应该已经出现过，不过我有2%的不确定性。注意这里的不确定性在你分配的内存足够大的时候，可以变得很小很少。一个简单的教程:
+  &lt;a href=&quot;http%3A//billmill.org/bloomfilter-tutorial/&quot; title=&quot;Bloom Filters by Example&quot;&gt;Bloom Filters by Example&lt;/a&gt;好，现在已经接近处理判重最快的方法了。另外一个瓶颈——你只有一台机器。不管你的带宽有多大，只要你的机器下载网页的速度是瓶颈的话，那么你只有加快这个速度。用一台机子不够的话——用很多台吧！当然，我们假设每台机子都已经进了最大的效率——使用多线程.&lt;/p&gt;
+&lt;p&gt;3）集群化抓取&lt;/p&gt;
+&lt;p&gt;据统计2013年豆瓣的page量已经达到了几百万个，如果用100多台机器昼夜不停地运行，那么需要一个月时间左右才能爬完。想象如果只用一台机子你就得运行100个月了…&lt;/p&gt;
+&lt;p&gt;那么，假设你现在有100台机器可以用，怎么实现一个分布式的爬取算法呢？&lt;/p&gt;
+&lt;p&gt;我们把这100台中的99台运算能力较小的机器叫作slave，另外一台较大的机器叫作master，那么回顾上面代码中的url_queue，如果我们能把这个queue放到这台master机器上，所有的slave都可以通过网络跟master联通，每当一个slave完成下载一个网页，就向master请求一个新的网页来抓取。而每次slave新抓到一个网页，就把这个网页上所有的链接送到master的queue里去。同样，bloom filter也放到master上，但是现在master只发送确定没有被访问过的url给slave。Bloom
+  Filter放到master的内存里，而被访问过的url放到运行在master上的Redis里，这样保证所有操作都是O(1)。（至少平摊是O(1)，Redis的访问效率见:&lt;a href=&quot;http%3A//redis.io/commands/linsert&quot; title=&quot;LINSERT – Redis&quot;&gt;LINSERT – Redis&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;4）展望及后续处理&lt;/p&gt;
+&lt;p&gt;虽然上面用很多“简单”，但是真正要实现一个商业规模可用的爬虫并不是一件容易的事。上面的代码用来爬一个整体的网站几乎没有太大的问题。&lt;/p&gt;
+&lt;p&gt;但是如果附加上你需要这些后续处理，比如&lt;/p&gt;
+&lt;p&gt;有效地存储（数据库应该怎样安排）&lt;/p&gt;
+&lt;p&gt;有效地判重（这里指网页判重，咱可不想把人民日报和抄袭它的大民日报都爬一遍）&lt;/p&gt;
+&lt;p&gt;有效地信息抽取（比如怎么样抽取出网页上所有的地址抽取出来，“朝阳区奋进路中华道”），搜索引擎通常不需要存储所有的信息，比如图片我存来干嘛…&lt;/p&gt;
+&lt;p&gt;及时更新（预测这个网页多久会更新一次）&lt;/p&gt;
+&lt;p&gt;如你所想，这里每一个点都可以供很多研究者十数年的研究。虽然如此，&lt;br&gt;“路漫漫其修远兮,吾将上下而求索”。&lt;/p&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;crawler4j是一个开源的Java爬虫框架，通过使用其简单的接口就可以实现网站资源的多线程爬取。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="技术" scheme="http://xiaolin.site/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="爬虫" scheme="http://xiaolin.site/tags/%E7%88%AC%E8%99%AB/"/>
     
   </entry>
   

@@ -14,45 +14,18 @@
   <meta name="keywords" content="mysql,">
   <link rel="alternate" href="/atom.xml" title="XiaoLin's Blog" type="application/atom+xml">
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1">
-  <meta name="description" content="索引基础
-索引优化应该是对查询优化最有效的手段了。MySQL索引可以类比于一本书的目录或索引部分，你可以通过已经排序好的关键字直接找到特定记录所在的位置，而不用全表扫描。也就是说MySQL先在索引上按值进行查找，然后返回所有包含该值的数据行。
-索引的优点:
-
-  索引大大减少了服务器需要扫描的数据量；
-  索引可以帮助服务器避免排序和临时表；
-  索引可以将随机IO变为顺序IO；
-
-索引的类型
-在">
+  <meta name="description" content="索引优化应该是对查询优化最有效的手段了。索引能轻易将查询性能提高几个数量级，所以，了解MySQL索引的原理对于优化数据库的查询性能至关重要。">
   <meta property="og:type" content="article">
   <meta property="og:title" content="mysql索引学习笔记">
   <meta property="og:url" content="http://xiaolin.site/2016/09/30/mysql-index/index.html">
   <meta property="og:site_name" content="XiaoLin's Blog">
-  <meta property="og:description" content="索引基础
-索引优化应该是对查询优化最有效的手段了。MySQL索引可以类比于一本书的目录或索引部分，你可以通过已经排序好的关键字直接找到特定记录所在的位置，而不用全表扫描。也就是说MySQL先在索引上按值进行查找，然后返回所有包含该值的数据行。
-索引的优点:
-
-  索引大大减少了服务器需要扫描的数据量；
-  索引可以帮助服务器避免排序和临时表；
-  索引可以将随机IO变为顺序IO；
-
-索引的类型
-在">
+  <meta property="og:description" content="索引优化应该是对查询优化最有效的手段了。索引能轻易将查询性能提高几个数量级，所以，了解MySQL索引的原理对于优化数据库的查询性能至关重要。">
   <meta property="og:image" content="http://i.imgur.com/R2peify.png">
   <meta property="og:image" content="http://i.imgur.com/z3B3qt0.png">
-  <meta property="og:updated_time" content="2016-09-30T08:57:46.900Z">
+  <meta property="og:updated_time" content="2016-09-30T09:09:04.910Z">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="mysql索引学习笔记">
-  <meta name="twitter:description" content="索引基础
-索引优化应该是对查询优化最有效的手段了。MySQL索引可以类比于一本书的目录或索引部分，你可以通过已经排序好的关键字直接找到特定记录所在的位置，而不用全表扫描。也就是说MySQL先在索引上按值进行查找，然后返回所有包含该值的数据行。
-索引的优点:
-
-  索引大大减少了服务器需要扫描的数据量；
-  索引可以帮助服务器避免排序和临时表；
-  索引可以将随机IO变为顺序IO；
-
-索引的类型
-在">
+  <meta name="twitter:description" content="索引优化应该是对查询优化最有效的手段了。索引能轻易将查询性能提高几个数量级，所以，了解MySQL索引的原理对于优化数据库的查询性能至关重要。">
   <meta name="twitter:image" content="http://i.imgur.com/R2peify.png">
   <script type="text/javascript" id="hexo.configuration">
     var NexT = window.NexT || {},
@@ -112,8 +85,10 @@
                   </div>
                 </header>
                 <div class="post-body" itemprop="articleBody">
+                  <p>索引优化应该是对查询优化最有效的手段了。索引能轻易将查询性能提高几个数量级，所以，了解MySQL索引的原理对于优化数据库的查询性能至关重要。</p>
+                  <a id="more"></a>
                   <h5 id="索引基础"><a href="#索引基础" class="headerlink" title="索引基础"></a>索引基础</h5>
-                  <p>索引优化应该是对查询优化最有效的手段了。MySQL索引可以类比于一本书的目录或索引部分，你可以通过已经排序好的关键字直接找到特定记录所在的位置，而不用全表扫描。也就是说MySQL先在索引上按值进行查找，然后返回所有包含该值的数据行。</p>
+                  <p>MySQL索引可以类比于一本书的目录或索引部分，你可以通过已经排序好的关键字直接找到特定记录所在的位置，而不用进行全表扫描。也就是说MySQL先在索引上按值进行查找，然后返回所有包含该值的数据行。</p>
                   <p>索引的优点:</p>
                   <ol>
                     <li>索引大大减少了服务器需要扫描的数据量；</li>
@@ -127,9 +102,10 @@
                   <p>如图所示，根节点中存放了指向子节点的指针，而叶子节点比较特殊，它们的指针指向的是被索引的数据。</p>
                   <p>因为B-Tree对索引列是顺序存放的，所以很适合查找范围数据。</p>
                   <h5 id="索引的最左前缀匹配原则"><a href="#索引的最左前缀匹配原则" class="headerlink" title="索引的最左前缀匹配原则"></a>索引的最左前缀匹配原则</h5>
-                  <p>请注意，B-Tree联合索引的排序是CREATE TABLE时定义索引的列的顺序，假设有定义索引key(last_name,name,age)，那么索引会先按last_name排序，再次按name排序，最后按age排序。<br>根据B-Tree联合索引的这一性质导致了我们使用索引的时候需要注意“索引的最左前缀匹配”。关于这一原则的具体描述：</p>
+                  <p>请注意，B-Tree联合索引的排序是CREATE TABLE时定义索引的列的顺序，假设有定义索引key(last_name,name,age)，那么索引会先按last_name排序，再次按name排序，最后按age排序。<br>根据B-Tree联合索引的这一性质导致了我们使用索引的时候需要注意“
+                    <font color="red">索引的最左前缀匹配原则</font>”。关于这一原则的具体描述：</p>
                   <ul>
-                    <li>如果不是按索引的最左列开始查找，则无法使用索引；</li>
+                    <li>如果不是按索引的最左列开始查找，则MySQL无法使用索引；</li>
                     <li>不能跳过索引的列；</li>
                     <li>如果查询中有某个列的范围查询（BETWEEN、LIKE），则其右边所有列都无法使用索引优化查找。如果范围查询的列值数量有限，那么可以通过IN关键字来代替范围条件；</li>
                   </ul>
@@ -205,7 +181,7 @@
                 <footer class="post-footer">
                   <div class="post-tags"><a href="/tags/mysql/" rel="tag">#mysql</a></div>
                   <div class="post-nav">
-                    <div class="post-nav-next post-nav-item"><a href="/2016/09/07/front-optimize-js/" rel="next" title="前端优化——JS篇"><i class="fa fa-chevron-left"></i> 前端优化——JS篇</a></div>
+                    <div class="post-nav-next post-nav-item"><a href="/2016/07/22/learn-study/" rel="next" title="学习学习"><i class="fa fa-chevron-left"></i> 学习学习</a></div>
                     <div class="post-nav-prev post-nav-item"></div>
                   </div>
                 </footer>
@@ -232,7 +208,7 @@
                 <p class="site-description motion-element" itemprop="description">XiaoLin's Blog</p>
               </div>
               <nav class="site-state motion-element">
-                <div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">23</span> <span class="site-state-item-name">日志</span></a></div>
+                <div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">21</span> <span class="site-state-item-name">日志</span></a></div>
                 <div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">4</span> <span class="site-state-item-name">分类</span></a></div>
                 <div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">14</span> <span class="site-state-item-name">标签</span></a></div>
               </nav>
