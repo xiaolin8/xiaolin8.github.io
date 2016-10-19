@@ -10,13 +10,15 @@ install:
  # - npm install -g gulp
 
 script:
+  - git config user.name "胡孝林"
+  - git config user.email "bjhuxiaolin@corp.netease.com"
   - hexo g -d
 
 after_script:
   - cd ./public
   - git init
-  - git config user.name "xiaolin"
-  - git config user.email "hu_xiao_lin@163.com"
+  - git config user.name "胡孝林"
+  - git config user.email "bjhuxiaolin@corp.netease.com"
   - git add .
   - git commit -m "Update blog"
   - git push --force --quiet "https://${GIT_TOKEN}@${GH_REF}" master:master
