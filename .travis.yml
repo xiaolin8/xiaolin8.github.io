@@ -10,7 +10,7 @@ install:
  # - npm install -g gulp
 
 script:
-  - hexo g
+  - hexo g -d
 
 after_script:
   - cd ./public
@@ -20,7 +20,6 @@ after_script:
   - git add .
   - git commit -m "Update blog"
   - git push --force --quiet "https://${GIT_TOKEN}@${GH_REF}" master:master
-  - hexo deploy
 # E: Build LifeCycle
 
 branches:
