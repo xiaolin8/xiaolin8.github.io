@@ -30,3 +30,11 @@ branches:
 env:
  global:
    - GH_REF: github.com/xiaolin8/xiaolin8.github.io.git
+   
+addons:
+  ssh_known_hosts:
+  - 192.30.253.112
+  
+cache:
+  directories:
+    - node_modules
