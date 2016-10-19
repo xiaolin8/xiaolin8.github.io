@@ -15,8 +15,8 @@ script:
 after_script:
   - cd ./public
   - git init
-  - git config user.name "ºúÐ¢ÁÖ"
-  - git config user.email "bjhuxiaolin@corp.netease.com"
+  - git config user.name "xiaolin"
+  - git config user.email "hu_xiao_lin@163.com"
   - git add .
   - git commit -m "Update blog"
   - git push --force --quiet "https://${GIT_TOKEN}@${GH_REF}" master:master
