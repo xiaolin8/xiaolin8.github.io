@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="concurrent," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="AQS 基本结构AbStractQueuedSynchronizer —— 一个用来构建锁和同步器的框架 它提供一个FIFO的队列，可以用来构建锁或其他同步器   Sync queue即同步队列，它是双向链表。 Condition queue不是必须的，单向链表，只有在需要使用到condition的时候才会存在这个单向链表，并且可能存在多个Condition queue  设计：  AQS中，存在">
+<meta name="keywords" content="concurrent">
+<meta property="og:type" content="article">
+<meta property="og:title" content="并发编程04AQS">
+<meta property="og:url" content="https://hu3.coding.me/2018/04/04/concurrent-04-AQS/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="AQS 基本结构AbStractQueuedSynchronizer —— 一个用来构建锁和同步器的框架 它提供一个FIFO的队列，可以用来构建锁或其他同步器   Sync queue即同步队列，它是双向链表。 Condition queue不是必须的，单向链表，只有在需要使用到condition的时候才会存在这个单向链表，并且可能存在多个Condition queue  设计：  AQS中，存在">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3d9z3ylnmj20o70cfjv5.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3daciyn18j20p807040y.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3dadd3n4vj20ls07ejt9.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3daevm7jfj20qp066gnh.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3dagpuvsej20kb0ghqa1.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3daj6bu2fj20k30e67bu.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3danu7r2lj20bz0bnmz9.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3db2nu46oj20tq07cdhs.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3db6lfu9yj20w20wwn26.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3dbgtih7sj20p410qtha.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3dbtmjv9nj20wi0x0ah5.jpg">
+<meta property="og:updated_time" content="2019-08-06T13:48:48.412Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="并发编程04AQS">
+<meta name="twitter:description" content="AQS 基本结构AbStractQueuedSynchronizer —— 一个用来构建锁和同步器的框架 它提供一个FIFO的队列，可以用来构建锁或其他同步器   Sync queue即同步队列，它是双向链表。 Condition queue不是必须的，单向链表，只有在需要使用到condition的时候才会存在这个单向链表，并且可能存在多个Condition queue  设计：  AQS中，存在">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3d9z3ylnmj20o70cfjv5.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2018/04/04/concurrent-04-AQS/"/>
+
+
+
+
+
+  <title>并发编程04AQS | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2018/04/04/concurrent-04-AQS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">并发编程04AQS</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-04T21:41:38+08:00">
+                2018-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/04/concurrent-04-AQS/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/04/concurrent-04-AQS/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="AQS-基本结构"><a href="#AQS-基本结构" class="headerlink" title="AQS 基本结构"></a>AQS 基本结构</h3><p>AbStractQueuedSynchronizer —— 一个用来构建锁和同步器的框架</p>
+<p>它提供一个FIFO的队列，可以用来构建锁或其他同步器</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3d9z3ylnmj20o70cfjv5.jpg" alt=""></p>
+<ul>
+<li>Sync queue即同步队列，它是双向链表。</li>
+<li>Condition queue不是必须的，单向链表，只有在需要使用到condition的时候才会存在这个单向链表，并且可能存在多个Condition queue</li>
+</ul>
+<p>设计：</p>
+<ul>
+<li>AQS中，存在一个state成员变量，基于AQS有一个同步组件ReentrantLock，在这个组件中，state表示获取锁的线程数，假如state == 0表示无线程获取锁，state == 1表示已有线程获取锁，state &gt; 1表示锁的数量</li>
+<li>AQS的设计是基于模板方法，使用需要继承AQS，并覆写其中的方法。</li>
+<li>子类通过继承并通过实现它的方法管理其状态{acquire() 和 release()}的方法操纵状态</li>
+<li>可以同时实现排它锁和共享锁模式（独占、共享）。它的所有子类中，要么实现并使用它的独占功能API，要么实现共享锁的功能，而不会同时使用两套API。即便是它比较有名的子类ReentrantReadWirteLock也是通过两个内部类读锁和写锁分别使用两套API实现的。</li>
+<li>在LOCK包中的相关锁(常用的有ReentrantLock、 ReadWriteLock)都是基于AQS来构建.然而这些锁都没有直接来继承AQS,而是定义了一个Sync类去继承AQS，因为锁面向的是使用用户,而同步器面向的则是线程控制,那么在锁的实现中聚合同步器而不是直接继承AQS就可以很好的隔离二者所关注的事情.</li>
+</ul>
+<p>AQS内部维护了一个CLH队列来管理锁，线程首先会尝试获取锁，如果失败，会将当前线程以及等待状态等信息包装成Node结点加入同步队列（Sync queue）中。接着不断循环尝试获取锁，条件是当前结点为head直接后继才会尝试，如果失败则会阻塞自己，直到自己被唤醒；而当持有锁的线程，释放锁的时候，会唤醒队列中后继线程。基于这些基础的设计和思路，JDK提供了许多基于AQS的子类。</p>
+<p>独占式锁过程总结：</p>
+<p>AQS的模板方法acquire通过调用子类自定义实现的tryAcquire获取同步状态失败后-&gt;将线程构造成Node节点(创建一个独占式节点)(addWaiter)-&gt;将Node节点添加到同步队列队尾(addWaiter)-&gt;节点以自旋的方法获取同步状态(acquirQueued)。在节点自旋获取同步状态时，只有其前驱节点是头节点的时候才会尝试获取同步状态，如果该节点的前驱不是头节点或者该节点的前驱节点是头节点但获取同步状态失败，则判断当前线程需要阻塞，如果需要阻塞则需要被唤醒过后才返回。在释放同步状态时，同步器调用tryRelease(int arg)方法释放同步状态，然后唤醒头节点的后继节点。</p>
+<p>共享式锁过程总结：</p>
+<p>共享式获取与独占式获取的最主要区别在于同一时刻能否有多个线程同时获取到同步状态。通过调用acquireShared(int arg)方法可以共享式得获取同步状态。</p>
+<p>同步器调用tryAcquireShared(int arg)方法尝试获取同步状态，其返回值为int类型，当返回值大于0时，表示能够获取同步状态。因此，在共享式获取的自旋过程中，成功获取同步状态并且退出自旋的条件就是tryAcquireShared(int arg)方法返回值大于等于0。共享式释放同步状态状态是通过调用releaseShared(int arg)方法</p>
+<p>  CountDownLatch、ReentrantReadWriteLock、Semaphore等都是共享式获取同步状态的。</p>
+<h3 id="同步队列结构分析"><a href="#同步队列结构分析" class="headerlink" title="同步队列结构分析"></a>同步队列结构分析</h3><p>  本小节内容引用于<a href="https://blog.csdn.net/fjse51/article/details/54694714" target="_blank" rel="noopener">AQS实现分析</a></p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3daciyn18j20p807040y.jpg" alt=""></p>
+<p>同步器中包含了两个节点类型的引用，一个指向头节点(head)，一个指向尾节点(tail),没有获取到锁的线程，加入到队列的过程必须保证线程安全，因此同步器提供了一个基于CAS的设置尾节点的方法CompareAndSetTail(Node expect,Node update),它需要传递当前线程认为的尾节点和当前节点，只有设置成功后，当前节点才能正式与之前的尾节点建立关联。</p>
+<p>  同步器将结点加入到同步队列的过程：</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3dadd3n4vj20ls07ejt9.jpg" alt=""></p>
+<p>  同步队列遵循FIFO，首节点是获取锁成功的节点，首节点的线程在释放锁时，将会唤醒后继节点，而后继节点将会在获取到锁时，将自己设置为首节点，设置首节点是由成功获取锁的线程来完成的，由于只有一个线程能够成功获取锁，因此设置首节点不需要CAS操作。 过程如下所示：</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3daevm7jfj20qp066gnh.jpg" alt=""></p>
+<h3 id="同步组件概览"><a href="#同步组件概览" class="headerlink" title="同步组件概览"></a>同步组件概览</h3><ul>
+<li>CountDownLatch：是闭锁，通过一个计数来保证线程是否需要一直阻塞</li>
+<li>Semaphore：控制同一时间，并发线程的数目</li>
+<li>CyclicBarrier：和CountDwonLatch相似，能阻塞线程</li>
+<li>ReentrantLock</li>
+<li>Condition：使用时需要ReentrantLock</li>
+<li>FutureTask</li>
+</ul>
+<h3 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3dagpuvsej20kb0ghqa1.jpg" alt=""></p>
+<h3 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h3><p>Semaphore经常用于限制获取某种资源的线程数量，其内部是基于AQS的共享模式，AQS的状态表示许可证的数量，在许可证数量不够时，线程将会被挂起；而一旦有一个线程释放一个资源，那么就有可能重新唤醒等待队列中的线程继续执行。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3daj6bu2fj20k30e67bu.jpg" alt=""></p>
+<p><strong>应用场景</strong></p>
+<blockquote>
+<p>Semaphore可以用于做流量控制，特别公用资源有限的应用场景，比如数据库连接。假如有一个需求，要读取几万个文件的数据，因为都是IO密集型任务，我们可以启动几十个线程并发的读取，但是如果读到内存后，还需要存储到数据库中，而数据库的连接数只有10个，这时我们必须控制只有十个线程同时获取数据库连接保存数据，否则会报错无法获取数据库连接。这个时候，我们就可以使用Semaphore来做流控</p>
+</blockquote>
+<p><strong>tryAcquire</strong></p>
+<p>  尝试获取许可，如果获取不成功，则放弃操作，tryAcquire方法提供几个重载</p>
+<ol>
+<li>tryAcquire() : boolean</li>
+<li>tryAcquire(int permits) : boolean 尝试获取指定数量的许可</li>
+<li>tryAcquire(int permits,long timeout,TimeUnit timeUnit) : boolean</li>
+<li>tryAcquire(long timeout,TimeUnit timeUnit) : boolean 尝试获取许可的时候可以等待一段时间，在指定时间内未获取到许可则放弃</li>
+</ol>
+<p>emaphore有两种模式，公平模式和非公平模式。</p>
+<h3 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a>CyclicBarrier</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3danu7r2lj20bz0bnmz9.jpg" alt=""></p>
+<p>CyclicBarrier也是一个同步辅助类，它允许一组线程相互等待， 直到到达某个公共的屏障点（common barrier point），也称之为栅栏点。通过它可以完成多个线程之间相互等待，只有当每个线程都准备就绪后，才能各自继续进行后面的操作。它和CountDownLatch有相似的地方，都是通过计数器实现。当某个线程调用await()方法之后，该线程就进入等待状态，而且计数器是执行+1操作，当计数器值达到设定的值，因为调用await()方法进入等待的线程，会被唤醒，继续执行他们后续的操作。由于CyclicBarrier在等待线程释放之后，可以进行重用，所以称之为循环屏障。它非常适用于一组线程之间必需经常互相等待的情况。</p>
+<h4 id="与CountDownLatch比较"><a href="#与CountDownLatch比较" class="headerlink" title="与CountDownLatch比较"></a>与CountDownLatch比较</h4><p><strong>相同点：</strong></p>
+<ol>
+<li>都是同步辅助类。</li>
+<li>使用计数器实现</li>
+</ol>
+<p><strong>不同点：</strong></p>
+<ol>
+<li>CountDownLatch允许一个或多个线程，等待其他一组线程完成操作，再继续执行。</li>
+<li>CyclicBarrier允许一组线程相互之间等待，达到一个共同点，再继续执行。</li>
+<li>CountDownLatch不能被复用</li>
+<li>CyclicBarrier适用于更复杂的业务场景，如计算发生错误，通过重置计数器，并让线程重新执行</li>
+<li>CyclicBarrier还提供其他有用的方法，比如getNumberWaiting方法可以获得CyclicBarrier阻塞的线程数量。isBroken方法用来知道阻塞的线程是否被中断。</li>
+</ol>
+<p><strong>场景比较：</strong></p>
+<ol>
+<li>CyclicBarrier : 好比一扇门，默认情况下关闭状态，堵住了线程执行的道路，直到所有线程都就位，门才打开，让所有线程一起通过。</li>
+<li>CyclicBarrier可以用于多线程计算数据，最后合并计算结果的应用场景。比如我们用一个Excel保存了用户所有银行流水，每个Sheet保存一个帐户近一年的每笔银行流水，现在需要统计用户的日均银行流水，先用多线程处理每个sheet里的银行流水，都执行完之后，得到每个sheet的日均银行流水，最后，再用barrierAction用这些线程的计算结果，计算出整个Excel的日均银行流水。</li>
+<li>CountDownLatch : 监考老师发下去试卷，然后坐在讲台旁边玩着手机等待着学生答题，有的学生提前交了试卷，并约起打球了，等到最后一个学生交卷了，老师开始整理试卷，贴封条</li>
+</ol>
+<h3 id="ReentrantLock-可重入锁-和synchronized区别"><a href="#ReentrantLock-可重入锁-和synchronized区别" class="headerlink" title="ReentrantLock(可重入锁)和synchronized区别"></a>ReentrantLock(可重入锁)和synchronized区别</h3><ul>
+<li><p>可重入性：ReentrantLock字面意思即为再进入锁，称为可重入锁，其实synchronize所使用的锁也是可以重入的，两者关于这个区别不大，它们都是同一个线程进入一次，锁的计数器进行自增，要等到锁的计数器下降为零时，才能释放锁</p>
+</li>
+<li><p>锁的实现：synchronized依赖于JVM实现很难看到源码，而ReentrantLock基于JDK实现，区别就类似于操作系统控制实现与用户使用代码实现。</p>
+</li>
+<li><p>性能区别：在JDK1.6以前，synchronized性能比ReentrantLock差很多，但自从synchronize引入了偏向锁、轻量级锁（自选锁）后 ，也就是自循锁后，两者性能就差不多了。synchronized的优化其实是借鉴了ReentrantLock中的CAS技术，都是试图在用户态就把加锁问题解决，避免进入内核态的线程阻塞。</p>
+</li>
+</ul>
+<p><strong>功能区别：</strong></p>
+<ul>
+<li>便利性：synchronized更便利，它是由编译器保证加锁与释放。ReentrantLock是需要手动声明与释放锁，所以为了避免忘记手工释放锁造成死锁，所以最好在finally中声明释放锁。</li>
+<li>锁的细粒度和灵活度：ReentrantLock优于synchronized</li>
+</ul>
+<p><strong>ReentrantLock独有的功能</strong></p>
+<ul>
+<li>ReentrantLock可以指定是公平锁还是非公平锁，synchronized只能是非公平锁。</li>
+<li>提供了一个Condition类，可以分组唤醒需要唤醒的线程。不像是synchronized要么随机唤醒一个线程，要么全部唤醒。</li>
+<li>提供能够中断等待锁的线程的机制，通过lock.lockInterruptibly()实现，这种机制ReentrantLock是一种自旋锁，通过循环调用CAS操作来实现加锁。性能比较好的原因是避免了进入内核态的阻塞状态。</li>
+</ul>
+<h3 id="ReentrantReadWriteLock"><a href="#ReentrantReadWriteLock" class="headerlink" title="ReentrantReadWriteLock"></a>ReentrantReadWriteLock</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3db2nu46oj20tq07cdhs.jpg" alt=""></p>
+<p>ReentrantLock是一个排他锁，同一时间只允许一个线程访问，而ReentrantReadWriteLock允许多个读线程同时访问，但不允许写线程和读线程、写线程和写线程同时访问。相对于排他锁，提高了并发性。在实际应用中，大部分情况下对共享数据（如缓存）的访问都是读操作远多于写操作，这时ReentrantReadWriteLock能够提供比排他锁更好的并发性和吞吐量。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3db6lfu9yj20w20wwn26.jpg" alt=""></p>
+<h3 id="StampedLock"><a href="#StampedLock" class="headerlink" title="StampedLock"></a>StampedLock</h3><p>JDK 1.8 新增，它是 ReentrantReadWriteLock 的增强版。</p>
+<p>它把读操作进一步细分为：乐观读、悲观读</p>
+<p>它的思想是读写锁中读不仅不阻塞读，同时也不应该阻塞写。 在读的时候如果发生了写，则应当重读而不是在读的时候直接阻塞写。即读写之间不会阻塞，但是写和写之间还是阻塞的</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3dbgtih7sj20p410qtha.jpg" alt=""></p>
+<h3 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h3><p>除了AQS sync队列之外，还有可能存在Condition队列（不存在或者存在多个等待队列）。</p>
+<p>使得某个，或者某些线程一起等待某个条件（Condition），只有当该条件具备(signal 或者 signalAll方法被带调用)时，这些等待线程才会被唤醒，从而重新争夺锁。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3dbtmjv9nj20wi0x0ah5.jpg" alt=""></p>
+<p>Condition 队列 –&gt; 等待队列</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/concurrent/" rel="tag"># concurrent</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/03/concurrent-02-safe-publication/" rel="next" title="并发编程02安全发布对象">
+                <i class="fa fa-chevron-left"></i> 并发编程02安全发布对象
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/04/concurrent-03-safe-strategy/" rel="prev" title="并发编程03线程安全策略">
+                并发编程03线程安全策略 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AQS-基本结构"><span class="nav-number">1.</span> <span class="nav-text">AQS 基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步队列结构分析"><span class="nav-number">2.</span> <span class="nav-text">同步队列结构分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步组件概览"><span class="nav-number">3.</span> <span class="nav-text">同步组件概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CountDownLatch"><span class="nav-number">4.</span> <span class="nav-text">CountDownLatch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Semaphore"><span class="nav-number">5.</span> <span class="nav-text">Semaphore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CyclicBarrier"><span class="nav-number">6.</span> <span class="nav-text">CyclicBarrier</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与CountDownLatch比较"><span class="nav-number">6.1.</span> <span class="nav-text">与CountDownLatch比较</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantLock-可重入锁-和synchronized区别"><span class="nav-number">7.</span> <span class="nav-text">ReentrantLock(可重入锁)和synchronized区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ReentrantReadWriteLock"><span class="nav-number">8.</span> <span class="nav-text">ReentrantReadWriteLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StampedLock"><span class="nav-number">9.</span> <span class="nav-text">StampedLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Condition"><span class="nav-number">10.</span> <span class="nav-text">Condition</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

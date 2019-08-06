@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="concurrent," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="线程安全策略不可变对象需要满足的条件：  对象创建后它的状态就不能修改 所有的域都是final类型 对象是正确构建的(在对象创建期间，this引用没有逸出)  final 修饰类：不能被继承，final类中的成员属性可以根据需要设置为final，但final类中所有的成员方法都被隐式指定为final方法。一般不建议将类设置为final类型。 修饰方法：1）锁定方法不被继承类修改；2）效率 修饰变量">
+<meta name="keywords" content="concurrent">
+<meta property="og:type" content="article">
+<meta property="og:title" content="并发编程03线程安全策略">
+<meta property="og:url" content="https://hu3.coding.me/2018/04/04/concurrent-03-safe-strategy/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="线程安全策略不可变对象需要满足的条件：  对象创建后它的状态就不能修改 所有的域都是final类型 对象是正确构建的(在对象创建期间，this引用没有逸出)  final 修饰类：不能被继承，final类中的成员属性可以根据需要设置为final，但final类中所有的成员方法都被隐式指定为final方法。一般不建议将类设置为final类型。 修饰方法：1）锁定方法不被继承类修改；2）效率 修饰变量">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cmgibywyj20se0h0juc.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cml5ro96j210m09y76k.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cnhslhjhj20ri0vygr2.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3d7hwpg0rj20ss0k013z.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3d7p3gxvuj20ju0b7ada.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3d8i17ypgj20we0d6whj.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3d9t3nzhaj22aa1827wh.jpg">
+<meta property="og:updated_time" content="2019-08-06T13:46:33.151Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="并发编程03线程安全策略">
+<meta name="twitter:description" content="线程安全策略不可变对象需要满足的条件：  对象创建后它的状态就不能修改 所有的域都是final类型 对象是正确构建的(在对象创建期间，this引用没有逸出)  final 修饰类：不能被继承，final类中的成员属性可以根据需要设置为final，但final类中所有的成员方法都被隐式指定为final方法。一般不建议将类设置为final类型。 修饰方法：1）锁定方法不被继承类修改；2）效率 修饰变量">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cmgibywyj20se0h0juc.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2018/04/04/concurrent-03-safe-strategy/"/>
+
+
+
+
+
+  <title>并发编程03线程安全策略 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2018/04/04/concurrent-03-safe-strategy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">并发编程03线程安全策略</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-04T21:41:38+08:00">
+                2018-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/04/concurrent-03-safe-strategy/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/04/concurrent-03-safe-strategy/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="线程安全策略"><a href="#线程安全策略" class="headerlink" title="线程安全策略"></a>线程安全策略</h3><p>不可变对象需要满足的条件：</p>
+<ul>
+<li>对象创建后它的状态就不能修改</li>
+<li>所有的域都是final类型</li>
+<li>对象是正确构建的(在对象创建期间，this引用没有逸出)</li>
+</ul>
+<h4 id="final"><a href="#final" class="headerlink" title="final"></a>final</h4><ul>
+<li>修饰类：不能被继承，final类中的成员属性可以根据需要设置为final，但final类中所有的成员方法都被隐式指定为final方法。一般不建议将类设置为final类型。</li>
+<li>修饰方法：1）锁定方法不被继承类修改；2）效率</li>
+<li>修饰变量：1）基本数据类型变量，初始化后便不能进行修改；2）引用类型变量，初始化之后不能再指向别的引用</li>
+</ul>
+<p>final类中所有的方法都会被隐式指定为final，参见String</p>
+<h4 id="Collections-unmodifiableXXX"><a href="#Collections-unmodifiableXXX" class="headerlink" title="Collections.unmodifiableXXX"></a>Collections.unmodifiableXXX</h4><p>Collection、List、Set、Map…</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cmgibywyj20se0h0juc.jpg" alt=""></p>
+<h4 id="Guava-ImmutableXXX"><a href="#Guava-ImmutableXXX" class="headerlink" title="Guava ImmutableXXX"></a>Guava ImmutableXXX</h4><p>ImmutableXXX：Collection、List、Set、Map…</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cml5ro96j210m09y76k.jpg" alt=""></p>
+<p>除了不可变对象，还存在一个方法 就是线程封闭</p>
+<h3 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h3><p>把对象封装到一个线程中，只有一个对象能够看到该对象，那么就算这个对象不是线程安全的，也不会出现任何线程安全问题</p>
+<ul>
+<li>Ad-hoc 线程封闭：程序控制实现，非常脆弱、最糟糕，忽略</li>
+<li>堆栈封闭：局部变量</li>
+<li>ThreadLocal</li>
+</ul>
+<h4 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ThreadLocal&lt;String&gt; mThreadLocal = <span class="keyword">new</span> ThreadLocal&lt;String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> Thread.currentThread().getName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(C)ThreadLocal</span><br><span class="line">    -&gt; (C)ThreadLocalMap</span><br><span class="line">        -&gt; (C)Entry</span><br><span class="line">(C)Thread</span><br><span class="line">    -&gt; (f)ThreadLocal.ThreadLocalMap</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">     * ThreadLocal values pertaining to this thread. This map is maintained</span></span><br><span class="line"><span class="comment">     * by the ThreadLocal class. </span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>ThreadLocal的作用是提供线程内部的局部变量，这种变量只存在线程的生命周期。</strong></p>
+<p>ThreadLocalMap的key是ThreadLocal类的实例对象，value为用户的值</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cnhslhjhj20ri0vygr2.jpg" alt=""></p>
+<p><strong>工作原理</strong></p>
+<ul>
+<li>set方法<ul>
+<li>首先获取当前线程</li>
+<li>利用当前线程作为句柄获取一个ThreadLocalMap的对象</li>
+<li>如果上述ThreadLocalMap对象不为空，则设置值，否则创建这个ThreadLocalMap对象并设置值</li>
+</ul>
+</li>
+</ul>
+<p>总结：实际上，ThreadLocal的值是放入了当前线程的一个ThreadLocalMap的成员变量中，所以只能在本线程中访问，其他线程无法访问</p>
+<ul>
+<li>每个线程中都有属于自己的ThreadLocalMap，互不干扰</li>
+</ul>
+<p>使用InheritableThreadLocal可以实现多个线程访问ThreadLocal的值。</p>
+<p><strong>会导致内存泄露么</strong></p>
+<ul>
+<li>首先ThreadLocal实例被线程的ThreadLocalMap实例持有，也可以看成被线程持有。</li>
+<li>如果应用使用了线程池，那么之前的线程实例处理完之后出于复用的目的依然存活</li>
+<li>所以，ThreadLocal设定的值被持有，导致内存泄露。</li>
+</ul>
+<p>上面的逻辑是清晰的，可是ThreadLocal并不会产生内存泄露，因为<u>ThreadLocalMap在选择key的时候，并不是直接选择ThreadLocal实例，而是ThreadLocal实例的弱引用</u>。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3d7hwpg0rj20ss0k013z.jpg" alt=""></p>
+<p>所以<strong>实际上从ThreadLocal设计角度来说是不会导致内存泄露的</strong>。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3d7p3gxvuj20ju0b7ada.jpg" alt=""></p>
+<p>ThreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal没有外部强引用引用它，那么系统gc的时候，这个ThreadLocal势必会被回收，这样一来，ThreadLocalMap中就会出现key为null的Entry，就没有办法访问这些key为null的Entry的value，再如果当前线程迟迟不结束的话，这些key为null的Entry的value就会一直存在一条强引用链：ThreadLocal Ref -&gt; Thread -&gt; ThreadLocalMap -&gt; Entry -&gt; value永远无法回收，造成内存泄露。<strong>比如使用线程池的时候，线程结束是不会销毁的，会再次使用的就可能出现内存泄露 。</strong></p>
+<p>ThreadLocal通过Entry保存在map中，key为Thread的弱引用（GC时会自动回收），value为存入的变量副本，<u>一个线程不管有多少个ThreadLocal，都是通过一个ThreadLocalMap来存放局部变量的</u>。</p>
+<p><strong>总结：</strong></p>
+<ol>
+<li>使用ThreadLocal，<strong>建议用static修饰</strong> static ThreadLocal<httpheader> headerLocal = new ThreadLocal();这样的话ThreadLocal的生命周期就更长，由于一直存在ThreadLocal的强引用，所以ThreadLocal也就不会被回收，也就能保证任何时候都能根据ThreadLocal的弱引用访问到Entry的value值，然后remove它，防止内存泄露。</httpheader></li>
+</ol>
+<blockquote>
+<p>为了避免参数传递的麻烦，在controller中将已经封装好的参数放入ThreadLocal中，在其它层调用时直接通过ThreadLocal对象获取。在方法结束时，定义拦截器（或者Filter）进行ThreadLocal的remove方法。</p>
+</blockquote>
+<ol start="2">
+<li>使用完ThreadLocal后，执行下remove操作。</li>
+</ol>
+<h3 id="常见线程不安全类与写法"><a href="#常见线程不安全类与写法" class="headerlink" title="常见线程不安全类与写法"></a>常见线程不安全类与写法</h3><h4 id="StringBuilder-与-StringBuffer"><a href="#StringBuilder-与-StringBuffer" class="headerlink" title="StringBuilder 与 StringBuffer"></a>StringBuilder 与 StringBuffer</h4><p>StringBuilder 不是线程安全的类，而StringBuffer是线程安全的。</p>
+<h4 id="SimpleDateFormat-与-JodaTime"><a href="#SimpleDateFormat-与-JodaTime" class="headerlink" title="SimpleDateFormat 与 JodaTime"></a>SimpleDateFormat 与 JodaTime</h4><p>SimpleDateFormat在多线程下共享使用就会出现线程不安全情况。建议将SimpleDateFormat声明为局部变量，这样才会避免线程不安全所带来的异常</p>
+<h4 id="ArrayList、HashSet、HashMap-等-Collections"><a href="#ArrayList、HashSet、HashMap-等-Collections" class="headerlink" title="ArrayList、HashSet、HashMap 等 Collections"></a>ArrayList、HashSet、HashMap 等 Collections</h4><h4 id="同步容器"><a href="#同步容器" class="headerlink" title="同步容器"></a>同步容器</h4><ul>
+<li><p>ArrayList -&gt; Vector、Stack</p>
+</li>
+<li><p>HashMap -&gt; HashTable(key、value均不能为null)</p>
+</li>
+<li><p>Collections.synchronizedXXX(List、Set、Map)</p>
+</li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3d8i17ypgj20we0d6whj.jpg" alt=""></p>
+<blockquote>
+<ul>
+<li>如果在使用foreach或iterator进集合的遍历，</li>
+<li>尽量不要在操作的过程中进行remove等相关的更新操作。</li>
+<li>如果非要进行操作，则可以在遍历的过程中记录需要操作元素的序号，</li>
+<li>待遍历结束后方可进行操作，让这两个动作分开进行</li>
+</ul>
+</blockquote>
+<p>同步容器中的方法主要采取synchronized进行同步，因此执行的性能会收到受到影响，并且同步容器并不一定能做到真正的线程安全。</p>
+<h4 id="并发容器-J-U-C"><a href="#并发容器-J-U-C" class="headerlink" title="并发容器 J.U.C"></a>并发容器 J.U.C</h4><h5 id="CopyOnWriteArrayList、CopyOnWriteArraySet"><a href="#CopyOnWriteArrayList、CopyOnWriteArraySet" class="headerlink" title="CopyOnWriteArrayList、CopyOnWriteArraySet"></a>CopyOnWriteArrayList、CopyOnWriteArraySet</h5><p>CopyOnWriteArrayList相比于ArrayList是线程安全的，从字面意思理解，即为<strong>写操作时复制</strong>。当有新元素添加到CopyOnWriteArrayList时，先从原有的数组中拷贝一份出来，然后在新的数组做写操作，写完之后，再将原来的数组引用指向到新数组。</p>
+<p>CopyOnWriteArrayList add操作 会加锁。</p>
+<ol>
+<li><p>由于写操作的时候，需要拷贝数组，会消耗内存，如果原数组的内容比较多的情况下，可能导致young gc或者full gc</p>
+</li>
+<li><p><strong>不能用于实时读的场景</strong>，像拷贝数组、新增元素都需要时间，所以调用一个set操作后，读取到数据可能还是旧的，虽然CopyOnWriteArrayList能做到最终一致性，但是还是没法满足实时性要求；</p>
+</li>
+</ol>
+<p>由于所有的写操作都是在新数组进行的，这个时候如果有线程并发的写，则通过锁来控制，如果有线程并发的读，则分几种情况：</p>
+<ol>
+<li>如果写操作未完成，那么直接读取原数组的数据；</li>
+<li>如果写操作完成，但是引用还未指向新数组，那么也是读取原数组数据；</li>
+<li>如果写操作完成，并且引用已经指向了新的数组，那么直接从新数组中读取数据。</li>
+</ol>
+<h5 id="ConcurrentSkipListSet"><a href="#ConcurrentSkipListSet" class="headerlink" title="ConcurrentSkipListSet"></a>ConcurrentSkipListSet</h5><p>TreeSet -&gt; ConcurrentSkipListSet</p>
+<ul>
+<li>和TreeSet一样，都支持自然排序，并且在构造时可定义Comparator<e>比较器</e></li>
+<li>和其他Set集合一样，底层都是基于相应的Map的</li>
+<li>多线程并发时，add、contains、remove都是线程安全的，但是对于批量操作addAll、removeAll、containsAll并不能保证原子性。</li>
+<li>不允许使用null元素，因为无法将其与不存在的元素区分开来</li>
+</ul>
+<h5 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h5><p>锁分离技术</p>
+<h5 id="ConcurrentSkipListMap"><a href="#ConcurrentSkipListMap" class="headerlink" title="ConcurrentSkipListMap"></a>ConcurrentSkipListMap</h5><p>TreeMap -&gt; ConcurrentSkipListMap</p>
+<h5 id="ConcurrentHashMap与ConcurrentSkipListMap性能测试"><a href="#ConcurrentHashMap与ConcurrentSkipListMap性能测试" class="headerlink" title="ConcurrentHashMap与ConcurrentSkipListMap性能测试"></a>ConcurrentHashMap与ConcurrentSkipListMap性能测试</h5><p>在4线程1.6万数据的条件下，ConcurrentHashMap 存取速度是ConcurrentSkipListMap 的4倍左右。</p>
+<p>但ConcurrentSkipListMap有几个ConcurrentHashMap不能比拟的优点：</p>
+<ul>
+<li>ConcurrentSkipListMap 的key是有序的，而ConcurrentHashMap是做不到的</li>
+<li>ConcurrentSkipListMap 支持更高的并发。ConcurrentSkipListMap的存取时间是log（N），和线程数几乎无关。也就是说在数据量一定的情况下，并发的线程越多，ConcurrentSkipListMap越能体现出他的优势。</li>
+</ul>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3d9t3nzhaj22aa1827wh.jpg" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>不安全类</th>
+<th>并发容器</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ArrayList</td>
+<td>CopyOnWriteArrayList</td>
+</tr>
+<tr>
+<td>HashSet</td>
+<td>CopyOnWriteArraySet</td>
+</tr>
+<tr>
+<td>TreeSet</td>
+<td>ConcurrentSkipListSet</td>
+</tr>
+<tr>
+<td>HashMap</td>
+<td>ConcurrentHashMap</td>
+</tr>
+<tr>
+<td>TreeMap</td>
+<td>ConcurrentSkipListMap</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/concurrent/" rel="tag"># concurrent</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/04/concurrent-04-AQS/" rel="next" title="并发编程04AQS">
+                <i class="fa fa-chevron-left"></i> 并发编程04AQS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/05/concurrent-05-JUC/" rel="prev" title="并发编程05JUC">
+                并发编程05JUC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全策略"><span class="nav-number">1.</span> <span class="nav-text">线程安全策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#final"><span class="nav-number">1.1.</span> <span class="nav-text">final</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Collections-unmodifiableXXX"><span class="nav-number">1.2.</span> <span class="nav-text">Collections.unmodifiableXXX</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Guava-ImmutableXXX"><span class="nav-number">1.3.</span> <span class="nav-text">Guava ImmutableXXX</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程封闭"><span class="nav-number">2.</span> <span class="nav-text">线程封闭</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">2.1.</span> <span class="nav-text">ThreadLocal</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见线程不安全类与写法"><span class="nav-number">3.</span> <span class="nav-text">常见线程不安全类与写法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#StringBuilder-与-StringBuffer"><span class="nav-number">3.1.</span> <span class="nav-text">StringBuilder 与 StringBuffer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SimpleDateFormat-与-JodaTime"><span class="nav-number">3.2.</span> <span class="nav-text">SimpleDateFormat 与 JodaTime</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ArrayList、HashSet、HashMap-等-Collections"><span class="nav-number">3.3.</span> <span class="nav-text">ArrayList、HashSet、HashMap 等 Collections</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步容器"><span class="nav-number">3.4.</span> <span class="nav-text">同步容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发容器-J-U-C"><span class="nav-number">3.5.</span> <span class="nav-text">并发容器 J.U.C</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CopyOnWriteArrayList、CopyOnWriteArraySet"><span class="nav-number">3.5.1.</span> <span class="nav-text">CopyOnWriteArrayList、CopyOnWriteArraySet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ConcurrentSkipListSet"><span class="nav-number">3.5.2.</span> <span class="nav-text">ConcurrentSkipListSet</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">3.5.3.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ConcurrentSkipListMap"><span class="nav-number">3.5.4.</span> <span class="nav-text">ConcurrentSkipListMap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ConcurrentHashMap与ConcurrentSkipListMap性能测试"><span class="nav-number">3.5.5.</span> <span class="nav-text">ConcurrentHashMap与ConcurrentSkipListMap性能测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#总结"><span class="nav-number">3.5.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

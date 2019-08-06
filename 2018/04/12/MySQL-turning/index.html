@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL,turning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. EXPLAIN  type列，连接类型。一个好的sql语句至少要达到range级别。杜绝出现all级别 key列，使用到的索引名。如果没有选择索引，值是NULL。可以采取强制索引方式 key_len列，索引长度 rows列，扫描行数。该值是个预估值 extra列，详细说明。注意常见的不太友好的值有：Using filesort, Using temporary  2. SQL语句中IN包含的">
+<meta name="keywords" content="MySQL,turning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL优化技巧">
+<meta property="og:url" content="https://hu3.coding.me/2018/04/12/MySQL-turning/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="1. EXPLAIN  type列，连接类型。一个好的sql语句至少要达到range级别。杜绝出现all级别 key列，使用到的索引名。如果没有选择索引，值是NULL。可以采取强制索引方式 key_len列，索引长度 rows列，扫描行数。该值是个预估值 extra列，详细说明。注意常见的不太友好的值有：Using filesort, Using temporary  2. SQL语句中IN包含的">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t3bbjgrlj20m807j0vz.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t3du43pmj20av08xgmd.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t3fymc56j20hb0bz7bj.jpg">
+<meta property="og:updated_time" content="2019-08-06T13:31:04.596Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL优化技巧">
+<meta name="twitter:description" content="1. EXPLAIN  type列，连接类型。一个好的sql语句至少要达到range级别。杜绝出现all级别 key列，使用到的索引名。如果没有选择索引，值是NULL。可以采取强制索引方式 key_len列，索引长度 rows列，扫描行数。该值是个预估值 extra列，详细说明。注意常见的不太友好的值有：Using filesort, Using temporary  2. SQL语句中IN包含的">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2018/04/12/MySQL-turning/"/>
+
+
+
+
+
+  <title>MySQL优化技巧 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2018/04/12/MySQL-turning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL优化技巧</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-12T21:30:11+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/12/MySQL-turning/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/12/MySQL-turning/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-EXPLAIN"><a href="#1-EXPLAIN" class="headerlink" title="1. EXPLAIN"></a>1. EXPLAIN</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg" alt=""></p>
+<ol>
+<li>type列，连接类型。一个好的sql语句至少要达到range级别。杜绝出现all级别</li>
+<li>key列，使用到的索引名。如果没有选择索引，值是NULL。可以采取强制索引方式</li>
+<li>key_len列，索引长度</li>
+<li>rows列，扫描行数。该值是个预估值</li>
+<li>extra列，详细说明。注意常见的不太友好的值有：Using filesort, Using temporary</li>
+</ol>
+<h3 id="2-SQL语句中IN包含的值不应过多"><a href="#2-SQL语句中IN包含的值不应过多" class="headerlink" title="2. SQL语句中IN包含的值不应过多"></a>2. SQL语句中IN包含的值不应过多</h3><p>MySQL对于IN做了相应的优化，即将IN中的常量全部存储在一个数组里面，而且这个数组是排好序的。但是如果数值较多，产生的消耗也是比较大的。再例如：select id from table_name where num in(1,2,3) 对于连续的数值，能用 between 就不要用 in 了；再或者使用连接来替换。</p>
+<h3 id="3-不要使用SELECT"><a href="#3-不要使用SELECT" class="headerlink" title="3. 不要使用SELECT *"></a>3. 不要使用SELECT *</h3><h3 id="4-当只需要一条数据的时候，使用limit-1"><a href="#4-当只需要一条数据的时候，使用limit-1" class="headerlink" title="4. 当只需要一条数据的时候，使用limit 1"></a>4. 当只需要一条数据的时候，使用limit 1</h3><p>这是为了使EXPLAIN中type列达到const类型</p>
+<h3 id="5-如果排序字段没有用到索引，就尽量少排序"><a href="#5-如果排序字段没有用到索引，就尽量少排序" class="headerlink" title="5. 如果排序字段没有用到索引，就尽量少排序"></a>5. 如果排序字段没有用到索引，就尽量少排序</h3><h3 id="6-如果限制条件中其他字段没有索引，尽量少用or"><a href="#6-如果限制条件中其他字段没有索引，尽量少用or" class="headerlink" title="6. 如果限制条件中其他字段没有索引，尽量少用or"></a>6. 如果限制条件中其他字段没有索引，尽量少用or</h3><p>必须where中所有的or条件都是独立索引，否则不走索引<br>很多时候使用 union all 或者是union(必要的时候)的方式来代替“or”会得到更好的效果</p>
+<h3 id="7-尽量用union-all代替union"><a href="#7-尽量用union-all代替union" class="headerlink" title="7. 尽量用union all代替union"></a>7. 尽量用union all代替union</h3><p>union和union all的差异主要是前者需要将结果集合并后再进行唯一性过滤操作，这就会涉及到排序，增加大量的CPU运算，加大资源消耗及延迟。当然，union all的前提条件是两个结果集没有重复数据。</p>
+<h3 id="8-不使用ORDER-BY-RAND"><a href="#8-不使用ORDER-BY-RAND" class="headerlink" title="8. 不使用ORDER BY RAND()"></a>8. 不使用ORDER BY RAND()</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> <span class="string">`table_name`</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">rand</span>() <span class="keyword">limit</span> <span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+<p>上面的sql语句，可优化为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> <span class="string">`table_name`</span> t1 <span class="keyword">join</span> (<span class="keyword">select</span>  <span class="keyword">rand</span>() * (<span class="keyword">select</span> <span class="keyword">max</span>(<span class="keyword">id</span>) <span class="keyword">from</span> <span class="string">`table_name`</span>) <span class="keyword">as</span> nid) t2 <span class="keyword">on</span> t1.id &gt; t2.nid <span class="keyword">limit</span> <span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="9-区分in和exists，-not-in和not-exists"><a href="#9-区分in和exists，-not-in和not-exists" class="headerlink" title="9. 区分in和exists， not in和not exists"></a>9. 区分in和exists， not in和not exists</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表A <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">in</span> (<span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> 表B)</span><br></pre></td></tr></table></figure>
+<p>上面sql语句相当于</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 表A <span class="keyword">where</span> <span class="keyword">exists</span>(<span class="keyword">select</span> * <span class="keyword">from</span> 表B <span class="keyword">where</span> 表B.id=表A.id)</span><br></pre></td></tr></table></figure>
+<p>区分in和exists主要是造成了驱动顺序的改变（这是性能变化的关键），如果是exists，那么以外层表为驱动表，先被访问，如果是IN，那么先执行子查询。所以<strong>IN适合于外表大而内表小的情况；EXISTS适合于外表小而内表大的情况</strong>。</p>
+<p><u><strong>关于not in和not exists，推荐使用not exists，不仅仅是效率问题，not in可能存在逻辑问题</strong></u>。如何高效的写出一个替代not exists的sql语句？</p>
+<p>原sql语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> colname … <span class="keyword">from</span> A表 <span class="keyword">where</span> a.id <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> b.id <span class="keyword">from</span> B表)</span><br></pre></td></tr></table></figure>
+<p>高效的sql语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> colname … <span class="keyword">from</span> A表 <span class="keyword">Left</span> <span class="keyword">join</span> B表 <span class="keyword">on</span> a.id = b.id <span class="keyword">where</span> b.id <span class="keyword">is</span> <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<h3 id="10-使用合理的分页方式以提高分页的效率"><a href="#10-使用合理的分页方式以提高分页的效率" class="headerlink" title="10. 使用合理的分页方式以提高分页的效率"></a>10. 使用合理的分页方式以提高分页的效率</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span> <span class="keyword">from</span> table_name <span class="keyword">limit</span> <span class="number">866613</span>, <span class="number">20</span></span><br></pre></td></tr></table></figure>
+<p>使用上述sql语句做分页的时候，可能有人会发现，随着表数据量的增加，直接使用limit分页查询会越来越慢。</p>
+<p>优化的方法如下：可以取前一页的最大行数的id，然后根据这个最大的id来限制下一页的起点。比如此列中，上一页最大的id是866612。sql可以采用如下的写法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span> <span class="keyword">from</span> table_name <span class="keyword">where</span> <span class="keyword">id</span>&gt; <span class="number">866612</span> <span class="keyword">limit</span> <span class="number">20</span></span><br></pre></td></tr></table></figure>
+<h3 id="11-分段查询"><a href="#11-分段查询" class="headerlink" title="11. 分段查询"></a>11. 分段查询</h3><p>在一些用户选择页面中，可能一些用户选择的时间范围过大，造成查询缓慢。主要的原因是扫描行数过多。这个时候可以通过程序，分段进行查询，循环遍历，将结果合并处理进行展示。</p>
+<h3 id="12-避免在-where-子句中对字段进行-null-值判断"><a href="#12-避免在-where-子句中对字段进行-null-值判断" class="headerlink" title="12. 避免在 where 子句中对字段进行 null 值判断"></a>12. 避免在 where 子句中对字段进行 null 值判断</h3><p>对于null的判断会导致引擎放弃使用索引而进行全表扫描。</p>
+<h3 id="13-不建议使用-前缀模糊查询"><a href="#13-不建议使用-前缀模糊查询" class="headerlink" title="13. 不建议使用%前缀模糊查询"></a>13. 不建议使用%前缀模糊查询</h3><p>创建全文索引的sql语法是：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`table_name`</span> <span class="keyword">ADD</span> FULLTEXT <span class="keyword">INDEX</span> <span class="string">`idx_user_name`</span> (<span class="string">`user_name`</span>);</span><br></pre></td></tr></table></figure>
+<p>使用全文索引的sql语句是：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,fnum,fdst <span class="keyword">from</span> table_name <span class="keyword">where</span> <span class="keyword">match</span>(user_name) against(<span class="string">'zhangsan'</span> <span class="keyword">in</span> <span class="built_in">boolean</span> <span class="keyword">mode</span>);</span><br></pre></td></tr></table></figure>
+<p>注意：在需要创建全文索引之前，请联系DBA确定能否创建。同时需要注意的是查询语句的写法与普通索引的区别</p>
+<ol>
+<li>MySQL 5.6 以前的版本，只有 MyISAM 存储引擎支持全文索引；</li>
+<li>MySQL 5.6 及以后的版本，MyISAM 和 InnoDB 存储引擎均支持全文索引;</li>
+<li>只有字段的数据类型为 char、varchar、text 及其系列才可以建全文索引。</li>
+</ol>
+<p>MySQL 中的全文索引，有两个变量，<strong>最小搜索长度</strong>和<strong>最大搜索长度</strong>，对于长度小于最小搜索长度和大于最大搜索长度的词语，都不会被索引。通俗点就是说，想对一个词语使用全文索引搜索，那么这个词语的长度必须在以上两个变量的区间内。</p>
+<blockquote>
+<p>show variables like ‘%ft%’;</p>
+</blockquote>
+<blockquote>
+<p>// InnoDB<br>innodb_ft_min_token_size = 3;<br>innodb_ft_max_token_size = 84;</p>
+</blockquote>
+<p>两种全文索引</p>
+<h5 id="自然语言的全文索引"><a href="#自然语言的全文索引" class="headerlink" title="自然语言的全文索引"></a>自然语言的全文索引</h5><p>自然语言搜索引擎将计算每一个文档对象和查询的相关度。这里，相关度是基于匹配的关键词的个数，以及关键词在文档中出现的次数。在整个索引中出现次数越少的词语，匹配时的相关度就越高。相反，非常常见的单词将不会被搜索，如果一个词语的在超过 50% 的记录中都出现了，那么自然语言的搜索将不会搜索这类词语。上面提到的，测试表中必须有 4 条以上的记录，就是这个原因。</p>
+<h5 id="布尔全文索引"><a href="#布尔全文索引" class="headerlink" title="布尔全文索引"></a>布尔全文索引</h5><p>在布尔搜索中，我们可以在查询中自定义某个被搜索的词语的相关性，当编写一个布尔搜索查询时，可以通过一些前缀修饰符来定制搜索。</p>
+<p>MySQL 内置的修饰符，上面查询最小搜索长度时，搜索结果 ft_boolean_syntax 变量的值就是内置的修饰符，下面简单解释几个，更多修饰符的作用可以查手册</p>
+<ul>
+<li>+ 必须包含该词</li>
+<li>- 必须不包含该词</li>
+<li><blockquote>
+<p>提高该词的相关性，查询的结果靠前</p>
+</blockquote>
+</li>
+<li>&lt; 降低该词的相关性，查询的结果靠后</li>
+<li>(*)星号 通配符，只能接在词后面</li>
+</ul>
+<p>对于上面提到的问题，可以使用布尔全文索引查询来解决，使用下面的命令，a、aa、aaa、aaaa 就都被查询出来了。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">test</span> <span class="keyword">where</span> <span class="keyword">match</span>(<span class="keyword">content</span>) against(<span class="string">'a*'</span> <span class="keyword">in</span> <span class="built_in">boolean</span> <span class="keyword">mode</span>);</span><br></pre></td></tr></table></figure>
+<p>MySQL 的全文索引最开始仅支持英语，因为英语的词与词之间有空格，使用空格作为分词的分隔符是很方便的。亚洲文字，比如汉语、日语、汉语等，是没有空格的，这就造成了一定的限制。不过 MySQL 5.7.6 开始，引入了一个 ngram 全文分析器来解决这个问题，并且对 MyISAM 和 InnoDB 引擎都有效。</p>
+<p>事实上，MyISAM 存储引擎对全文索引的支持有很多的限制，例如表级别锁对性能的影响、数据文件的崩溃、崩溃后的恢复等，这使得 MyISAM 的全文索引对于很多的应用场景并不适合。所以，多数情况下的建议是使用别的解决方案，例如 Sphinx、Lucene 等等第三方的插件，亦或是使用 InnoDB 存储引擎的全文索引。</p>
+<ol>
+<li>使用全文索引前，搞清楚版本支持情况；</li>
+<li>全文索引比 like + % 快 N 倍，但是可能存在精度问题；</li>
+<li>如果需要全文索引的是大量数据，建议先添加数据，再创建索引；</li>
+<li>对于中文，可以使用 MySQL 5.7.6 之后的版本，或者第三方插件。</li>
+</ol>
+<h3 id="14-避免在where子句中对字段进行表达式操作"><a href="#14-避免在where子句中对字段进行表达式操作" class="headerlink" title="14. 避免在where子句中对字段进行表达式操作"></a>14. 避免在where子句中对字段进行表达式操作</h3><h3 id="15-避免隐式类型转换"><a href="#15-避免隐式类型转换" class="headerlink" title="15. 避免隐式类型转换"></a>15. 避免隐式类型转换</h3><h3 id="16-对于联合索引来说，要遵守最左前缀法则"><a href="#16-对于联合索引来说，要遵守最左前缀法则" class="headerlink" title="16. 对于联合索引来说，要遵守最左前缀法则"></a>16. 对于联合索引来说，要遵守最左前缀法则</h3><h3 id="17-必要时可以使用force-index来强制查询走某个索引"><a href="#17-必要时可以使用force-index来强制查询走某个索引" class="headerlink" title="17. 必要时可以使用force index来强制查询走某个索引"></a>17. 必要时可以使用force index来强制查询走某个索引</h3><h3 id="18-注意范围查询语句"><a href="#18-注意范围查询语句" class="headerlink" title="18. 注意范围查询语句"></a>18. 注意范围查询语句</h3><p>对于联合索引来说，如果存在范围查询，比如between,&gt;,&lt;等条件时，会造成后面的索引字段失效。</p>
+<h3 id="19-关于JOIN优化"><a href="#19-关于JOIN优化" class="headerlink" title="19. 关于JOIN优化"></a>19. 关于JOIN优化</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2t3bbjgrlj20m807j0vz.jpg" alt=""></p>
+<ul>
+<li>LEFT JOIN A表为驱动表</li>
+<li>INNER JOIN MySQL会自动找出那个数据少的表作用驱动表</li>
+<li>RIGHT JOIN B表为驱动表</li>
+</ul>
+<p>注意：MySQL中没有full join，可以用以下方式来解决</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> A <span class="keyword">left</span> <span class="keyword">join</span> B <span class="keyword">on</span> B.name = A.name </span><br><span class="line"><span class="keyword">where</span> B.name <span class="keyword">is</span> <span class="literal">null</span></span><br><span class="line"> <span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> B;</span><br></pre></td></tr></table></figure>
+<h4 id="1-尽量使用inner-join，避免left-join"><a href="#1-尽量使用inner-join，避免left-join" class="headerlink" title="1. 尽量使用inner join，避免left join"></a>1. 尽量使用inner join，避免left join</h4><p>参与联合查询的表至少为2张表，一般都存在大小之分。如果连接方式是inner join，在没有其他过滤条件的情况下MySQL会自动选择小表作为驱动表，但是left join在驱动表的选择上遵循的是左边驱动右边的原则，即left join左边的表名为驱动表。</p>
+<h4 id="2-合理利用索引"><a href="#2-合理利用索引" class="headerlink" title="2. 合理利用索引"></a>2. 合理利用索引</h4><p>被驱动表的索引字段作为on的限制字段。</p>
+<h4 id="3-利用小表去驱动大表"><a href="#3-利用小表去驱动大表" class="headerlink" title="3. 利用小表去驱动大表"></a>3. 利用小表去驱动大表</h4><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2t3du43pmj20av08xgmd.jpg" alt=""></p>
+<h4 id="4-巧用STRAIGHT-JOIN"><a href="#4-巧用STRAIGHT-JOIN" class="headerlink" title="4. 巧用STRAIGHT_JOIN"></a>4. 巧用STRAIGHT_JOIN</h4><p>inner join是由mysql选择驱动表，但是有些特殊情况需要选择另个表作为驱动表，比如有group by、order by等「Using filesort」、「Using temporary」时。STRAIGHT_JOIN来强制连接顺序，在STRAIGHT_JOIN左边的表名就是驱动表，右边则是被驱动表。<strong>在使用STRAIGHT_JOIN有个前提条件是该查询是内连接，也就是inner join。其他链接不推荐使用STRAIGHT_JOIN，否则可能造成查询结果不准确</strong>。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2t3fymc56j20hb0bz7bj.jpg" alt=""></p>
+<p>这个方式有时可能减少3倍的时间。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL-turning/" rel="tag"># MySQL,turning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/06/concurrent-06-thread-pool/" rel="next" title="并发编程06线程池">
+                <i class="fa fa-chevron-left"></i> 并发编程06线程池
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/06/life-formula/" rel="prev" title="人生公式">
+                人生公式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-EXPLAIN"><span class="nav-number">1.</span> <span class="nav-text">1. EXPLAIN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SQL语句中IN包含的值不应过多"><span class="nav-number">2.</span> <span class="nav-text">2. SQL语句中IN包含的值不应过多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-不要使用SELECT"><span class="nav-number">3.</span> <span class="nav-text">3. 不要使用SELECT *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-当只需要一条数据的时候，使用limit-1"><span class="nav-number">4.</span> <span class="nav-text">4. 当只需要一条数据的时候，使用limit 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-如果排序字段没有用到索引，就尽量少排序"><span class="nav-number">5.</span> <span class="nav-text">5. 如果排序字段没有用到索引，就尽量少排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-如果限制条件中其他字段没有索引，尽量少用or"><span class="nav-number">6.</span> <span class="nav-text">6. 如果限制条件中其他字段没有索引，尽量少用or</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-尽量用union-all代替union"><span class="nav-number">7.</span> <span class="nav-text">7. 尽量用union all代替union</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-不使用ORDER-BY-RAND"><span class="nav-number">8.</span> <span class="nav-text">8. 不使用ORDER BY RAND()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-区分in和exists，-not-in和not-exists"><span class="nav-number">9.</span> <span class="nav-text">9. 区分in和exists， not in和not exists</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-使用合理的分页方式以提高分页的效率"><span class="nav-number">10.</span> <span class="nav-text">10. 使用合理的分页方式以提高分页的效率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-分段查询"><span class="nav-number">11.</span> <span class="nav-text">11. 分段查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-避免在-where-子句中对字段进行-null-值判断"><span class="nav-number">12.</span> <span class="nav-text">12. 避免在 where 子句中对字段进行 null 值判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-不建议使用-前缀模糊查询"><span class="nav-number">13.</span> <span class="nav-text">13. 不建议使用%前缀模糊查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#自然语言的全文索引"><span class="nav-number">13.0.1.</span> <span class="nav-text">自然语言的全文索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#布尔全文索引"><span class="nav-number">13.0.2.</span> <span class="nav-text">布尔全文索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-避免在where子句中对字段进行表达式操作"><span class="nav-number">14.</span> <span class="nav-text">14. 避免在where子句中对字段进行表达式操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-避免隐式类型转换"><span class="nav-number">15.</span> <span class="nav-text">15. 避免隐式类型转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-对于联合索引来说，要遵守最左前缀法则"><span class="nav-number">16.</span> <span class="nav-text">16. 对于联合索引来说，要遵守最左前缀法则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-必要时可以使用force-index来强制查询走某个索引"><span class="nav-number">17.</span> <span class="nav-text">17. 必要时可以使用force index来强制查询走某个索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-注意范围查询语句"><span class="nav-number">18.</span> <span class="nav-text">18. 注意范围查询语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-关于JOIN优化"><span class="nav-number">19.</span> <span class="nav-text">19. 关于JOIN优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-尽量使用inner-join，避免left-join"><span class="nav-number">19.1.</span> <span class="nav-text">1. 尽量使用inner join，避免left join</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-合理利用索引"><span class="nav-number">19.2.</span> <span class="nav-text">2. 合理利用索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-利用小表去驱动大表"><span class="nav-number">19.3.</span> <span class="nav-text">3. 利用小表去驱动大表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-巧用STRAIGHT-JOIN"><span class="nav-number">19.4.</span> <span class="nav-text">4. 巧用STRAIGHT_JOIN</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

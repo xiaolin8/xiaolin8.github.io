@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="rate-limiter," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="限流背景高并发神器 缓存 降级：低价值的服务、影响到核心流程，暂时屏蔽掉 限流：限制并发/请求量，比如稀缺资源(秒杀、抢购)、写服务(评论、下单)、频繁的复杂查询(评论的后几页)  限流目的通过对请求的频率(一定时间窗口内的请求数)进行限制来保护系统，一旦达到临界值，就可以拒绝服务(跳转到错误页、告知资源没有了)、排队等待(秒杀、评论、下单)、降级(返回兜底数据，如库存默认有货) 限流算法计数器令">
+<meta name="keywords" content="rate-limiter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="限流总结">
+<meta property="og:url" content="https://hu3.coding.me/2019/06/13/rate-limiter/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="限流背景高并发神器 缓存 降级：低价值的服务、影响到核心流程，暂时屏蔽掉 限流：限制并发/请求量，比如稀缺资源(秒杀、抢购)、写服务(评论、下单)、频繁的复杂查询(评论的后几页)  限流目的通过对请求的频率(一定时间窗口内的请求数)进行限制来保护系统，一旦达到临界值，就可以拒绝服务(跳转到错误页、告知资源没有了)、排队等待(秒杀、评论、下单)、降级(返回兜底数据，如库存默认有货) 限流算法计数器令">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g557y4uk7xj20e50gqdhu.jpg">
+<meta property="og:updated_time" content="2019-08-06T13:15:24.161Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="限流总结">
+<meta name="twitter:description" content="限流背景高并发神器 缓存 降级：低价值的服务、影响到核心流程，暂时屏蔽掉 限流：限制并发/请求量，比如稀缺资源(秒杀、抢购)、写服务(评论、下单)、频繁的复杂查询(评论的后几页)  限流目的通过对请求的频率(一定时间窗口内的请求数)进行限制来保护系统，一旦达到临界值，就可以拒绝服务(跳转到错误页、告知资源没有了)、排队等待(秒杀、评论、下单)、降级(返回兜底数据，如库存默认有货) 限流算法计数器令">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2019/06/13/rate-limiter/"/>
+
+
+
+
+
+  <title>限流总结 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2019/06/13/rate-limiter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">限流总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-13T21:14:25+08:00">
+                2019-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/13/rate-limiter/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/13/rate-limiter/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="限流背景"><a href="#限流背景" class="headerlink" title="限流背景"></a>限流背景</h3><h4 id="高并发神器"><a href="#高并发神器" class="headerlink" title="高并发神器"></a>高并发神器</h4><ul>
+<li><strong>缓存</strong></li>
+<li><strong>降级</strong>：低价值的服务、影响到核心流程，暂时屏蔽掉</li>
+<li><strong>限流</strong>：限制并发/请求量，比如稀缺资源(秒杀、抢购)、写服务(评论、下单)、频繁的复杂查询(评论的后几页)</li>
+</ul>
+<h4 id="限流目的"><a href="#限流目的" class="headerlink" title="限流目的"></a>限流目的</h4><p>通过对请求的频率(一定时间窗口内的请求数)进行限制来保护系统，一旦达到临界值，就可以拒绝服务(跳转到错误页、告知资源没有了)、排队等待(秒杀、评论、下单)、降级(返回兜底数据，如库存默认有货)</p>
+<h3 id="限流算法"><a href="#限流算法" class="headerlink" title="限流算法"></a>限流算法</h3><h4 id="计数器"><a href="#计数器" class="headerlink" title="计数器"></a>计数器</h4><h4 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h4><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg" alt=""></p>
+<p>令牌桶算法是一个存放固定容量令牌的桶，按照固定速率往桶里添加令牌。令牌桶算法的描述如下：</p>
+<ul>
+<li><p>假设限制2r/s，则按照500毫秒的固定速率往桶中添加令牌；</p>
+</li>
+<li><p>桶中最多存放b个令牌，当桶满时，新添加的令牌被丢弃或拒绝；</p>
+</li>
+<li><p>当一个n个字节大小的数据包到达，将从桶中删除n个令牌，接着数据包被发送到网络上；</p>
+</li>
+<li><p>如果桶中的令牌不足n个，则不会删除令牌，且该数据包将被限流（要么丢弃，要么缓冲区等待）。</p>
+</li>
+</ul>
+<h4 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h4><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g557y4uk7xj20e50gqdhu.jpg" alt=""></p>
+<p>漏桶作为计量工具（The Leaky Bucket Algorithm as a Meter）时，可以用于流量整形（Traffic Shaping）和流量控制（TrafficPolicing），漏桶算法的描述如下：</p>
+<ul>
+<li><p>一个固定容量的漏桶，按照常量固定速率流出水滴；</p>
+</li>
+<li><p>如果桶是空的，则不需流出水滴；</p>
+</li>
+<li><p>可以以任意速率流入水滴到漏桶；</p>
+</li>
+<li><p>如果流入水滴超出了桶的容量，则流入的水滴溢出了（被丢弃），而漏桶容量是不变的。</p>
+</li>
+</ul>
+<h3 id="应用级限流"><a href="#应用级限流" class="headerlink" title="应用级限流"></a>应用级限流</h3><h4 id="限制总并发-连接-请求数"><a href="#限制总并发-连接-请求数" class="headerlink" title="限制总并发/连接/请求数"></a>限制总并发/连接/请求数</h4><p>限制极限并发/请求数，即TPS/QPS阀值。<br>如Tomcat的maxConnections、maxThread，MySQL的max_connections、Redis的tcp-backlog</p>
+<h4 id="限制总资源数"><a href="#限制总资源数" class="headerlink" title="限制总资源数"></a>限制总资源数</h4><p>稀缺资源，有多个系统使用，可采用池化技术(数据库连接、线程)</p>
+<h4 id="限制某个接口的总并发-请求数"><a href="#限制某个接口的总并发-请求数" class="headerlink" title="限制某个接口的总并发/请求数"></a>限制某个接口的总并发/请求数</h4><p>防止某接口因突发访问量太大，造成系统崩溃(抢购业务)</p>
+<p> 开放平台使用AtomicLong、Semaphore进行限流</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(atomic.incrementAndGet() &gt; 限流数) &#123;</span><br><span class="line">        <span class="comment">//拒绝请求</span></span><br><span class="line">   &#125;</span><br><span class="line">    <span class="comment">//处理请求</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    atomic.decrementAndGet();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="限制某接口的时间窗请求数"><a href="#限制某接口的时间窗请求数" class="headerlink" title="限制某接口的时间窗请求数"></a>限制某接口的时间窗请求数</h4><p>一些基础服务可能会被很多其他系统调用，比如商品详情页更新时会调用基础商品服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">LoadingCache&lt;Long, AtomicLong&gt; counter =</span><br><span class="line">        CacheBuilder.newBuilder()</span><br><span class="line">                .expireAfterWrite(<span class="number">2</span>, TimeUnit.SECONDS)</span><br><span class="line">                .build(<span class="keyword">new</span> CacheLoader&lt;Long, AtomicLong&gt;() &#123;</span><br><span class="line">                    <span class="meta">@Override</span></span><br><span class="line">                    <span class="function"><span class="keyword">public</span> AtomicLong <span class="title">load</span><span class="params">(Long seconds)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line"><span class="keyword">long</span> limit = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">    <span class="comment">//得到当前秒</span></span><br><span class="line">    <span class="keyword">long</span> currentSeconds = System.currentTimeMillis() / <span class="number">1000</span>;</span><br><span class="line">    <span class="keyword">if</span>(counter.get(currentSeconds).incrementAndGet() &gt; limit) &#123;</span><br><span class="line">        System.out.println(<span class="string">"限流了:"</span> + currentSeconds);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//业务处理</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可使用Guava的LodingCache来存储计数器，过期时间设置为2秒（保证1秒内的计数器是有的），然后我们获取当前时间戳然后取秒数来作为KEY进行计数统计和限流，这种方式也是简单粗暴</p>
+<h4 id="平滑限流某个接口的请求数"><a href="#平滑限流某个接口的请求数" class="headerlink" title="平滑限流某个接口的请求数"></a>平滑限流某个接口的请求数</h4><p>之前的限流方式都不能很好地应对突发情况，因此需要进行流量整型，有两种算法满足我们的场景：令牌桶和漏桶算法。<br>Guava RateLimiter提供了令牌桶算法实现：<strong>平滑突发限流(SmoothBursty)</strong> 和 <strong>平滑预热限流(SmoothWarmingUp)</strong> 实现。</p>
+<p>假设将应用部署到多台机器，应用级限流方式只是单应用内的请求限流，不能进行全局限流。因此我们需要分布式限流和接入层限流来解决这个问题。</p>
+<h3 id="分布式限流"><a href="#分布式限流" class="headerlink" title="分布式限流"></a>分布式限流</h3><p>最关键的是要将限流服务做成原子化，而解决方案可以使使用redis+lua或者nginx+lua技术进行实现，通过这两种技术可以实现的高并发和高性能</p>
+<p>Lua本身就是一种编程语言，也可以使用它实现复杂的令牌桶或漏桶算法。</p>
+<h4 id="Redis-Lua-限流"><a href="#Redis-Lua-限流" class="headerlink" title="Redis + Lua 限流"></a>Redis + Lua 限流</h4><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> key = KEYS[<span class="number">1</span>] <span class="comment">--限流KEY（一秒一个）</span></span><br><span class="line"><span class="keyword">local</span> limit = <span class="built_in">tonumber</span>(ARGV[<span class="number">1</span>]) <span class="comment">--限流大小</span></span><br><span class="line"><span class="keyword">local</span> current = <span class="built_in">tonumber</span>(redis.call(<span class="string">"INCRBY"</span>, key, <span class="string">"1"</span>)) <span class="comment">--请求数+1</span></span><br><span class="line"><span class="keyword">if</span> current &gt; limit <span class="keyword">then</span> <span class="comment">--如果超出限流大小</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">elseif</span> current == <span class="number">1</span> <span class="keyword">then</span> <span class="comment">--只有第一次访问需要设置2秒的过期时间</span></span><br><span class="line">    redis.call(<span class="string">"expire"</span>, key,<span class="string">"2"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>如上方式有一个缺点就是当达到限流大小后还是会递增的，可以改造成如下方式实现：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> key = KEYS[<span class="number">1</span>] <span class="comment">--限流KEY（一秒一个）</span></span><br><span class="line"><span class="keyword">local</span> limit = <span class="built_in">tonumber</span>(ARGV[<span class="number">1</span>]) <span class="comment">--限流大小</span></span><br><span class="line"><span class="keyword">local</span> current = <span class="built_in">tonumber</span>(redis.call(<span class="string">'get'</span>, key) <span class="keyword">or</span> <span class="string">"0"</span>)</span><br><span class="line"><span class="keyword">if</span> current + <span class="number">1</span> &gt; limit <span class="keyword">then</span> <span class="comment">--如果超出限流大小</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">else</span> <span class="comment">--请求数+1，并设置2秒过期</span></span><br><span class="line">    redis.call(<span class="string">"INCRBY"</span>, key,<span class="string">"1"</span>)</span><br><span class="line">    redis.call(<span class="string">"expire"</span>, key,<span class="string">"2"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>如下是Java中判断是否需要限流的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">acquire</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">String luaScript = Files.toString(<span class="keyword">new</span> File(<span class="string">"limit.lua"</span>), Charset.defaultCharset());</span><br><span class="line">Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.147.52"</span>, <span class="number">6379</span>);</span><br><span class="line">String key = <span class="string">"ip:"</span> + System.currentTimeMillis()/ <span class="number">1000</span>; <span class="comment">//此处将当前时间戳取秒数</span></span><br><span class="line">Stringlimit = <span class="string">"3"</span>; <span class="comment">//限流大小</span></span><br><span class="line"><span class="keyword">return</span> (Long)jedis.eval(luaScript,Lists.newArrayList(key), Lists.newArrayList(limit)) == <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为Redis的限制（Lua中有写操作不能使用带随机性质的读操作，如TIME）<u><strong>不能在Redis Lua中使用TIME获取时间戳，因此只好从应用获取然后传入，在某些极端情况下（机器时钟不准的情况下），限流会存在一些小问题</strong></u>。</p>
+<h4 id="Nginx-Lua-限流"><a href="#Nginx-Lua-限流" class="headerlink" title="Nginx + Lua 限流"></a>Nginx + Lua 限流</h4><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> locks = <span class="built_in">require</span> <span class="string">"resty.lock"</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">acquire</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">local</span> lock =locks:new(<span class="string">"locks"</span>)</span><br><span class="line">    <span class="keyword">local</span> elapsed, err =lock:lock(<span class="string">"limit_key"</span>) <span class="comment">--互斥锁</span></span><br><span class="line">    <span class="keyword">local</span> limit_counter =ngx.shared.limit_counter <span class="comment">--计数器</span></span><br><span class="line">    <span class="keyword">local</span> key = <span class="string">"ip:"</span> ..<span class="built_in">os</span>.<span class="built_in">time</span>()</span><br><span class="line">    <span class="keyword">local</span> limit = <span class="number">5</span> <span class="comment">--限流大小</span></span><br><span class="line">    <span class="keyword">local</span> current =limit_counter:get(key)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> current ~= <span class="literal">nil</span> <span class="keyword">and</span> current + <span class="number">1</span>&gt; limit <span class="keyword">then</span> <span class="comment">--如果超出限流大小</span></span><br><span class="line">        lock:unlock()</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">if</span> current == <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">        limit_counter:set(key, <span class="number">1</span>, <span class="number">1</span>) <span class="comment">--第一次需要设置过期时间，设置key的值为1，过期时间为1秒</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        limit_counter:incr(key, <span class="number">1</span>) <span class="comment">--第二次开始加1即可</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    lock:unlock()</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">ngx.<span class="built_in">print</span>(acquire())</span><br></pre></td></tr></table></figure>
+<p>实现中我们需要使用lua-resty-lock互斥锁模块来解决原子性问题(在实际工程中使用时请考虑获取锁的超时问题)，并使用ngx.shared.DICT共享字典来实现计数器。如果需要限流则返回0，否则返回1。使用时需要先定义两个共享字典（分别用来存放锁和计数器数据）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http &#123;  </span><br><span class="line">    ……  </span><br><span class="line">    lua_shared_dict locks 10m;  </span><br><span class="line">    lua_shared_dict limit_counter 10m;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有人会纠结如果应用并发量非常大那么redis或者nginx是不是能抗得住；不过这个问题要从多方面考虑：你的流量是不是真的有这么大，是不是可以通过<strong>一致性哈希</strong>将分布式限流进行分片，是不是可以当并发量太大<strong>降级为应用级限流</strong>；对策非常多，可以根据实际情况调节；像在京东使用Redis+Lua来限流抢购流量，一般流量是没有问题的。</p>
+<p>对于分布式限流目前遇到的场景是业务上的限流，而不是流量入口的限流；流量入口限流应该在接入层完成，而接入层笔者一般使用Nginx。</p>
+<h3 id="接入层限流"><a href="#接入层限流" class="headerlink" title="接入层限流"></a>接入层限流</h3><p>接入层通常指请求流量的入口，该层的主要目的有：负载均衡、非法请求过滤、请求聚合、缓存、降级、限流、A/B测试、服务质量监控等等，可以参考笔者写的<a href="https://jinnianshilongnian.iteye.com/blog/2280928" target="_blank" rel="noopener">《使用Nginx+Lua(OpenResty)开发高性能Web应用》</a>。</p>
+<p>对于Nginx接入层限流可以使用Nginx自带了两个模块：连接数限流模块ngx_http_limit_conn_module和漏桶算法实现的请求限流模块ngx_http_limit_req_module。还可以使用OpenResty提供的Lua限流模块lua-resty-limit-traffic进行更复杂的限流场景。</p>
+<p>limit_conn用来对某个KEY对应的总的网络连接数进行限流，可以按照如IP、域名维度进行限流。limit_req用来对某个KEY对应的请求的平均速率进行限流，并有两种用法：平滑模式（delay）和允许突发模式(nodelay)。</p>
+<p><strong>ngx_http_limit_conn_module</strong></p>
+<p>limit_conn是对某个KEY对应的总的网络连接数进行限流。可以按照IP来限制IP维度的总连接数，或者按照服务域名来限制某个域名的总连接数。但是记住不是每一个请求连接都会被计数器统计，只有那些被Nginx处理的且已经读取了整个请求头的请求连接才会被计数器统计。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    limit_conn_zone$binary_remote_addr zone=addr:10m; </span><br><span class="line">    limit_conn_log_level error; </span><br><span class="line">    limit_conn_status 503;</span><br><span class="line">    ...</span><br><span class="line">    server &#123;</span><br><span class="line">    ...</span><br><span class="line">    location /limit &#123;</span><br><span class="line">        limit_conn addr 1;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>limit_conn：要配置存放KEY和计数器的共享内存区域和指定KEY的最大连接数；此处指定的最大连接数是1，表示Nginx最多同时并发处理1个连接；</p>
+<p>limit_conn_zone：用来配置限流KEY、及存放KEY对应信息的共享内存区域大小；此处的KEY是“$binary_remote_addr”其表示IP地址，也可以使用如$server_name作为KEY来限制域名级别的最大连接数；</p>
+<p>limit_conn_status：配置被限流后返回的状态码，默认返回503；</p>
+<p>limit_conn_log_level：配置记录被限流后的日志级别，默认error级别。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/rate-limiter/" rel="tag"># rate-limiter</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/06/clean-code/" rel="next" title="整洁代码随想">
+                <i class="fa fa-chevron-left"></i> 整洁代码随想
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/14/Hystrix-Sentinel/" rel="prev" title="Hystrix与Sentinel">
+                Hystrix与Sentinel <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#限流背景"><span class="nav-number">1.</span> <span class="nav-text">限流背景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#高并发神器"><span class="nav-number">1.1.</span> <span class="nav-text">高并发神器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限流目的"><span class="nav-number">1.2.</span> <span class="nav-text">限流目的</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限流算法"><span class="nav-number">2.</span> <span class="nav-text">限流算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计数器"><span class="nav-number">2.1.</span> <span class="nav-text">计数器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#令牌桶算法"><span class="nav-number">2.2.</span> <span class="nav-text">令牌桶算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#漏桶算法"><span class="nav-number">2.3.</span> <span class="nav-text">漏桶算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用级限流"><span class="nav-number">3.</span> <span class="nav-text">应用级限流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#限制总并发-连接-请求数"><span class="nav-number">3.1.</span> <span class="nav-text">限制总并发/连接/请求数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限制总资源数"><span class="nav-number">3.2.</span> <span class="nav-text">限制总资源数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限制某个接口的总并发-请求数"><span class="nav-number">3.3.</span> <span class="nav-text">限制某个接口的总并发/请求数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限制某接口的时间窗请求数"><span class="nav-number">3.4.</span> <span class="nav-text">限制某接口的时间窗请求数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#平滑限流某个接口的请求数"><span class="nav-number">3.5.</span> <span class="nav-text">平滑限流某个接口的请求数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式限流"><span class="nav-number">4.</span> <span class="nav-text">分布式限流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-Lua-限流"><span class="nav-number">4.1.</span> <span class="nav-text">Redis + Lua 限流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx-Lua-限流"><span class="nav-number">4.2.</span> <span class="nav-text">Nginx + Lua 限流</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接入层限流"><span class="nav-number">5.</span> <span class="nav-text">接入层限流</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
