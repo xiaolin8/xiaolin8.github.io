@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="GFW, VPN, 翻墙," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="DNS污染和劫持DNS劫持是指返回给你一个伪造页面的IP地址，DNS污染是返回给你一个不存在的页面的IP地址。 解决办法：  使用OpenDNS（208.67.222.222）或GoogleDNS（8.8.8.8） 使用一些第三方的DNS服务器 自己用VPS搭建DNS服务器 修改机器host文件，直接IP访问  封锁IP虽然通过上面一些方式，可以绕过DNS污染。但是目前针对IP进行大范围的封锁。">
+<meta name="keywords" content="GFW, VPN, 翻墙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GFW与翻墙原理">
+<meta property="og:url" content="https://hu3.coding.me/2017/09/23/GFW-fanqiang/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="DNS污染和劫持DNS劫持是指返回给你一个伪造页面的IP地址，DNS污染是返回给你一个不存在的页面的IP地址。 解决办法：  使用OpenDNS（208.67.222.222）或GoogleDNS（8.8.8.8） 使用一些第三方的DNS服务器 自己用VPS搭建DNS服务器 修改机器host文件，直接IP访问  封锁IP虽然通过上面一些方式，可以绕过DNS污染。但是目前针对IP进行大范围的封锁。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dnbcwe46j20km09i761.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dncy2y0uj20go08j41t.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dndbb0o4j20r10dh3zy.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dngza7z7j20fe0ehjs6.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dni9xcmwj20ps0p7taa.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dnjlvtrkj20go0jb3zb.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dnu0lxyaj20ic0e2gm1.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dnw3n5nej20e6092dhh.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dnwbwgy0j20e6092q4t.jpg">
+<meta property="og:updated_time" content="2019-08-06T09:04:37.031Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GFW与翻墙原理">
+<meta name="twitter:description" content="DNS污染和劫持DNS劫持是指返回给你一个伪造页面的IP地址，DNS污染是返回给你一个不存在的页面的IP地址。 解决办法：  使用OpenDNS（208.67.222.222）或GoogleDNS（8.8.8.8） 使用一些第三方的DNS服务器 自己用VPS搭建DNS服务器 修改机器host文件，直接IP访问  封锁IP虽然通过上面一些方式，可以绕过DNS污染。但是目前针对IP进行大范围的封锁。">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4dnbcwe46j20km09i761.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2017/09/23/GFW-fanqiang/"/>
+
+
+
+
+
+  <title>GFW与翻墙原理 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2017/09/23/GFW-fanqiang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GFW与翻墙原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-23T12:46:49+08:00">
+                2017-09-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/23/GFW-fanqiang/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/09/23/GFW-fanqiang/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="DNS污染和劫持"><a href="#DNS污染和劫持" class="headerlink" title="DNS污染和劫持"></a>DNS污染和劫持</h3><p>DNS劫持是指返回给你一个伪造页面的IP地址，DNS污染是返回给你一个不存在的页面的IP地址。</p>
+<p><strong>解决办法：</strong></p>
+<ul>
+<li>使用OpenDNS（208.67.222.222）或GoogleDNS（8.8.8.8）</li>
+<li>使用一些第三方的DNS服务器</li>
+<li>自己用VPS搭建DNS服务器</li>
+<li>修改机器host文件，直接IP访问</li>
+</ul>
+<h3 id="封锁IP"><a href="#封锁IP" class="headerlink" title="封锁IP"></a>封锁IP</h3><p>虽然通过上面一些方式，可以绕过DNS污染。但是目前针对IP进行大范围的封锁。</p>
+<p>不过目前不可能把所有国外的IP全部封锁掉，所以我们才有机会从国内连接到国外的VPS，进行翻墙。</p>
+<p><strong>解决办法：</strong></p>
+<ul>
+<li>使用VPS搭建代理</li>
+<li>使用IPV6 （IPV6地址巨大，采用封地址不现实，但是目前国内只有部分高校部署了IPV6）</li>
+</ul>
+<h3 id="封锁HTTP代理"><a href="#封锁HTTP代理" class="headerlink" title="封锁HTTP代理"></a>封锁HTTP代理</h3><p>对于没有办法搭建VPS的人来说，最好的办法就是使用HTTP代理。客户端不在直接请求目标服务器，而是请求代理服务器，代理服务器在去请求目标服务器。然后返回结果。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dnbcwe46j20km09i761.jpg" alt=""></p>
+<p>对于HTTP代理来说，封锁起来非常简单。因为HTTP协议是明文，Request Message中就带有要请求的URL或IP地址，这样很容易就被检测到。对于HTTPS来说，虽然通信是进行加密了，但是在建连之前会给代理服务器发送CONNECT方法，这里也会带上要访问的远端服务器地址。如果代理服务器在国外，在出去前就会被检测到。 如果代理服务器在国内，呵呵，你也出不去啊。</p>
+<p>对于HTTP代理，因为是明文，所以很容易被服务器了解你的一些数据。所以<strong>不要随便使用第三方的HTTP代理访问HTTP网站，而HTTPS虽然不知道你的数据，但是可以知道你去了那里</strong>。</p>
+<p><strong>解决办法：</strong></p>
+<ol>
+<li>使用VPS搭建VPN</li>
+<li>使用第三方VPN</li>
+</ol>
+<h3 id="封锁VPN"><a href="#封锁VPN" class="headerlink" title="封锁VPN"></a>封锁VPN</h3><p>虚拟专用网（英语：Virtual Private Network，简称VPN），是一种常用于连接中、大型企业或团体与团体间的私人网络的通讯方法。虚拟私人网络的讯息透过公用的网络架构（例如：互联网）来传送内联网的网络讯息。它利用已加密的通道协议（Tunneling Protocol）来达到保密、发送端认证、消息准确性等私人消息安全效果。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dncy2y0uj20go08j41t.jpg" alt=""></p>
+<p>正常网络通信时，所有网络请求都是通过我们的物理网卡直接发送出去。而VPN是客户端使用相应的VPN协议先与VPN服务器进行通信，成功连接后就在操作系统内建立一个虚拟网卡，一般来说默认PC上所有网络通信都从这虚拟网卡上进出，经过VPN服务器中转之后再到达目的地。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dndbb0o4j20r10dh3zy.jpg" alt=""></p>
+<p>通常VPN协议都会对数据流进行强加密处理，从而使得第三方无法知道数据内容，这样就实现了翻墙。翻墙时VPN服务器知道你干的所有事情（HTTP，对于HTTPS，它知道你去了哪）。</p>
+<p>VPN有多种协议：OPENVPN、PPTP、L2TP/IPSec、SSLVPN、IKEv2 VPN，Cisco VPN等。其中的PPTP和L2TP是明文传输协议。只负责传输，不负责加密。分别利用了MPPE和IPSec进行加密。</p>
+<p>OpenVPN 速度快，并且安全可信。但劣势是缺乏对移动设备的支持，另外还需要安装第三方客户端。</p>
+<p>对于VPN和其他一些加密的传输的协议来说，没有办法直接获取明文的请求信息，所以没有办法直接封锁，而是使用了监控分析的方式：</p>
+<h4 id="暴力破解"><a href="#暴力破解" class="headerlink" title="暴力破解"></a>暴力破解</h4><p>对于一些使用弱加密方式的协议来说，直接使用暴力破解检查传输内容。比如PPTP使用MPPE加密，但是MPPE是基于RC4，对于强大的防火墙背后的超级计算机集群，破解就是几秒钟的事情。</p>
+<p>破解后明文中一旦包含了违禁内容，请求就会被封。而对应的IP可能会进入重点关怀列表。</p>
+<h4 id="特征检测"><a href="#特征检测" class="headerlink" title="特征检测"></a>特征检测</h4><p>要想成功翻墙都必须与对应的远程服务器建立连接，然后再用对应的协议进行数据处理并传输。<br>而问题就出在这里：翻墙工具和远程服务器建立连接时，如果表现的很独特，在一大堆流量里很显眼，就会轻易被GFW识别出从而直接阻断连接，而VPN（尤其是OPENVPN）和SSH这方面的问题尤其严重。</p>
+<h4 id="流量监控"><a href="#流量监控" class="headerlink" title="流量监控"></a>流量监控</h4><p>当一个VPN地址被大量人请求，并保持长时间连接时，就很容易引起关注。SSH接口有大量数据请求。一般会结合其他特征。</p>
+<h4 id="深度包检测"><a href="#深度包检测" class="headerlink" title="深度包检测"></a>深度包检测</h4><p>深度数据包检测（Deep packet inspection，缩写为 DPI），又称完全数据包探测（complete packet inspection）或信息萃取（Information eXtraction，IX），是一种电脑网络数据包过滤技术，用来检查通过检测点之数据包的数据部分（亦可能包含其标头），以搜索不匹配规范之协议、病毒、垃圾邮件、入侵，或以预定之准则来决定数据包是否可通过或需被路由至其他不同目的地，亦或是为了收集统计数据之目的。</p>
+<p>比如我们用HTTPS来访问一个网站，TLS/SSL协议在建连过程如下：</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dngza7z7j20fe0ehjs6.jpg" alt=""></p>
+<p>很明显的会发送“client hello”和“server hello” 这种特诊很明显的信息。（当然不会根据这个就封掉，否则https没法用了）。而后续会有服务端证书发送，验证，客户端密钥协商等过程。有明显的协议特征。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dni9xcmwj20ps0p7taa.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dnjlvtrkj20go0jb3zb.jpg" alt=""></p>
+<h3 id="Socks代理-SSH-Socks"><a href="#Socks代理-SSH-Socks" class="headerlink" title="Socks代理/SSH Socks"></a>Socks代理/SSH Socks</h3><p>SOCKS是一种网络传输协议，主要用于客户端与外网服务器之间通讯的中间传递。SOCKS是”SOCKetS”的缩写[1]。</p>
+<p>当防火墙后的客户端要访问外部的服务器时，就跟SOCKS代理服务器连接。这个代理服务器控制客户端访问外网的资格，允许的话，就将客户端的请求发往外部的服务器。</p>
+<p>根据OSI模型，SOCKS是会话层的协议，位于表示层与传输层之间</p>
+<h4 id="与HTTP代理的对比"><a href="#与HTTP代理的对比" class="headerlink" title="与HTTP代理的对比"></a>与HTTP代理的对比</h4><p>SOCKS工作在比HTTP代理更低的层次：SOCKS使用握手协议来通知代理软件其客户端试图进行的连接SOCKS，然后尽可能透明地进行操作，而常规代理可能会解释和重写报头（例如，使用另一种底层协议，例如FTP；然而，HTTP代理只是将HTTP请求转发到所需的HTTP服务器）。虽然HTTP代理有不同的使用模式，CONNECT方法允许转发TCP连接；然而，SOCKS代理还可以转发UDP流量和反向代理，而HTTP代理不能。HTTP代理通常更了解HTTP协议，执行更高层次的过滤（虽然通常只用于GET和POST方法，而不用于CONNECT方法）</p>
+<p>Socks代理本身协议是明文传输，虽然相对HTTP有一些优势，但是明文也导致Socks代理很容易被封。所以可以考虑对Socks进行加密。所以出现了SSH Socks，对于MAC和Linux来说，不需要Client就可以进行访问。详细可以看：<a href="https://my.oschina.net/leejun2005/blog/94401" target="_blank" rel="noopener">SSH隧道技术简介：端口转发&amp;SOCKS代理</a></p>
+<p>但是有些地区好像会对一些VPS的SSH进行端口干扰。而且SSH一般是小流量数据，如果数据量特别大，也会被认为是翻墙，进入特别关怀列表。</p>
+<h3 id="Shadowsocks"><a href="#Shadowsocks" class="headerlink" title="Shadowsocks"></a>Shadowsocks</h3><p>认准官网：<a href="https://shadowsocks.org/en/index.html" target="_blank" rel="noopener">https://shadowsocks.org/en/index.html</a> </p>
+<p>Shadowsocks 目前不容易被封杀主要是因为：</p>
+<ol>
+<li>建立在socks5协议之上，socks5是运用很广泛的协议，所以没办法直接封杀socks5协议</li>
+<li>使用socks5协议建立连接，而没有使用VPN中的服务端身份验证和密钥协商过程。而是在服务端和客户端直接写死密钥和加密算法。所以防火墙很难找到明显的特征，因为这就是个普通的socks5协议。</li>
+<li>Shadowsock搭建也比较简单，所以很多人自己架设VPS搭建，个人使用流量也很小，没法通过流量监控方式封杀。</li>
+<li>自定义加密方式和密钥。因为加密主要主要是防止被检测，所以要选择安全系数高的加密方式。之前RC4会很容易被破解，而导致被封杀。所以现在推荐使用AES加密。而在客户端和服务端自定义密钥，泄露的风险相对较小。</li>
+</ol>
+<h3 id="Shadowsocks-rss"><a href="#Shadowsocks-rss" class="headerlink" title="Shadowsocks-rss"></a>Shadowsocks-rss</h3><p>前面认为Shadowssocks特征并不是很明细，但是了解协议工作原理后会发现，SS协议本身还有有漏洞，可以被利用来检测特征，具体讨论看：<a href="https://github.com/breakwa11/shadowsocks-rss/issues/38" target="_blank" rel="noopener">ShadowSocks协议的弱点分析和改进</a>。 我总结了下大致意思是：</p>
+<p>协议过于简单，并且格式固定，很容易被发起中间人攻击。先看看协议结构</p>
+<table>
+<thead>
+<tr>
+<th>Address Type</th>
+<th>Destination Address</th>
+<th>Destination Port</th>
+<th>Data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Variable</td>
+<td>2</td>
+<td>Variable</td>
+</tr>
+</tbody>
+</table>
+<p>Possible values of address type are 1 (IPv4), 4 (IPv6), 3 (hostname). For IPv4 address, it’s packed as a 32-bit (4-byte) big-endian integer. For IPv6 address, a compact representation (16-byte array) is used. For hostname, the first byte of destination address indicates the length, which limits the length of hostname to 255. The destination port is also a big-endian integer.</p>
+<p>The request is encrypted using the specified cipher with a random IV and the pre-shared key, it then becomes so-called payload.</p>
+<p>结构很简单，上面解释也很清楚。Client每一个请求都是这种格式，然后进行加密。Server端解密然后解析。看起来没什么问题，没有密钥你无法模拟中间人攻击，也没什么明显特征。但是看看Server处理逻辑会发现存在一些问题：</p>
+<p>Client数据在加密目前用的最多的是AES系列，加密后在协议数据前会有16位的IV。而Server段解析后，首先判断请求是否有效，而这个判断很简单：</p>
+<p>判断的依据就是Address Type的那个字节，看它是不是在那三个可能取值，如果不是，立即断开连接，如果是，就尝试解析后面的地址和端口进行连接。</p>
+<p>如果能发起中间人攻击，模拟Client请求，这个就是一个很明显的特征，如果把Address Type穷举各种情况，其中只有3种情况会连接成功。那么很可能就是一个Shadowsocks 服务器。</p>
+<p>所以只需要先劫持一条socks5的请求，因为AES加密后Address Type位置是固定的（第17位），篡改这一位，穷举256种情况（AES-256），然后发送给服务器。如果服务器在3种情况没有关闭连接，就说明这个很可能是Shadowsock服务。你这个IP很快就进入关怀列表了。</p>
+<p>这里的关键就是AES加密明文和密文对应关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">举个例子，现在有一个协议包，共7个字节</span><br><span class="line"></span><br><span class="line">0x01, 0x08, 0x08, 0x08, 0x08, 0x00, 0x50</span><br><span class="line">对照socks5协议，很明显这是一个IPv4包(第一个字节是0x01)，目的地是8.8.8.8的80端口</span><br><span class="line"></span><br><span class="line">被shadowsocks加密了以后（密码abc，加密方式aes-256-cfb），数据包就变成了这样</span><br><span class="line"></span><br><span class="line">0xbb, 0x59, 0x1c, 0x4a, 0xb9, 0x0a, 0x91, 0xdc, 0x07, 0xef, 0x72, 0x05, 0x90, 0x42, 0xca, 0x0d, 0x4c, 0x3b, 0x87, 0x8e, 0xca, 0xab, 0x32</span><br><span class="line">前16个字节，从0xbb到0x0d，都是iv，根据issue中提到的弱点和之前的总结，只需要修改0x4c，即真正密文中的第一个字节，就可要起到修改明文中的第一个字节的效果。</span><br><span class="line"></span><br><span class="line">那就把0x4c修改成0x4d吧，解密以后的结果是</span><br><span class="line"></span><br><span class="line">0x00, 0x08, 0x08, 0x08, 0x08, 0x00, 0x50</span><br><span class="line">的确只有第一个字节被改掉了，根据breakwa11的理论，不难推出其他情况，其中合法的是</span><br><span class="line"></span><br><span class="line">0x4e =&gt; 0x03 (Domain Name)</span><br><span class="line">0x49 =&gt; 0x04 (IPv6)</span><br></pre></td></tr></table></figure>
+<p>所以目前Shadowsocks应该是比较容易被检测出来。但是为什么没有被封掉，呵呵，就不知道了。所以这个项目目的就是在SS基础上进行一些混淆。因为原有实现确实有漏洞。 不过目前这个项目好像也停止更新了。并且木有开源。</p>
+<p>当然如果是自己用完全可以自己修改一个私有协议，这样就没法被检测到了。但是需要同时修改Server段，MAC Client，Windows Client， Android Client。 – -！</p>
+<h3 id="GoAgent和GoProxy"><a href="#GoAgent和GoProxy" class="headerlink" title="GoAgent和GoProxy"></a>GoAgent和GoProxy</h3><p>Google App Engine是一个开发、托管网络应用程序的平台，使用Google管理的数据中心</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dnu0lxyaj20ic0e2gm1.jpg" alt=""></p>
+<p>GoAgent的运行原理与其他代理工具基本相同，使用特定的中转服务器完成数据传输。它使用Google App Engine的服务器作为中传，将数据包后发送至Google服务器，再由Google服务器转发至目的服务器，接收数据时方法也类似。由于服务器端软件基本相同，该中转服务器既可以是用户自行架设的服务器，也可以是由其他人架设的开放服务器。</p>
+<p>GoAgent其实也是利用GAE作为代理，但是因为他是连接到google的服务器，因为在国内现在google大量被封，所以GoAgent也基本很难使用。目前github上源码也已经删除。</p>
+<p>但是GoAgent本身不依赖于GAE，而且使用Python编写，完全可以部署到VPS上进行代理。GoProxy是GoAgent的后续项目<a href="https://github.com/phuslu/goproxy" target="_blank" rel="noopener">https://github.com/phuslu/goproxy</a><br>还有一个XX-NET：<a href="https://github.com/XX-net/XX-Net" target="_blank" rel="noopener">https://github.com/XX-net/XX-Net</a> 有兴趣都可以去了解下。</p>
+<h3 id="Tor"><a href="#Tor" class="headerlink" title="Tor"></a>Tor</h3><p>Tor（The Onion Router，洋葱路由器）是实现匿名通信的自由软件。Tor是第二代洋葱路由的一种实现，用户通过Tor可以在因特网上进行匿名交流。</p>
+<blockquote>
+<p>The Tor network is a group of volunteer-operated servers that allows people to improve their privacy and security on the Internet. Tor’s users employ this network by connecting through a series of virtual tunnels rather than making a direct connection, thus allowing both organizations and individuals to share information over public networks without compromising their privacy. Along the same line, Tor is an effective censorship circumvention tool, allowing its users to reach otherwise blocked destinations or content. Tor can also be used as a building block for software developers to create new communication tools with built-in privacy features.</p>
+</blockquote>
+<p>简单说和其他翻墙方式不同，简单可以理解为Tor有一群代理服务器，然后要访问远端站点，是通过随机的代理路径来完成的，数据经历了多个代理服务器的传递。它主要作用是隐藏访问者信息，而翻墙只是顺带的功能。</p>
+<p>要访问远程站点，Client需要知道Tor nodes，这些nodes就是普通加入的用户，就好像P2P下载一样。获取nodes信息后，会随机选择一条路径访问。 因为这个原因，Tor的速度可能不会很好。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dnw3n5nej20e6092dhh.jpg" alt=""></p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4dnwbwgy0j20e6092q4t.jpg" alt=""></p>
+<p>而关于Tor的漏洞和检测看这里：<a href="http://network.pconline.com.cn/701/7017738_all.html" target="_blank" rel="noopener">Tor真的十分安全么 其原理以及漏洞详解</a></p>
+<p>目前有结合Tor+Shadowsocks前置代理使用的。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://plus.google.com/+GhostAssassin/posts/AXgoJutf5sz" target="_blank" rel="noopener">VPN翻墙，不安全的加密，不要相信墙内公司</a><br><a href="https://plus.google.com/+GhostAssassin/posts/c1zb7q6xKMA" target="_blank" rel="noopener">GFW的工作原理（1） ————GFW是如何识别并封锁翻墙工具的</a><br><a href="https://plus.google.com/+GhostAssassin/posts/TpdEExwyrVj" target="_blank" rel="noopener">关于翻墙和匿名与网络安全类科普文大集合</a><br><a href="https://gist.github.com/clowwindy/5947691" target="_blank" rel="noopener">为什么不应该用 SSL 翻墙</a><br><a href="https://hengyunabc.github.io/something-about-science-surf-the-internet/" target="_blank" rel="noopener">科学上网的一些原理</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GFW-VPN-翻墙/" rel="tag"># GFW, VPN, 翻墙</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/15/principles-of-security-design/" rel="prev" title="principles-of-security-design">
+                principles-of-security-design <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#DNS污染和劫持"><span class="nav-number">1.</span> <span class="nav-text">DNS污染和劫持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封锁IP"><span class="nav-number">2.</span> <span class="nav-text">封锁IP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封锁HTTP代理"><span class="nav-number">3.</span> <span class="nav-text">封锁HTTP代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封锁VPN"><span class="nav-number">4.</span> <span class="nav-text">封锁VPN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#暴力破解"><span class="nav-number">4.1.</span> <span class="nav-text">暴力破解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特征检测"><span class="nav-number">4.2.</span> <span class="nav-text">特征检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流量监控"><span class="nav-number">4.3.</span> <span class="nav-text">流量监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#深度包检测"><span class="nav-number">4.4.</span> <span class="nav-text">深度包检测</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Socks代理-SSH-Socks"><span class="nav-number">5.</span> <span class="nav-text">Socks代理/SSH Socks</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与HTTP代理的对比"><span class="nav-number">5.1.</span> <span class="nav-text">与HTTP代理的对比</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shadowsocks"><span class="nav-number">6.</span> <span class="nav-text">Shadowsocks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shadowsocks-rss"><span class="nav-number">7.</span> <span class="nav-text">Shadowsocks-rss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GoAgent和GoProxy"><span class="nav-number">8.</span> <span class="nav-text">GoAgent和GoProxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tor"><span class="nav-number">9.</span> <span class="nav-text">Tor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">10.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

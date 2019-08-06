@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="security," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 编码安全1. 输入验证   说明 检查项     概述 任何来自客户端的数据，如URL和参数、HTTP头部、 JS戓其他嵌入代码提交的信息都属于不可信数据   白名单 能使用白名单就使用白名单   黑名单 不可信数据中包含不良输入字符时,如空字节(%00)、换行符(%0d,%0a,\r, \n)、路径字符(…/ 或 …)等,建议直接阻止该数据,若需要接受该数据,则应做不同方式的净化处理">
+<meta name="keywords" content="security">
+<meta property="og:type" content="article">
+<meta property="og:title" content="web安全开发规范">
+<meta property="og:url" content="https://hu3.coding.me/2018/11/23/web-security-specification/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="1. 编码安全1. 输入验证   说明 检查项     概述 任何来自客户端的数据，如URL和参数、HTTP头部、 JS戓其他嵌入代码提交的信息都属于不可信数据   白名单 能使用白名单就使用白名单   黑名单 不可信数据中包含不良输入字符时,如空字节(%00)、换行符(%0d,%0a,\r, \n)、路径字符(…/ 或 …)等,建议直接阻止该数据,若需要接受该数据,则应做不同方式的净化处理">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g35g2ee1muj21qg0kcqf9.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g35dzgmkkpj20c709bmzo.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g35ecpvdeej20hd0av41s.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g35iqxdln9j20po5a3nph.jpg">
+<meta property="og:updated_time" content="2019-08-06T09:06:20.434Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="web安全开发规范">
+<meta name="twitter:description" content="1. 编码安全1. 输入验证   说明 检查项     概述 任何来自客户端的数据，如URL和参数、HTTP头部、 JS戓其他嵌入代码提交的信息都属于不可信数据   白名单 能使用白名单就使用白名单   黑名单 不可信数据中包含不良输入字符时,如空字节(%00)、换行符(%0d,%0a,\r, \n)、路径字符(…/ 或 …)等,建议直接阻止该数据,若需要接受该数据,则应做不同方式的净化处理">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g35g2ee1muj21qg0kcqf9.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2018/11/23/web-security-specification/"/>
+
+
+
+
+
+  <title>web安全开发规范 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2018/11/23/web-security-specification/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">web安全开发规范</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-23T13:05:45+08:00">
+                2018-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/23/web-security-specification/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/11/23/web-security-specification/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g35g2ee1muj21qg0kcqf9.jpg" alt=""></p>
+<h3 id="1-编码安全"><a href="#1-编码安全" class="headerlink" title="1. 编码安全"></a>1. 编码安全</h3><h4 id="1-输入验证"><a href="#1-输入验证" class="headerlink" title="1. 输入验证"></a>1. 输入验证</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>概述</td>
+<td>任何来自客户端的数据，如URL和参数、HTTP头部、 JS戓其他嵌入代码提交的信息都属于<strong>不可信数据</strong></td>
+</tr>
+<tr>
+<td>白名单</td>
+<td>能使用白名单就使用白名单</td>
+</tr>
+<tr>
+<td>黑名单</td>
+<td>不可信数据中包含不良输入字符时,如空字节(%00)、换行符(%0d,%0a,\r, \n)、路径字符(…/ 或 …)等,建议直接阻止该数据,若需要接受该数据,则应做不同方式的净化处理</td>
+</tr>
+<tr>
+<td>规范化</td>
+<td>不可信数据的净化和校验前置进行规范化,如将目录遍历(./或)等相对路径转化成绝对路径URL解码等</td>
+</tr>
+<tr>
+<td>净化</td>
+<td>不可信数据需实施各种净化处理时,应彻底删除恶意字符,只留下已知安全的字符,或者在处理前对它们进行适当编码或”转义”,如数据输出到页面时对其进行HTML编码可防止脚本攻击</td>
+</tr>
+<tr>
+<td>合法性校验</td>
+<td>不可信数据的合法性校验包括:数据类型如字符.数字、日期等特征;数据范围;数据长度等</td>
+</tr>
+<tr>
+<td>防范SQL注入</td>
+<td>不可信数据进入后端数据库操作前,使用参数化查询来处理,避免出现SQL注入</td>
+</tr>
+<tr>
+<td>文件校验</td>
+<td>不可信数据为解压缩的文件时,如果文件位于服务目录外或文件大小超过限制,应拒绝处理</td>
+</tr>
+<tr>
+<td>访问控制</td>
+<td>不可信数据通过上述校验后,还应确认所提交的内容是否与用户的身份匹配,避免越权访问</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-输出验证"><a href="#2-输出验证" class="headerlink" title="2. 输出验证"></a>2. 输出验证</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>概述</td>
+<td>考虑目标编译器的安全性，对所有输出字符进行正确编码与数据脱敏</td>
+</tr>
+<tr>
+<td>编码场景</td>
+<td>不可信数据输出到前后端页面时,根据输出场景对其进行相关编码,如HTML实体编码、UR编码</td>
+</tr>
+<tr>
+<td>净化场景</td>
+<td>针对操作系统命令、SQL和LDAP查询,净化所有输出的敏感信息,如银行卡、手机号、系统信息等</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-SQL注入"><a href="#3-SQL注入" class="headerlink" title="3. SQL注入"></a>3. SQL注入</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let querySQL = `</span><br><span class="line">    SELECT *</span><br><span class="line">    FROM user</span><br><span class="line">    WHERE username=<span class="string">'$&#123;username&#125;'</span></span><br><span class="line">    AND psw=<span class="string">'$&#123;password&#125;'</span></span><br><span class="line">`;</span><br><span class="line"><span class="comment">// 接下来就是执行 sql 语句...</span></span><br></pre></td></tr></table></figure>
+<p>恶意攻击者输入的用户名是 zoumiaojiang’ OR 1 = 1 –，密码随意输入</p>
+<table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>概述</td>
+<td>用户的输入参数进入SQL操作前,对输入进行合法性校验</td>
+</tr>
+<tr>
+<td>参数化处理</td>
+<td>用参数化查询(Java用 PreparedStatement,C#用 Sqlparameter)方法对敏感字符如”进行转义,然后再进行SQL操作</td>
+</tr>
+<tr>
+<td>最小化授权</td>
+<td>为每个应用配置最小化数据库操作权限,禁止用管理员权限进行数据库操作,限制操作连接数</td>
+</tr>
+<tr>
+<td>敏感数据加密</td>
+<td>敏感信息都采用了加密、哈希或混淆等方式进行保密存储,降低可能漏洞带来的数据泄露风险</td>
+</tr>
+<tr>
+<td>禁止错误回显</td>
+<td>禁止系统开启 Debug模式或异常时返回包含敏感信息的提示,建议使用自定义的错误信息模板异常信息应存放在日志中用于安全审计</td>
+</tr>
+</tbody>
+</table>
+<h4 id="4-XSS跨站"><a href="#4-XSS跨站" class="headerlink" title="4. XSS跨站"></a>4. XSS跨站</h4><blockquote>
+<p>Cross Site Script</p>
+<ul>
+<li>持久型XSS</li>
+<li>非持久型XSS</li>
+<li>基于字符集的 XSS<br><img src="https://ws1.sinaimg.cn/large/960345a2ly1g35dzgmkkpj20c709bmzo.jpg" alt=""></li>
+</ul>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输入校验</td>
+<td>对输入的数据进行过滤和转义,包含但不限于&lt;&gt;”9%0&amp;+\V”等危险特殊字符</td>
+</tr>
+<tr>
+<td></td>
+<td>页面渲染的所有内容或者渲染的数据都必须来自于服务端。前端渲染的时候对任何的字段都需要做 escape 转义编码。不一定来源于 URL，refferer，forms 等，还有可能来源于数据库中读出来的数据</td>
+</tr>
+<tr>
+<td>输出编码</td>
+<td>输入数据输出到不同场景中进行不同形式的编码,如输出到HTML标签中则进行HTML编码输出到URL中则进行URL编码,输出到JS中则行 Script编码,输出到 CSS中则进行CSS编码</td>
+</tr>
+</tbody>
+</table>
+<h4 id="4-XML注入"><a href="#4-XML注入" class="headerlink" title="4. XML注入"></a>4. XML注入</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输入校验</td>
+<td>在XML文档内部或外部引用数据时,过滤用户提交的参数,如&lt;、&gt;&amp;等特殊字符。禁止加载外部实体,禁止报错</td>
+</tr>
+<tr>
+<td>输出编码</td>
+<td>建议对XML元素属性或者内容进行输出转义</td>
+</tr>
+</tbody>
+</table>
+<h4 id="5-CSRF跨站请求伪造"><a href="#5-CSRF跨站请求伪造" class="headerlink" title="5. CSRF跨站请求伪造"></a>5. CSRF跨站请求伪造</h4><p>Cross-Site Request Forgery<br><img src="https://ws1.sinaimg.cn/large/960345a2ly1g35ecpvdeej20hd0av41s.jpg" alt=""></p>
+<p>盗用你的登录身份，可以理解为有一个小偷在你配钥匙的地方得到了你家的钥匙，然后拿着钥匙去你家想偷什么偷什么</p>
+<table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Token使用</td>
+<td>在非 GET 请求中增加 token。在重要操作的表单中增加会话生成的 Token字段一次一用,提交后在服务端校验该字段</td>
+</tr>
+<tr>
+<td>二次验证</td>
+<td>在关键表单提交时,要求用户进行二次身份验证如密码、短信验证码等</td>
+</tr>
+<tr>
+<td>Referer验证</td>
+<td>检验用户请求中 Referer:字段是否存在跨域提交的情况</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-逻辑安全"><a href="#2-逻辑安全" class="headerlink" title="2. 逻辑安全"></a>2. 逻辑安全</h3><h4 id="1-身份验证"><a href="#1-身份验证" class="headerlink" title="1. 身份验证"></a>1. 身份验证</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>概述</td>
+<td>所有对非公开的网页和资源的访问,必须在后端服务上执行标准的、通用的身份验证过程</td>
+</tr>
+<tr>
+<td>提交凭证</td>
+<td>用户凭据必须经过加密且以POST方式提交,建议用HTTPS协议来加密通道、认证服务端</td>
+</tr>
+<tr>
+<td>错误提示</td>
+<td>安全地处理失败的身份校验,如使用”用户名或密码错误”来提示失败,防止泄露过多信息</td>
+</tr>
+<tr>
+<td>异常处理</td>
+<td>登录入口应具有防暴力或撞库猜解(利用已泄露的密码字典进行批量登录尝试)的措施,超过1次验证失败自动启用图灵测试,超过多次验证失败自动启用账户锁定机制限制其访问</td>
+</tr>
+<tr>
+<td>二次验证</td>
+<td>在执行关键操作(如账户密码修改、资料更新、交易支付等)时,先启动图灵测试,再对用户身份进行二次验证。交易支付过程还应该形成完整的证据链,待交易数据应经过发起方数字签名</td>
+</tr>
+<tr>
+<td>多因子验证</td>
+<td>高度敏感或核心的业务系统,建议使用多因子身份验证机制,如短信验证码、软硬件 Token等。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-短信验证"><a href="#2-短信验证" class="headerlink" title="2. 短信验证"></a>2. 短信验证</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>验证码生成</td>
+<td>复杂度至少6位数字或字母,一次一用,建议有效期不超过180秒</td>
+</tr>
+<tr>
+<td>验证码限制</td>
+<td>前后端设置用户获取频率为60秒一次,建议每个用户每天获取的短信最多10条</td>
+</tr>
+<tr>
+<td>安全提示</td>
+<td>增加安全提示:至少含本次操作的功能、验证码发送编号、是否是个人自己操作的风险等信息</td>
+</tr>
+<tr>
+<td>凭证校验</td>
+<td>禁止在响应中返回验证码,服务器端同时校验密码、短信验证码等凭证信息,防止出现多阶段认证绕过的漏洞</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-图灵测试"><a href="#3-图灵测试" class="headerlink" title="3. 图灵测试"></a>3. 图灵测试</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>验证码生成</td>
+<td>复杂度至少4位数字或字母,或者采用拼图等验证方式,一次一用,建议有效期不超过180秒</td>
+</tr>
+<tr>
+<td>验证码使用</td>
+<td>建议从用户体验和安全角度出发,可设计为当用户输错1次密码后自动弹出验证码输入框验证</td>
+</tr>
+<tr>
+<td>验证码校验</td>
+<td>禁止在响应中返回验证码,验证码校验应在服务端进行</td>
+</tr>
+</tbody>
+</table>
+<h4 id="4-密码管理"><a href="#4-密码管理" class="headerlink" title="4. 密码管理"></a>4. 密码管理</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>密码设置</td>
+<td>密码设置时,应该满足8位及以上长度,含大小写字母、数字及特殊字符等的要求。用户密码设置必须经过后端验,不允许设置不满定复杂度要求的敏感密码</td>
+</tr>
+<tr>
+<td>密码存储</td>
+<td>用户密码存储时,应采用哈希算法(如SHA1)计算用户密码和唯一随机盐值(Salt)的摘要值保存其摘要和Sat值,建议分开存储这两个值</td>
+</tr>
+<tr>
+<td>密码修改</td>
+<td>用户修改密码时,修改操作需要通过手机号或者邮箱地均进行一次身份验证。密码变更时,应短信或者邮件通知如用户是否是本人操作,告知其安全风险</td>
+</tr>
+<tr>
+<td>密码找回</td>
+<td>用户密码找回时,后端需要对注册手机号或邮箱进行二次验证,验证码和验证链接应发送至预先注册的地址,并设置有效期以防止暴力破解。密保问题,应当支持尽可能随机的问题提问</td>
+</tr>
+<tr>
+<td>密码使用</td>
+<td>应用开发中禁止设置万能密码、硬编码明文的密 码、使用数据库管理员账户操作、不同用户公用账户操作或者将密码输出到日志文件或者控制台</td>
+</tr>
+</tbody>
+</table>
+<h4 id="5-会话安全"><a href="#5-会话安全" class="headerlink" title="5. 会话安全"></a>5. 会话安全</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>防止会话劫持</td>
+<td>在应用程序进行身份验证时,建议持续使用HTTPS连接,认证站点使用HTTPS协议。如果连接是从防止会话劫持HTTP跳转到HTTPS,需要重新生成会话标识符。禁止在HTTP和HTTPS之间来回转换,这可能会导致会话被劫持</td>
+</tr>
+<tr>
+<td>会话标识符安全</td>
+<td>设置会话 Cookie时,正确设置” Httponly’属性(禁止脚本等读取 Cookie信息)” Secure’属性(禁止Cookie通过HTTP连接传递到服务器端进行验证);” Domain”属性(跨域访问时可指定的授权访问域名),”Path”属性(授权可访问的目录路径)</td>
+</tr>
+<tr>
+<td>防止CSRF攻击</td>
+<td>服务器端执行了完整的会话管理机制,保证每个会话请求都执行了合法的身份验证和权限控制</td>
+</tr>
+<tr>
+<td>会话有效期</td>
+<td>会话应在平衡风险和功能需求的基础上设置有效期。定期生成一个新的会话标识符并使上一个会话标识符失效,这可以缓解那些因原会活标识符被盗而产生的会话劫持风险</td>
+</tr>
+<tr>
+<td>会话注销</td>
+<td>注销功能应用于所有受身份验证保护的网页,用户会话注销登出后应立即清理会话相关信息,终止相关的会话连接</td>
+</tr>
+</tbody>
+</table>
+<h4 id="6-访问控制"><a href="#6-访问控制" class="headerlink" title="6. 访问控制"></a>6. 访问控制</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>控制管理</td>
+<td>限制只有授权的用户才能访问受保护的URL、文件、服务、应用数据、配置等</td>
+</tr>
+<tr>
+<td>接口管理</td>
+<td>限制只有授权的外部应用程序或接口才能访问受保护的本地程序或资源等</td>
+</tr>
+<tr>
+<td>权限变更</td>
+<td>当权限发生变更时,应记录日志,并通知用户是否是本人操作,告知存在的安全风险</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-文件上传安全"><a href="#7-文件上传安全" class="headerlink" title="7. 文件上传安全"></a>7. 文件上传安全</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>身份校验</td>
+<td>进行文件上传时,在服务端对用户的身份进行合法性校验</td>
+</tr>
+<tr>
+<td>合法性校验</td>
+<td>进行文件上传时,在服务端对文件属性进行合法性校验,白名单形式检查文档类型(如文件的后缀名、文件头信息校验等)和大小(图片校验长、宽和像素等)</td>
+</tr>
+<tr>
+<td>存储环境设置</td>
+<td>进行文件保存时,保存在与应用环境独立的文档服务器中(配置独立域名),保存的目录权限应设置为不可执行</td>
+</tr>
+<tr>
+<td>隐藏文件路径</td>
+<td>进行文件保存时,成功上传的文件需要进行随机化重命名,禁止给客户端返回保存的路径信息</td>
+</tr>
+<tr>
+<td>文件访问设置</td>
+<td>进行文件下载时,应以二进制形式下载,建议不提供直接访问(防止木马文件直接执行)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="8-接口安全"><a href="#8-接口安全" class="headerlink" title="8. 接口安全"></a>8. 接口安全</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>网络限制</td>
+<td>调用方网络限制,比如通过防火墙、主机host和Nginx deny等技术措施进行校验</td>
+</tr>
+<tr>
+<td>身份认证</td>
+<td>调用方身份认证,比如key、 secret、证书等技术措施进行校验,禁止共享凭证</td>
+</tr>
+<tr>
+<td>完整性校验</td>
+<td>调用的数据安全,对全部参数使用SHA1等摘要运算进行数字签名,识别数据被篡改</td>
+</tr>
+<tr>
+<td>合法性校验</td>
+<td>调用的参数检查,如参数是否完整,时间戳和Token是否有效,调用权限是否合法等</td>
+</tr>
+<tr>
+<td>可用性要求</td>
+<td>调用的服务要求,调用满足等幂性即保持数据一致性,对调用频率和有效期进行限制</td>
+</tr>
+<tr>
+<td>异常处理</td>
+<td>调用的异常处理,调用行为实时检测,发现异常及时阻拦</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-数据安全"><a href="#4-数据安全" class="headerlink" title="4. 数据安全"></a>4. 数据安全</h3><h4 id="1-敏感信息"><a href="#1-敏感信息" class="headerlink" title="1. 敏感信息"></a>1. 敏感信息</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>敏感信息传输</td>
+<td>敏感信息传输时,禁止在GET请求参数中包含敏感信息,如用户名、密码、卡号等。建议为所有敏感信息采用TSL加密传输</td>
+</tr>
+<tr>
+<td>客户端保存</td>
+<td>客户端保存敏感信息时,禁止其表单中的自动填充功能、以明文形式保存敏感信息</td>
+</tr>
+<tr>
+<td>服务端保存</td>
+<td>服务端保存敏感信息时,禁止在程序中硬编码敏感信息,明文存储用户密码、身份证号、银行卡号、持卡人姓名等敏感信息,临时写入内存或文件中的敏感数据,应及时清除和释放</td>
+</tr>
+<tr>
+<td>敏感信息维护</td>
+<td>敏感信息维护时,禁止将源码或SQL库上传到开源平台或社区,如 Github、开源中国等</td>
+</tr>
+<tr>
+<td>敏感信息展示</td>
+<td>敏感信息展示时,如果是展示在web页面上,应在后端服务器上进行敏感字段的脱敏处理</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-日志规范"><a href="#2-日志规范" class="headerlink" title="2. 日志规范"></a>2. 日志规范</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>记录原则</td>
+<td>确保日志记录包含了重要的应用事件,但禁止保存敏感信息,如会话标识,账户密码、证件等</td>
+</tr>
+<tr>
+<td>事件类型</td>
+<td>记录所有的身份验证、访问操作、数据变更、关键操作、管理功能、登出记录等事件</td>
+</tr>
+<tr>
+<td>事件要求</td>
+<td>要记录时间、IP地址和用户账户(如果已通过验证)</td>
+</tr>
+<tr>
+<td>日志保护</td>
+<td>日志受到严格保护,避免未授权的读取或写入访问</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-异常处理"><a href="#3-异常处理" class="headerlink" title="3. 异常处理"></a>3. 异常处理</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容错机制</td>
+<td>在应用实现时应包含完整的功能异常捕获机制如try-catch块,典型位置:文件、网络、数据库、命令操作等。一旦出现异常,应该在日志中完整记录异常的发生时间、代码位置、报错详情、触发错误的可能用户等,重要系统的严重异常应该有报警的机制,及时通知系统运营者及时排查并修复</td>
+</tr>
+<tr>
+<td>自定义错误信息</td>
+<td>禁止在异常中系统、应用服务器的指纹信息，禁止返回任何系统生成的消息或其他调试信息</td>
+</tr>
+<tr>
+<td>隐藏用户信息</td>
+<td>禁止在系统异常时泄露用户的隐私信息,典型的有:身份信息、个人住址、电话号码、银行账号、通讯记录、定位信息等</td>
+</tr>
+<tr>
+<td>隐藏系统信息</td>
+<td>禁止在系统异常时泄露系统的敏感信息(用户账户和密码、系统开发密钥、系统源代码、应用架构、系统账户和密码、网络拓扑等)</td>
+</tr>
+<tr>
+<td>异常状态恢复</td>
+<td>方法发生异常时要恢复到之前的对象状态,如业务操作失败时的回滚操作等,对象修改失败时要恢复对象原来的状态,维持对象状态的一致性</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-主机安全"><a href="#5-主机安全" class="headerlink" title="5. 主机安全"></a>5. 主机安全</h3><h4 id="1-I-O操作"><a href="#1-I-O操作" class="headerlink" title="1. I/O操作"></a>1. I/O操作</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>共享环境文件安全</td>
+<td>在多用户系统中创建文件时应指定合适的访问许可,以防止未授权的文件访问,共享目录中文件的读/写/可执行权限应该使用白名单机制,实现最小化授权</td>
+</tr>
+<tr>
+<td>数据访问检查</td>
+<td>防止封装好的数据对象被未授权使用,设置合理的数据缓存区大小以防止耗尽系统资源</td>
+</tr>
+<tr>
+<td>应用文件处理</td>
+<td>应用程序运行过程中创建的文件,需设置访问权限(读、写、可执行),临时文件使用完毕及时删除</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-运行环境"><a href="#2-运行环境" class="headerlink" title="2. 运行环境"></a>2. 运行环境</h4><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>检查项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最小化开放端口</td>
+<td>关闭操作系统不需要的端口和服务</td>
+</tr>
+<tr>
+<td>后台服务管理</td>
+<td>后台(如数据缓存和存储、监控、业务管理等)限内部网络访问,开放在公网的必须设置身份验证和访问控制</td>
+</tr>
+<tr>
+<td>环境配置</td>
+<td>使用安全稳定的操作系统版本、Web股务器软件各种应用框架、数据库组件等</td>
+</tr>
+<tr>
+<td>敏感代码处理</td>
+<td>将客户端敏感代码(如软件包签名、用户名密码校验等)都放在o等软件包中防止篡改</td>
+</tr>
+<tr>
+<td>关闭调试通道</td>
+<td>生产代码不包含任何调试代码或接口</td>
+</tr>
+<tr>
+<td>通信安全</td>
+<td>配置网站的HTTPS证书或其它加密传输措施</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-DDoS-攻击"><a href="#6-DDoS-攻击" class="headerlink" title="6. DDoS 攻击"></a>6. DDoS 攻击</h3><p>Distributed Denial of Service</p>
+<blockquote>
+<p>我开了一家店。平时门庭若市，生意特别红火，而对面二狗家的火锅店却无人问津。二狗为了对付我，想了一个办法，叫了五十个人来我的火锅店坐着却不点菜，让别的客人无法吃饭。</p>
+</blockquote>
+<h4 id="网络层-DDoS"><a href="#网络层-DDoS" class="headerlink" title="网络层 DDoS"></a>网络层 DDoS</h4><p><strong>SYN Flood 攻击</strong></p>
+<p>TCP 三次握手、慢型 DDoS 攻击</p>
+<h4 id="网络层-DDoS-防御"><a href="#网络层-DDoS-防御" class="headerlink" title="网络层 DDoS 防御"></a>网络层 DDoS 防御</h4><p>流量清洗、负载均衡、限制SYN 半连接数目、缩短 SYN 半连接的 Timeout 时间、限制单 IP 请求频率、禁止 ICMP 包、加钱堆机器、CDN分流隐藏IP</p>
+<h4 id="应用层-DDoS"><a href="#应用层-DDoS" class="headerlink" title="应用层 DDoS"></a>应用层 DDoS</h4><p>目的就是耗尽你的带宽</p>
+<p>恶意刷消耗资源比较多的页面</p>
+<p><strong>HTTP 慢速连接攻击</strong></p>
+<p>设置一个较大的 Conetnt-Length，每次只发送很少的字节，让服务器一直以为 HTTP 头部没有传输完成，这样连接一多就很快会出现连接耗尽。</p>
+<h4 id="应用层-DDoS-防御"><a href="#应用层-DDoS-防御" class="headerlink" title="应用层 DDoS 防御"></a>应用层 DDoS 防御</h4><ul>
+<li>判断 User-Agent 字段（不可靠，因为可以随意构造）</li>
+<li>针对 IP + cookie，限制访问频率（由于 cookie 可以更改，IP 可以使用代理，或者肉鸡，也不可靠)</li>
+<li>关闭服务器最大连接数等，合理配置中间件，缓解 DDoS 攻击。</li>
+<li>请求中添加验证码，比如请求中有数据库操作的时候。</li>
+<li>编写代码时，尽量实现优化，并合理使用缓存技术，减少数据库的读取操作。</li>
+<li>加钱堆机器。。</li>
+</ul>
+<p>应用层 DDoS 防御的核心就是区分人与机器（爬虫）</p>
+<p><strong>利用 XSS，借刀杀人</strong></p>
+<blockquote>
+<p>举个例子，如果 12306 页面有一个 XSS 持久型漏洞被恶意攻击者发现，只需在春节抢票期间在这个漏洞中执行脚本使得往某一个小站点随便发点什么请求，然后随着用户访问的增多，感染用户增多，被攻击的站点自然就会迅速瘫痪了。</p>
+</blockquote>
+<h3 id="7-流量劫持"><a href="#7-流量劫持" class="headerlink" title="7. 流量劫持"></a>7. 流量劫持</h3><p>当用户访问 baidu.com 的时候，给你展示的并不是或者不完全是 baidu.com 提供的 “内容”</p>
+<h4 id="DNS-劫持"><a href="#DNS-劫持" class="headerlink" title="DNS 劫持"></a>DNS 劫持</h4><p>电脑中毒，被恶意篡改了路由器的 DNS 配置</p>
+<h4 id="HTTP-劫持"><a href="#HTTP-劫持" class="headerlink" title="HTTP 劫持"></a>HTTP 劫持</h4><blockquote>
+<p>不法运营商和黑产勾结能够截获 HTTP 请求返回内容，并且能够篡改内容，然后再返回给用户，从而实现劫持页面，轻则插入小广告，重则直接篡改成钓鱼网站页面骗用户隐私。</p>
+</blockquote>
+<p>全站改造成 HTTPS</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g35iqxdln9j20po5a3nph.jpg" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/security/" rel="tag"># security</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/06/dubbo-trouble/" rel="next" title="Dubbo的问题与坑">
+                <i class="fa fa-chevron-left"></i> Dubbo的问题与坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/11/timeout-design/" rel="prev" title="微服务调用超时处理">
+                微服务调用超时处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-编码安全"><span class="nav-number">1.</span> <span class="nav-text">1. 编码安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-输入验证"><span class="nav-number">1.1.</span> <span class="nav-text">1. 输入验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-输出验证"><span class="nav-number">1.2.</span> <span class="nav-text">2. 输出验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-SQL注入"><span class="nav-number">1.3.</span> <span class="nav-text">3. SQL注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-XSS跨站"><span class="nav-number">1.4.</span> <span class="nav-text">4. XSS跨站</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-XML注入"><span class="nav-number">1.5.</span> <span class="nav-text">4. XML注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-CSRF跨站请求伪造"><span class="nav-number">1.6.</span> <span class="nav-text">5. CSRF跨站请求伪造</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-逻辑安全"><span class="nav-number">2.</span> <span class="nav-text">2. 逻辑安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-身份验证"><span class="nav-number">2.1.</span> <span class="nav-text">1. 身份验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-短信验证"><span class="nav-number">2.2.</span> <span class="nav-text">2. 短信验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-图灵测试"><span class="nav-number">2.3.</span> <span class="nav-text">3. 图灵测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-密码管理"><span class="nav-number">2.4.</span> <span class="nav-text">4. 密码管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-会话安全"><span class="nav-number">2.5.</span> <span class="nav-text">5. 会话安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-访问控制"><span class="nav-number">2.6.</span> <span class="nav-text">6. 访问控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-文件上传安全"><span class="nav-number">2.7.</span> <span class="nav-text">7. 文件上传安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-接口安全"><span class="nav-number">2.8.</span> <span class="nav-text">8. 接口安全</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-数据安全"><span class="nav-number">3.</span> <span class="nav-text">4. 数据安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-敏感信息"><span class="nav-number">3.1.</span> <span class="nav-text">1. 敏感信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-日志规范"><span class="nav-number">3.2.</span> <span class="nav-text">2. 日志规范</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-异常处理"><span class="nav-number">3.3.</span> <span class="nav-text">3. 异常处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-主机安全"><span class="nav-number">4.</span> <span class="nav-text">5. 主机安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-I-O操作"><span class="nav-number">4.1.</span> <span class="nav-text">1. I/O操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-运行环境"><span class="nav-number">4.2.</span> <span class="nav-text">2. 运行环境</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-DDoS-攻击"><span class="nav-number">5.</span> <span class="nav-text">6. DDoS 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络层-DDoS"><span class="nav-number">5.1.</span> <span class="nav-text">网络层 DDoS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络层-DDoS-防御"><span class="nav-number">5.2.</span> <span class="nav-text">网络层 DDoS 防御</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用层-DDoS"><span class="nav-number">5.3.</span> <span class="nav-text">应用层 DDoS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用层-DDoS-防御"><span class="nav-number">5.4.</span> <span class="nav-text">应用层 DDoS 防御</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-流量劫持"><span class="nav-number">6.</span> <span class="nav-text">7. 流量劫持</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DNS-劫持"><span class="nav-number">6.1.</span> <span class="nav-text">DNS 劫持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-劫持"><span class="nav-number">6.2.</span> <span class="nav-text">HTTP 劫持</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据同步, design," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 1. 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份">
+<meta name="keywords" content="数据同步, design">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据同步机制设计">
+<meta property="og:url" content="https://hu3.coding.me/2019/03/17/data-sync-design/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 1. 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1h7rzslj20j60a50uc.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1oo62mej20q80ggacr.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1q6at9uj20nz0fo40w.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1t0nos4j20di082abz.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2e77o2cj20cx063757.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2f0759kj211b0iwwjm.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2hqtl9uj20lf03vmxh.jpg">
+<meta property="og:updated_time" content="2019-08-06T04:38:10.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据同步机制设计">
+<meta name="twitter:description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 1. 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2019/03/17/data-sync-design/"/>
+
+
+
+
+
+  <title>数据同步机制设计 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2019/03/17/data-sync-design/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据同步机制设计</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-17T11:23:54+08:00">
+                2019-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/17/data-sync-design/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/03/17/data-sync-design/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。</p>
+<h3 id="1-什么是单元化"><a href="#1-什么是单元化" class="headerlink" title="1. 什么是单元化"></a>1. 什么是单元化</h3><p>可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。</p>
+<p>考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份底层存储中，如下图所示：</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg" alt=""></p>
+<p>存在以下几个问题：</p>
+<ol>
+<li><p><strong>不同地区的用户体验不同</strong>。一个IDC必然只能部署在一个地区，例如部署在北京，那么北京的用户访问将会得到快速响应；但是对于上海的用户，访问延迟一般就会大一点，上海到北京的一个RTT可能有20ms左右。</p>
+</li>
+<li><p><strong>容灾问题</strong>。这里容灾不是单台机器故障，而是指机房断电，自然灾害，或者光纤被挖断等重大灾害。一旦出现这种问题，将无法正常为用户提供访问，甚至出现数据丢失的情况。</p>
+</li>
+</ol>
+<p>为了解决这些问题，我们可以将服务部署到多个不同的IDC中，不同IDC之间的数据互相进行同步。如下图：</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1h7rzslj20j60a50uc.jpg" alt=""></p>
+<p>当一个机房挂了之后，我们可以将这个机房用户的流量调度到另外一个正常的机房，由于不同机房之间的数据是实时同步的，用户流量调度过去后，也可以正常访问数据 (故障发生那一刻的少部分数据可能会丢失)。</p>
+<p><strong>机房容灾</strong> —— <strong>两地三中心</strong></p>
+<p>上面的案例中，我们使用了2个IDC，但是2个IDC并不能具备机房容灾能力。至少需要3个IDC，例如，一些基于多数派协议的一致性组件，如zookeeper，redis、etcd、consul等，需要得到大部分节点的同意。例如我们部署了3个节点，在只有2个机房的情况下， 必然是一个机房部署2个节点，一个机房部署一个节点。当部署了2个节点的机房挂了之后，只剩下一个节点，无法形成多数派。在3机房的情况下，每个机房部署一个节点，任意一个机房挂了，还剩2个节点，还是可以形成多数派。</p>
+<p><strong>城市级容灾</strong> —— <strong>三地五中心</strong></p>
+<p>在发生重大自然灾害的情况下，可能整个城市的机房都无法访问。一些组件，例如蚂蚁的ocean base，为了达到城市级容灾的能力，使用的是”三地五中心”的方案。这种情况下，3个城市分别拥有2、2、1个机房。当整个城市发生灾难时，其他两个城市依然至少可以保证有3个机房依然是存活的，同样可以形成多数派。</p>
+<p>实现单元化，技术层面我们要解决的事情很多，例如：<strong>流量调度</strong>，即如何让用户就近访问附近的IDC；<strong>数据互通</strong>，如何实现不同机房之间数据的相互同步。</p>
+<h3 id="如何进行数据同步"><a href="#如何进行数据同步" class="headerlink" title="如何进行数据同步"></a>如何进行数据同步</h3><p>我们就可以考虑自己编写一个组件，其作用类似与mysql slave，也是去主库上拉取binlog，只不过binlog不是保存到本地，而是将binlog转换成sql插入到目标mysql集群中，实现数据的同步。</p>
+<ul>
+<li><p>阿里巴巴开源的canal</p>
+</li>
+<li><p>美团开源的puma</p>
+</li>
+<li><p>linkedin开源的databus</p>
+</li>
+</ul>
+<p>这些组件都要完成最基本的2件事：从源库拉取binlog并进行解析，我们把这部分功能称之为<strong>binlog syncer</strong>；将获取到的binlog转换成SQL插入目标库，这个功能称之为<strong>sql writer</strong>。</p>
+<p>为什么划分成两块独立的功能？因为binlog订阅解析的实际应用场景并不仅仅是数据同步</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1oo62mej20q80ggacr.jpg" alt=""></p>
+<p>因此，通常我们把binlog syncer单独作为一个模块，其只负责解析从数据库中拉取并解析binlog，并在内存中缓存(或持久化存储)。另外，binlog syncer另外提一个sdk，业务方通过这个sdk从binlog syncer中获取解析后的binlog信息，然后完成自己的特定业务逻辑处理。</p>
+<p>显然，在数据同步的场景下，我们可以基于这个sdk，编写一个组件专门用于将binlog转换为sql，插入目标库，实现数据同步，如下图所示：</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1q6at9uj20nz0fo40w.jpg" alt=""></p>
+<p>北京用户的数据不断写入离自己最近的机房的DB，通过binlog syncer订阅这个库binlog，然后下游的binlog writer将binlog转换成SQL，插入到目标库。上海用户类似，只不过方向相反，不再赘述。通过这种方式，我们可以实时的将两个库的数据同步到对端。当然事情并非这么简单，我们有一些重要的事情需要考虑。</p>
+<h4 id="如何获取全量-增量的历史数据？"><a href="#如何获取全量-增量的历史数据？" class="headerlink" title="如何获取全量+增量的历史数据？"></a>如何获取全量+增量的历史数据？</h4><p>通常，mysql不会保存所有的历史binlog。</p>
+<p>expire_logs_days = 0，默认不清空</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1t0nos4j20di082abz.jpg" alt=""></p>
+<p>通常，如果binlog如果从来没被清理过，那么binlog文件名字后缀通常是000001，如果不是这个值，则说明可能已经被清理过。当然，这也不是绝对，例如执行”reset master”命令，可以将所有的binlog清空，然后从000001重新开始计数。</p>
+<p>反正! 我们知道了，binlog可能不会一直保留，所以直接同步binlog，可能只能获取到部分数据。因此，通常的策略是，<strong>由DBA先dump一份源库的完整数据快照，增量部分，再通过binlog订阅解析进行同步</strong>。</p>
+<h4 id="如何解决重复插入？"><a href="#如何解决重复插入？" class="headerlink" title="如何解决重复插入？"></a>如何解决重复插入？</h4><p>考虑以下情况下，源库中的一条记录没有唯一索引。对于这个记录的binlog，通过sql writer将binlog转换成sql插入目标库时，抛出了异常，此时我们并不知道知道是否插入成功了，则需要进行重试。如果之前已经是插入目标库成功，只是目标库响应时网络超时(socket timeout)了，导致的异常，这个时候重试插入，就会存在多条记录，造成数据不一致。</p>
+<p>因此，通常，在数据同步时，通常会<strong>限制记录必须有要有主键或者唯一索引</strong>。</p>
+<h4 id="如何解决唯一索引冲突？"><a href="#如何解决唯一索引冲突？" class="headerlink" title="如何解决唯一索引冲突？"></a>如何解决唯一索引冲突？</h4><p>由于两边的库都存在数据插入，如果都使用了同一个唯一索引，那么在同步到对端时，将会产生唯一索引冲突。对于这种情况，通常建议是使用一个全局唯一的分布式ID生成器来生成唯一索引，保证不会产生冲突。</p>
+<p>另外，如果真的产生冲突了，同步组件应该将冲突的记录保存下来，以便之后的问题排查。</p>
+<h4 id="对于DDL语句如何处理？"><a href="#对于DDL语句如何处理？" class="headerlink" title="对于DDL语句如何处理？"></a>对于DDL语句如何处理？</h4><p>如果数据库表中已经有大量数据，例如千万级别、或者上亿，这个时候对于这个表的DDL变更，将会变得非常慢，可能会需要几分钟甚至更长时间，而DDL操作是会锁表的，这必然会对业务造成极大的影响。</p>
+<p>因此，同步组件<strong>通常会对DDL语句进行过滤，不进行同步</strong>。DBA在不同的数据库集群上，通过一些在线DDL工具(如gh-ost)，进行表结构变更。</p>
+<h4 id="如何解决数据回环问题？"><a href="#如何解决数据回环问题？" class="headerlink" title="如何解决数据回环问题？"></a>如何解决数据回环问题？</h4><h5 id="INSERT操作"><a href="#INSERT操作" class="headerlink" title="INSERT操作"></a>INSERT操作</h5><p>假设在A库插入数据，A库产生binlog，之后同步到B库，B库同样也会产生binlog。由于是双向同步，这条记录，又会被重新同步回A库。由于A库应存在这条记录了，产生冲突。</p>
+<h5 id="UPDATE操作"><a href="#UPDATE操作" class="headerlink" title="UPDATE操作"></a>UPDATE操作</h5><p>先考虑针对A库某条记录R只有一次更新的情况，将R更新成R1，之后R1这个binlog会被同步到B库，B库又将R1同步会A库。对于这种情况下，A库将不会产生binlog。因为A库记录当前是R1，B库同步回来的还是R1，意味着值没有变。</p>
+<p>在一个更新操作并没有改变某条记录值的情况下，mysql是不会产生binlog，相当于同步终止。下图演示了当更新的值没有变时，mysql实际上不会做任何操作：</p>
+<p>然而，这并不意味UPDATE 操作没有问题，事实上，其比INSERT更加危险。</p>
+<p>考虑A库的记录R被连续更新了2次，第一次更新成R1，第二次被更新成R2；这两条记录变更信息都被同步到B库，B也产生了R1和R2。由于B的数据也在往A同步，B的R1会被先同步到A，而A现在的值是R2，由于值不一样，将会被更新成R1，并产生新的binlog；此时B的R2再同步会A，发现A的值是R1，又更新成R2，也产生binlog。由于B同步回A的操作，让A又产生了新的binlog，A又要同步到B，如此反复，陷入无限循环中。</p>
+<h5 id="DELETE操作"><a href="#DELETE操作" class="headerlink" title="DELETE操作"></a>DELETE操作</h5><p>同样存在先后顺序问题。例如先插入一条记录，再删除。B在A删除后，又将插入的数据同步回A，接着再将A的删除操作也同步回A，每次都会产生binlog，陷入无限回环。</p>
+<h3 id="数据同步架构设计"><a href="#数据同步架构设计" class="headerlink" title="数据同步架构设计"></a>数据同步架构设计</h3><p>前面的架构中，只涉及到2个DB的数据同步，如果有多个DB数据需要相互同步的情况下，架构将会变得非常复杂。例如：</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5d2e77o2cj20cx063757.jpg" alt=""></p>
+<p>这个图演示的是四个DB之间数据需要相互同步，这种拓扑结构非常复杂。为了解决这种问题，我们可以将数据写入到一个数据中转站，例如MQ中进行保存，如下：</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5d2f0759kj211b0iwwjm.jpg" alt=""></p>
+<p>我们在不同的机房各部署一套MQ集群，这个机房的binlog syncer将需要同步的DB binlog数据写入MQ对应的Topic中。对端机房如果需要同步这个数据，只需要通过binlog writer订阅这个topic，消费topic中的binlog数据，插入到目标库中即可。一些MQ支持consumer group的概念，不同的consumer group的消费位置offset相互隔离，从而达到一份数据，同时供多个消费者进行订阅的能力。</p>
+<p>当然，一些binlog订阅解析组件，可能实现了类似于MQ的功能，此时，则不需要独立部署MQ。    </p>
+<h3 id="数据同步回环问题解决方案"><a href="#数据同步回环问题解决方案" class="headerlink" title="数据同步回环问题解决方案"></a>数据同步回环问题解决方案</h3><h4 id="1-往目标库插入不生成binlog"><a href="#1-往目标库插入不生成binlog" class="headerlink" title="1. 往目标库插入不生成binlog"></a>1. 往目标库插入不生成binlog</h4><p>在mysql中，我们可以设置session变量，来控制当前会话上的更新操作，不产生binlog。这样当往目标库插入数据时，由于不产生binlog，也就不会被同步会源库了。为了演示这个效果，笔者清空了本机上的所有binlog(执行reset master)</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5d2hqtl9uj20lf03vmxh.jpg" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据同步-design/" rel="tag"># 数据同步, design</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/12/dubbo-best-practice/" rel="next" title="Dubbo最佳实践">
+                <i class="fa fa-chevron-left"></i> Dubbo最佳实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/18/redis-specification/" rel="prev" title="Redis开发规范">
+                Redis开发规范 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是单元化"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是单元化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何进行数据同步"><span class="nav-number">2.</span> <span class="nav-text">如何进行数据同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何获取全量-增量的历史数据？"><span class="nav-number">2.1.</span> <span class="nav-text">如何获取全量+增量的历史数据？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决重复插入？"><span class="nav-number">2.2.</span> <span class="nav-text">如何解决重复插入？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决唯一索引冲突？"><span class="nav-number">2.3.</span> <span class="nav-text">如何解决唯一索引冲突？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于DDL语句如何处理？"><span class="nav-number">2.4.</span> <span class="nav-text">对于DDL语句如何处理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决数据回环问题？"><span class="nav-number">2.5.</span> <span class="nav-text">如何解决数据回环问题？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#INSERT操作"><span class="nav-number">2.5.1.</span> <span class="nav-text">INSERT操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UPDATE操作"><span class="nav-number">2.5.2.</span> <span class="nav-text">UPDATE操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DELETE操作"><span class="nav-number">2.5.3.</span> <span class="nav-text">DELETE操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据同步架构设计"><span class="nav-number">3.</span> <span class="nav-text">数据同步架构设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据同步回环问题解决方案"><span class="nav-number">4.</span> <span class="nav-text">数据同步回环问题解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-往目标库插入不生成binlog"><span class="nav-number">4.1.</span> <span class="nav-text">1. 往目标库插入不生成binlog</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

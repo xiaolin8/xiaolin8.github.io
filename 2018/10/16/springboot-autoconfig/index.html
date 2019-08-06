@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SpringBoot," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 快速入门工程1. 配置属性 YAML 注意键和值由冒号及空白字符分开。强调下，空白字符是必须的 .properties 文件默认编码方式是 iso-8859 ，Spring Boot 应用以 UTF-8 的编码方式读取，就导致出现乱码问题  2. 创建属性类1234567891011121314151617181920212223import org.springframework.bea">
+<meta name="keywords" content="SpringBoot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot 自动配置原理">
+<meta property="og:url" content="https://hu3.coding.me/2018/10/16/springboot-autoconfig/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="1. 快速入门工程1. 配置属性 YAML 注意键和值由冒号及空白字符分开。强调下，空白字符是必须的 .properties 文件默认编码方式是 iso-8859 ，Spring Boot 应用以 UTF-8 的编码方式读取，就导致出现乱码问题  2. 创建属性类1234567891011121314151617181920212223import org.springframework.bea">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hhi4yo8nj20m904h3yu.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hfj67g32j20ua0gy76t.jpg">
+<meta property="og:updated_time" content="2019-08-06T09:05:24.248Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot 自动配置原理">
+<meta name="twitter:description" content="1. 快速入门工程1. 配置属性 YAML 注意键和值由冒号及空白字符分开。强调下，空白字符是必须的 .properties 文件默认编码方式是 iso-8859 ，Spring Boot 应用以 UTF-8 的编码方式读取，就导致出现乱码问题  2. 创建属性类1234567891011121314151617181920212223import org.springframework.bea">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2018/10/16/springboot-autoconfig/"/>
+
+
+
+
+
+  <title>SpringBoot 自动配置原理 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2018/10/16/springboot-autoconfig/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SpringBoot 自动配置原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-16T15:32:25+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/16/springboot-autoconfig/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/16/springboot-autoconfig/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg" alt=""></p>
+<h3 id="1-快速入门工程"><a href="#1-快速入门工程" class="headerlink" title="1. 快速入门工程"></a>1. 快速入门工程</h3><h4 id="1-配置属性"><a href="#1-配置属性" class="headerlink" title="1. 配置属性"></a>1. 配置属性</h4><ul>
+<li>YAML 注意键和值由冒号及空白字符分开。强调下，空白字符是必须的</li>
+<li>.properties 文件默认编码方式是 iso-8859 ，Spring Boot 应用以 UTF-8 的编码方式读取，就导致出现乱码问题</li>
+</ul>
+<h4 id="2-创建属性类"><a href="#2-创建属性类" class="headerlink" title="2. 创建属性类"></a>2. 创建属性类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 书属性</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 书名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;demo.book.name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 作者</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;demo.book.writer&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String writer;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... 省略 getter / setter 方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>@Component 注解</strong></p>
+<p>  @Component 对类进行标注，职责是泛指组件 Bean ，应用启动时会被容器加载并加入容器管理。常见的 @Controller、@Service 、@Repository 是 @Component 的分类细化组件，分别对应控制层、服务层、持久层的 Bean。</p>
+</li>
+<li><p><strong>@Value 注解</strong></p>
+<p>  @Value 对 Bean 的字段或者方法参数进行标注，职责是基于表达式给字段或方法参数设置默认属性值。通常格式是注解 + SpEL 表达式，如 @Value(“SpEL 表达式”)。</p>
+</li>
+</ul>
+<p>使用 @Vlaue 注解来引用属性值时，确保所引用的属性值在 application.properties 文件存在并且相对应匹配，否则会造成 Bean 的创建错误，引发 java.lang.IllegalArgumentException 非法参数异常。</p>
+<h3 id="2-配置属性的获取方式"><a href="#2-配置属性的获取方式" class="headerlink" title="2. 配置属性的获取方式"></a>2. 配置属性的获取方式</h3><h4 id="2-1-Value-注解"><a href="#2-1-Value-注解" class="headerlink" title="2.1 @Value 注解"></a>2.1 @Value 注解</h4><p>@Value 注解对 Bean 的变量或者方法参数进行标注，职责是基于表达式给字段或方法参数设置默认属性值。通常格式是注解 + SpEL 表达式，如 @Value(“SpEL 表达式”)，并标注在对应的字段或者方法上方，且必须对变量一一标注。这种方式适用于小而不复杂的属性结构。属性结构复杂，字段很多的情况下，这种方式会比较繁琐，应该考虑使用 @ConfigurationProperties 注解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.PropertySource;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 书属性</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@PropertySource</span>(<span class="string">"classpath:book.properties"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 书名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;demo.book.name&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 作者</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;demo.book.writer&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String writer;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... 省略 getters / setters 方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-2-ConfigurationProperties-注解"><a href="#2-2-ConfigurationProperties-注解" class="headerlink" title="2.2 @ConfigurationProperties 注解"></a>2.2 @ConfigurationProperties 注解</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 书属性</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"demo.book"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 书名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 作者</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String writer;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... 省略 getters / setters 方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@ConfigurationProperties 注解的 prefix 是指定属性的参数名称。会匹配到配置文件中 “ demo.book.<em> ” 结构的属性，星号 “ </em> ” 是指会一一对应匹配 BookComponent 类的字段名。例如，字段 name 表示书名，会匹配到 demo.book.name 属性值。</p>
+<p>@Value 注解方式强制字段必须对应在配置文件， @ConfigurationProperties 注解方式则不是必须的。一般情况下，所有字段应该保证一一对应在配置文件。如果没有属性值对应的话，该字段默认为空， @ConfigurationProperties 注解方式也不会引发任何异常，Spring Boot 推荐使用 @ConfigurationProperties 注解方式获取属性。</p>
+<p>org.springframework.boot.context.properties.ConfigurationProperties 注解参数</p>
+<ul>
+<li>prefix<br>字符串值，绑定该名称前缀的属性对象。</li>
+<li>value<br>字符串值，功能同 prefix 参数。</li>
+<li>ignoreInvalidFields<br>布尔值，默认 false。绑定对象时，忽略无效字段。</li>
+<li>ignoreUnknownFields<br>布尔值，默认 true。绑定对象时，忽略未知字段。</li>
+</ul>
+<h4 id="2-3-ConfigurationProperties-数据验证"><a href="#2-3-ConfigurationProperties-数据验证" class="headerlink" title="2.3 @ConfigurationProperties 数据验证"></a>2.3 @ConfigurationProperties 数据验证</h4><p>当属性类被 @Validated 注解标注时，Spring Boot 初始化时会验证类的字段。在类的字段上添加 JSR-303 约束注解，进行数据验证。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.annotation.Validated;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.validation.constraints.NotEmpty;</span><br><span class="line"><span class="keyword">import</span> javax.validation.constraints.NotNull;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 书属性</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"demo.book"</span>)</span><br><span class="line"><span class="meta">@Validated</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 书名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@NotEmpty</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 作者</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@NotNull</span></span><br><span class="line">    <span class="keyword">private</span> String writer;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... 省略 getters / setters 方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hhi4yo8nj20m904h3yu.jpg" alt=""></p>
+<h3 id="3-外化配置"><a href="#3-外化配置" class="headerlink" title="3. 外化配置"></a>3. 外化配置</h3><p>配置分离存储在 classpath 之外</p>
+<h4 id="3-1-外化配置优先级"><a href="#3-1-外化配置优先级" class="headerlink" title="3.1 外化配置优先级"></a>3.1 外化配置优先级</h4><p><code>java -jar target/chapter-2-spring-boot-config-1.0.jar --demo.book.writer=Jeff</code></p>
+<p><code>SpringApplication.setAddCommandLineProperties(false);</code></p>
+<ol>
+<li>本地 Devtools 全局配置</li>
+<li>测试时 @TestPropertySource 注解配置</li>
+<li>测试时 @SpringBootTest 注解的 properties 配置</li>
+<li>命令行配置</li>
+<li>SPRING_APPLICATION_JSON 配置</li>
+<li>ServletConfig 初始化参数配置</li>
+<li>ServletContext 初始化参数配置</li>
+<li>Java 环境的 JNDI 参数配置</li>
+<li>Java 系统的属性配置</li>
+<li>OS 环境变量配置</li>
+<li>只能随机属性的 RandomValuePropertySource 配置</li>
+<li>工程 jar 之外的多环境配置文件（application- {profile}.properties 或 YAML）</li>
+<li>工程 jar 之内的多环境配置文件（application- {profile}.properties 或 YAML）</li>
+<li>工程 jar 之外的应用配置文件（application.properties 或 YAML）</li>
+<li>工程 jar 之内的应用配置文件（application.properties 或 YAML）</li>
+<li>@Configuration 类中的 @PropertySource 注解配置</li>
+<li>默认属性配置（SpringApplication.setDefaultProperties 指定）</li>
+</ol>
+<h4 id="3-2-属性引用"><a href="#3-2-属性引用" class="headerlink" title="3.2 属性引用"></a>3.2 属性引用</h4><p>属性之间可以直接通过 “${propName}” 的形式引用其他属性</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 书信息</span></span><br><span class="line">demo.book.name=[Spring Boot 2.x Core Action]</span><br><span class="line">demo.book.writer=BYSocket</span><br><span class="line">demo.book.description=<span class="variable">$&#123;demo.book.writer&#125;</span><span class="string">'s$&#123;demo.book.name&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-3-使用随机数"><a href="#3-3-使用随机数" class="headerlink" title="3.3 使用随机数"></a>3.3 使用随机数</h4><p>例如注入某些密钥、UUID 或者测试用例，需要每次不是一个固定的值。RandomValuePropertySource 类随机提供整形、长整形数、UUID 或者字符串。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">my.secret=<span class="variable">$&#123;random.value&#125;</span></span><br><span class="line">my.number=<span class="variable">$&#123;random.int&#125;</span></span><br><span class="line">my.bignumber=<span class="variable">$&#123;random.long&#125;</span></span><br><span class="line">my.uuid=<span class="variable">$&#123;random.uuid&#125;</span></span><br><span class="line">my.number.less.than.ten=<span class="variable">$&#123;random.int(10)&#125;</span></span><br><span class="line">my.number.in.range=<span class="variable">$&#123;random.int[1024,65536]&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-4-多环境配置"><a href="#3-4-多环境配置" class="headerlink" title="3.4 多环境配置"></a>3.4 多环境配置</h4><p>类似 Maven 构建配置文件的思路，即配置多个不同环境的配置文件，再通过 spring.profiles.active 命令去指定读取特定配置文件的属性。</p>
+<p>多环境配置文件的约定命名格式为 application-{profile}.properties。多环境配置功能默认为激活状态，如果其他配置未被激活，则 {profile} 默认为 default，会加载 application-default.properties 默认配置文件，没有该文件就会加载 application.properties 应用配置文件。</p>
+<h3 id="4-SpringBoot-自动配置原理"><a href="#4-SpringBoot-自动配置原理" class="headerlink" title="4. SpringBoot 自动配置原理"></a>4. SpringBoot 自动配置原理</h3><h4 id="4-1-外化配置和自动配置"><a href="#4-1-外化配置和自动配置" class="headerlink" title="4.1 外化配置和自动配置"></a>4.1 外化配置和自动配置</h4><p>spring-boot-autoconfigure 包里面定义了很多默认的配置项。Spring Boot 会根据所添加的依赖，自动加载依赖相关的配置属性。</p>
+<p>自动化配置代替了传统的繁琐的xml配置模式，以前使用 Spring MVC ，需要进行配置组件扫描、调度器、视图解析器等，使用 Spring Boot 自动配置后，只需要添加 MVC 组件即可自动配置所需要的 Bean。</p>
+<ol>
+<li><p>External Configuration指的不是把配置内容分离到properties文件里，而是配置存储在classpath之外，比如spring cloud config 中</p>
+</li>
+<li><p>自动化配置本身包含了两块内容：@Configuration的定义和properties属性的定义，外部化配置是跟加载过程相关的。</p>
+</li>
+</ol>
+<h4 id="4-2-自动配置原理浅析"><a href="#4-2-自动配置原理浅析" class="headerlink" title="4.2 自动配置原理浅析"></a>4.2 自动配置原理浅析</h4><p>spring-boot-autoconfigure 包</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hfj67g32j20ua0gy76t.jpg" alt=""></p>
+<p>通过 @EnableAutoConfiguration 核心注解初始化，并扫描 ClassPath 目录中自动配置类对应依赖。比如工程中有木有添加 Thymeleaf 的 Starter 组件依赖。如果有，就按按一定规则获取默认配置并自动初始化所需要的 Bean。</p>
+<h4 id="4-3-EnableAutoConfiguration-核心注解的工作原理"><a href="#4-3-EnableAutoConfiguration-核心注解的工作原理" class="headerlink" title="4.3 @EnableAutoConfiguration 核心注解的工作原理"></a>4.3 @EnableAutoConfiguration 核心注解的工作原理</h4><p>@EnableAutoConfiguration 注解核心点是 @Import 的自动配置导入选择器类 AutoConfigurationImportSelector 。</p>
+<ul>
+<li>AutoConfigurationImportSelector 会读取 ClassPath 下面的 META-INF/spring.factories 文件。</li>
+<li>spring.factories 文件中配置的 Spring Boot 自动配置类，例如常见的Jpa 自动配置类 JpaRepositoriesAutoConfiguration、Thymeleaf 自动配置类 ThymeleafAutoConfiguration 、 WebMvcAutoConfiguration Web MVC 自动配置类和ServletWebServerFactoryAutoConfiguration 容器自动配置类等 。</li>
+<li>spring.factories 文件和 application.properties 文件都属于配置文件，均为键值对格式。里面配置的每个自动配置类都会定义相关 Bean 的默认配置，也会定义什么条件下自动配置和哪些 Bean 被实例化。</li>
+<li>当 pom.xml 添加某 Starter 依赖组件的时候，就会自动触发该依赖的默认配置。</li>
+</ul>
+<h4 id="4-4-spring-boot-starter-web-Starter-组件浅析"><a href="#4-4-spring-boot-starter-web-Starter-组件浅析" class="headerlink" title="4.4 spring-boot-starter-web Starter 组件浅析"></a>4.4 spring-boot-starter-web Starter 组件浅析</h4><p>容器自动配置类 ServletWebServerFactoryAutoConfiguration 的部分代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.springframework.boot.autoconfigure.web.servlet;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnClass</span>(&#123;ServletRequest.class&#125;)</span><br><span class="line"><span class="meta">@ConditionalOnWebApplication</span>(</span><br><span class="line">    type = Type.SERVLET</span><br><span class="line">)</span><br><span class="line"><span class="meta">@EnableConfigurationProperties</span>(&#123;ServerProperties.class&#125;)</span><br><span class="line"><span class="meta">@Import</span>(&#123;ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletWebServerFactoryAutoConfiguration</span> </span>&#123;</span><br><span class="line">... 省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>@ConditionalOnClass 注解表示对应的 ServletRequest 类在 ClassPath 目录下面存在，并且 @ConditionalOnWebApplication 注解表示该应用是 Servlet Web 应用时，才会去启动容器默认配置</li>
+<li>通过 ServerProperties 类默认设置了端口为 8080</li>
+<li>Type.SERVLET 枚举代表 Servlet Web 应用，Type.REACTIVE 枚举代表响应式 WebFlux 应用。</li>
+<li>@ConditionalOnClass 注解类似功能的还有 @ConditionalOnMissingBean 、@ConditionalOnProperty等注解</li>
+</ul>
+<h4 id="4-5-一些自动化配置造成的问题"><a href="#4-5-一些自动化配置造成的问题" class="headerlink" title="4.5 一些自动化配置造成的问题"></a>4.5 一些自动化配置造成的问题</h4><ul>
+<li>Spring Boot 工程添加某些 Starter 组件依赖，但不想触发组件自动配置</li>
+<li>Spring Boot 配置多个不同数据源配置时，比如使用 XML 配置多数据源，但其默认数据源配置会触发自动配置出现问题。</li>
+</ul>
+<p>解决方式是排除不需要的特定自动配置类：<br><code>@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})</code></p>
+<h3 id="5-利用自动配置自定义-Starter-组件"><a href="#5-利用自动配置自定义-Starter-组件" class="headerlink" title="5. 利用自动配置自定义 Starter 组件"></a>5. 利用自动配置自定义 Starter 组件</h3><p>一个完整的 Starter 组件包括以下两点：</p>
+<ul>
+<li>提供自动配置功能的自动配置模块。</li>
+<li>提供依赖关系管理功能的组件模块，即封装了组件所有功能，开箱即用。</li>
+</ul>
+<p>实现自定义 Starter 组件，并不会将这两点严格区分，可以将自动配置功能和依赖管理结合在一起实现。</p>
+<h4 id="5-1-创建一个新的-Spring-Boot-工程，命名为-spring-boot-starter-swagger。在-pom-xml-配置相关"><a href="#5-1-创建一个新的-Spring-Boot-工程，命名为-spring-boot-starter-swagger。在-pom-xml-配置相关" class="headerlink" title="5.1 创建一个新的 Spring Boot 工程，命名为 spring-boot-starter-swagger。在 pom.xml 配置相关"></a>5.1 创建一个新的 Spring Boot 工程，命名为 spring-boot-starter-swagger。在 pom.xml 配置相关</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-configuration-processor<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;version.swagger&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;version.swagger&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-bean-validators<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;version.swagger&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.16.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="5-2-新建-SwaggerProperties-配置类"><a href="#5-2-新建-SwaggerProperties-配置类" class="headerlink" title="5.2 新建 SwaggerProperties 配置类"></a>5.2 新建 SwaggerProperties 配置类</h4><p>新建名为 SwaggerProperties Swagger2 属性配置类，包含了所有默认属性值。使用该组件时，可以在 application.properties 配置文件配置对应属性项，进行覆盖默认配置。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> lombok.NoArgsConstructor;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> springfox.documentation.schema.ModelRef;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedHashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(<span class="string">"swagger"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**是否开启swagger**/</span></span><br><span class="line">    <span class="keyword">private</span> Boolean enabled;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**标题**/</span></span><br><span class="line">    <span class="keyword">private</span> String title = <span class="string">""</span>;</span><br><span class="line">    <span class="comment">/**描述**/</span></span><br><span class="line">    <span class="keyword">private</span> String description = <span class="string">""</span>;</span><br><span class="line">    <span class="comment">/**版本**/</span></span><br><span class="line">    <span class="keyword">private</span> String version = <span class="string">""</span>;</span><br><span class="line">    <span class="comment">/**许可证**/</span></span><br><span class="line">    <span class="keyword">private</span> String license = <span class="string">""</span>;</span><br><span class="line">    <span class="comment">/**许可证URL**/</span></span><br><span class="line">    <span class="keyword">private</span> String licenseUrl = <span class="string">""</span>;</span><br><span class="line">    <span class="comment">/**服务条款URL**/</span></span><br><span class="line">    <span class="keyword">private</span> String termsOfServiceUrl = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Contact contact = <span class="keyword">new</span> Contact();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**swagger会解析的包路径**/</span></span><br><span class="line">    <span class="keyword">private</span> String basePackage = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**swagger会解析的url规则**/</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; basePath = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">/**在basePath基础上需要排除的url规则**/</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; excludePath = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**分组文档**/</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, DocketInfo&gt; docket = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**host信息**/</span></span><br><span class="line">    <span class="keyword">private</span> String host = <span class="string">""</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**全局参数配置**/</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;GlobalOperationParameter&gt; globalOperationParameters;</span><br><span class="line"></span><br><span class="line">     ... 省略，具体代码见 GitHub</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用 @ConfigurationProperties(prefix = “swagger”) 标注在类上方是指定属性的参数名称为 swagger。会对应匹配到配置文件中 “ swagger.* ” 结构的属性，例如，字段标题 title 表示标题，会匹配到 swagger.title 属性值。</p>
+<h4 id="5-3-新建自动化配置类-SwaggerAutoConfiguration-（提供-Swagger2-依赖关系管理功能和自动配置功能）"><a href="#5-3-新建自动化配置类-SwaggerAutoConfiguration-（提供-Swagger2-依赖关系管理功能和自动配置功能）" class="headerlink" title="5.3 新建自动化配置类 SwaggerAutoConfiguration （提供 Swagger2 依赖关系管理功能和自动配置功能）"></a>5.3 新建自动化配置类 SwaggerAutoConfiguration （提供 Swagger2 依赖关系管理功能和自动配置功能）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Import;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty</span>(name = <span class="string">"swagger.enabled"</span>, matchIfMissing = <span class="keyword">true</span>)</span><br><span class="line"><span class="meta">@Import</span>(&#123;</span><br><span class="line">        Swagger2DocumentationConfiguration.class,</span><br><span class="line">        BeanValidatorPluginsConfiguration.class</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerAutoConfiguration</span> <span class="keyword">implements</span> <span class="title">BeanFactoryAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> BeanFactory beanFactory;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SwaggerProperties <span class="title">swaggerProperties</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SwaggerProperties();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">    <span class="meta">@ConditionalOnProperty</span>(name = <span class="string">"swagger.enabled"</span>, matchIfMissing = <span class="keyword">true</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Docket&gt; <span class="title">createRestApi</span><span class="params">(SwaggerProperties swaggerProperties)</span> </span>&#123;</span><br><span class="line">        ... 省略，具体代码见 GitHub</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBeanFactory</span><span class="params">(BeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.beanFactory = beanFactory;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>@Configuration 注解标注在类上方，表明该类为配置类。</li>
+<li>@Import 注解引入 Swagger2 提供的配置类 Swagger2DocumentationConfiguration 和 Bean 数据验证插件配置类 BeanValidatorPluginsConfiguration。</li>
+<li>@ConditionalOnMissingBean 注解标注了两处方法，当 Bean 没有被创建时会执行被标注的初始化方法。第一处被标记方法是 swaggerProperties() ，用来实例化属性配置类 SwaggerProperties;第二处被标记方法是 createRestApi()， 用来实例化 Swagger2 API 映射的 Docket 列表对象。</li>
+<li>@ConditionalOnProperty 注解标注在 createRestApi() 方法，name 属性会去检查环境配置项 swagger.enabled 。默认情况下，属性存在且不是 false 的情况下，会触发该初始化方法。matchIfMissing 属性默认值为 false ，这里设置为 true，表示如果环境配置项没被设置，也会触发。</li>
+</ol>
+<h4 id="5-4-新建启动注解类-EnableSwagger2Doc"><a href="#5-4-新建启动注解类-EnableSwagger2Doc" class="headerlink" title="5.4 新建启动注解类 EnableSwagger2Doc"></a>5.4 新建启动注解类 EnableSwagger2Doc</h4><p>用于开关 spring-boot-starter-swagger 组件依赖</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(&#123;ElementType.TYPE&#125;)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@Import</span>(&#123;SwaggerAutoConfiguration.class&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableSwagger2Doc &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码 @Import 注解引入 Swagger2 自动配置类 SwaggerAutoConfiguration。当将该注解配置在应用启动类上方，即可开启 Swagger2 自动配置及其功能。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/18/springboot-https/" rel="next" title="Spring Boot 集成配置 HTTPS">
+                <i class="fa fa-chevron-left"></i> Spring Boot 集成配置 HTTPS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/06/dubbo-trouble/" rel="prev" title="Dubbo的问题与坑">
+                Dubbo的问题与坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-快速入门工程"><span class="nav-number">1.</span> <span class="nav-text">1. 快速入门工程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-配置属性"><span class="nav-number">1.1.</span> <span class="nav-text">1. 配置属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-创建属性类"><span class="nav-number">1.2.</span> <span class="nav-text">2. 创建属性类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-配置属性的获取方式"><span class="nav-number">2.</span> <span class="nav-text">2. 配置属性的获取方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-Value-注解"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 @Value 注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-ConfigurationProperties-注解"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 @ConfigurationProperties 注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-ConfigurationProperties-数据验证"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 @ConfigurationProperties 数据验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-外化配置"><span class="nav-number">3.</span> <span class="nav-text">3. 外化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-外化配置优先级"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 外化配置优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-属性引用"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 属性引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-使用随机数"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 使用随机数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-多环境配置"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 多环境配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-SpringBoot-自动配置原理"><span class="nav-number">4.</span> <span class="nav-text">4. SpringBoot 自动配置原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-外化配置和自动配置"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 外化配置和自动配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-自动配置原理浅析"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 自动配置原理浅析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-EnableAutoConfiguration-核心注解的工作原理"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 @EnableAutoConfiguration 核心注解的工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-spring-boot-starter-web-Starter-组件浅析"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 spring-boot-starter-web Starter 组件浅析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-一些自动化配置造成的问题"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 一些自动化配置造成的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-利用自动配置自定义-Starter-组件"><span class="nav-number">5.</span> <span class="nav-text">5. 利用自动配置自定义 Starter 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-创建一个新的-Spring-Boot-工程，命名为-spring-boot-starter-swagger。在-pom-xml-配置相关"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 创建一个新的 Spring Boot 工程，命名为 spring-boot-starter-swagger。在 pom.xml 配置相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-新建-SwaggerProperties-配置类"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 新建 SwaggerProperties 配置类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-新建自动化配置类-SwaggerAutoConfiguration-（提供-Swagger2-依赖关系管理功能和自动配置功能）"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 新建自动化配置类 SwaggerAutoConfiguration （提供 Swagger2 依赖关系管理功能和自动配置功能）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-4-新建启动注解类-EnableSwagger2Doc"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 新建启动注解类 EnableSwagger2Doc</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="security," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文不涉及web安全方面的东西，只是根据接口设计，讲讲开发一个可靠的服务，需要考虑的几个维度，这些都是老生常谈的东西，每个人都清楚，但是很少有人能够考虑全面（比如前端发起一个删除数据的请求，后端直接调用xxxDao.delete而不做任何验证），这里单独拎出来讲讲，旨在提高意识。 1. 参数校验参数校验的目的是不相信前端传过来的数据，一方面是因为前端js问题导致校验失效，还有前端数据都是可以篡改的">
+<meta name="keywords" content="security">
+<meta property="og:type" content="article">
+<meta property="og:title" content="principles-of-security-design">
+<meta property="og:url" content="https://hu3.coding.me/2018/03/15/principles-of-security-design/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="本文不涉及web安全方面的东西，只是根据接口设计，讲讲开发一个可靠的服务，需要考虑的几个维度，这些都是老生常谈的东西，每个人都清楚，但是很少有人能够考虑全面（比如前端发起一个删除数据的请求，后端直接调用xxxDao.delete而不做任何验证），这里单独拎出来讲讲，旨在提高意识。 1. 参数校验参数校验的目的是不相信前端传过来的数据，一方面是因为前端js问题导致校验失效，还有前端数据都是可以篡改的">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-06T09:05:00.410Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="principles-of-security-design">
+<meta name="twitter:description" content="本文不涉及web安全方面的东西，只是根据接口设计，讲讲开发一个可靠的服务，需要考虑的几个维度，这些都是老生常谈的东西，每个人都清楚，但是很少有人能够考虑全面（比如前端发起一个删除数据的请求，后端直接调用xxxDao.delete而不做任何验证），这里单独拎出来讲讲，旨在提高意识。 1. 参数校验参数校验的目的是不相信前端传过来的数据，一方面是因为前端js问题导致校验失效，还有前端数据都是可以篡改的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2018/03/15/principles-of-security-design/"/>
+
+
+
+
+
+  <title>principles-of-security-design | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2018/03/15/principles-of-security-design/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">principles-of-security-design</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-15T12:51:31+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/15/principles-of-security-design/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/03/15/principles-of-security-design/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文不涉及web安全方面的东西，只是根据接口设计，讲讲开发一个可靠的服务，需要考虑的几个维度，这些都是老生常谈的东西，每个人都清楚，但是很少有人能够考虑全面（比如前端发起一个删除数据的请求，后端直接调用xxxDao.delete而不做任何验证），这里单独拎出来讲讲，旨在提高意识。</p>
+<h3 id="1-参数校验"><a href="#1-参数校验" class="headerlink" title="1. 参数校验"></a>1. 参数校验</h3><p>参数校验的目的是不相信前端传过来的数据，一方面是因为前端js问题导致校验失效，还有前端数据都是可以篡改的。</p>
+<h4 id="1-1-格式校验"><a href="#1-1-格式校验" class="headerlink" title="1.1 格式校验"></a>1.1 格式校验</h4><p>字段大小、长短、范围、格式校验；// todo 整理一份参数校验手册</p>
+<h4 id="1-2-特殊业务校验"><a href="#1-2-特殊业务校验" class="headerlink" title="1.2 特殊业务校验"></a>1.2 特殊业务校验</h4><p>比如起草合同时采购计划不能跨单位、起草期次时标项不能大于10个，严格意义上来说，后端都应该做好校验；</p>
+<p><strong>偷懒的底线</strong>：<br>一些次要信息（比如名字、地址长度这些可以为空，仅仅作为展示的字段）可以放到前端来做校验，但是对于会影响后续流程的关键性字段（比如金额、评分方式枚举等），后端必须做严格的校验，需要分辨这些关键信息。</p>
+<h3 id="2-权限校验"><a href="#2-权限校验" class="headerlink" title="2. 权限校验"></a>2. 权限校验</h3><h4 id="2-1-垂直越权"><a href="#2-1-垂直越权" class="headerlink" title="2.1 垂直越权"></a>2.1 垂直越权</h4><p><strong>说明</strong>：A并没有配置“生成项目”的权限，但是可以通过postman等http工具访问这个接口，导致越权。<br><strong>后果</strong>：危害性较大，抛开主动攻击不谈，最常见的危害是，不少用户具有多账号多类别，在双开界面下，如果不同界面的所属机构或者用户类别不同，就会导致session串掉，后台获取的LoginUser就会有问题（detailCategory、operatorId、orgId、orgName等），尤其是用了新的用户API，employee按照类别横向拆分成了多个Operator，用户切换类别导致operatorId不同（而老用户接口employeeId是相同的），使得问题出现频率更高。<br><strong>举例</strong>：<br>（1）跨类别：在一个账号下，用户同时具有采购人和代理机构两个类别，然后在一个界面是采购人身份，填了一些项目信息，然后新开了一个界面是代理机构类别，此时在第一个界面点击保存，那么LoginUser就有问题——首先detailCategory是不同的，如果用的是老用户API，用的是loginUser.id，同一个账号下用户类别不同，但是id都是相同的，所以只要不用detailCategory，老用户API下即使用户类别串掉了，也没有影响的，但是在新用户模块下，用户类别不同则operatorId不同，就会产生数据问题。<br>（2）跨机构（跨类别）：采购人生成委托单，然后委托给代理机构审核，不少用户为了操作方便，有采购人和代理机构两个账号，习惯性先用一个账号开一个采购人界面，再用一个账号开代理机构界面，然后在采购人界面操作，此时session已经串掉了，导致获取到的LoginUser的detailCategory、id、operatorId都串掉。</p>
+<blockquote>
+<p>两者本质都是一样的，都是在另一个界面偷偷更换了用户session信息。</p>
+</blockquote>
+<p><strong>后果演示</strong>：</p>
+<p>（1）跨类别：<br>登录binjiangcgjg账号，切换到采监处类别，在第一个界面填好期次信息，然后开另一个窗口，并切换到采购单位类别，回到第一个界面点击保存，检查后端获取的LoginUser;<br>（2）跨机构：<br>登录binjiangcgjg账号，切换到采监处类别，在第一个界面填好期次信息，然后开另一个窗口，登录binjiangcgr账号，回到第一个界面点击保存，检查后端获取的LoginUser;</p>
+<p><strong>解决</strong>：<br>配置@AuthZcy注解，该注解应该加在方法级（类级别尽量不要加），对于增、删、改、审核等接口，必须配置categorys和privileges属性，对于查询接口，至少需要配置categorys属性，privileges属性需要尽力配置。</p>
+<h4 id="2-2-水平越权"><a href="#2-2-水平越权" class="headerlink" title="2.2 水平越权"></a>2.2 水平越权</h4><p><strong>说明</strong>：A和B都有“修改项目”的权限，此时如果A将projectId换成了B拥有的一个项目的ID，由于接口没有做数据权限校验，导致A偷偷越权修改（访问）了B的数据。<br><strong>后果</strong>：就用户操作来说，相对来说危害性小一些，出现频率不高，但被恶意攻击，数据安全性危害就很大。<br><strong>解决</strong>：（1）明确数据权限粒度：是平台级、区化级、机构级还是用户级；<br>           （2）在创建数据时，关键的数据权限信息，不要从前端获取，而要从loginUser里面拿，比如某个项目的创建人、机构、区划信息，直接从LoginUser里拿，前端传的话容易被篡改。<br>           （3）删、改、查、审核等操作时，需要加上数据权限验证（查询接口危害很小，但安全性检测时最常检测的就是查询接口）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PubfundProjectOpenBidModel <span class="title">queryOpenBidDetail</span><span class="params">(Long projectId)</span> </span>&#123;</span><br><span class="line">    validThrow(projectId, <span class="string">"项目id不能为空"</span>);</span><br><span class="line">    PubfundProject project = validThrow(<span class="keyword">this</span>.pubfundProjectDao.selectById(projectId), <span class="string">"项目不存在"</span>);</span><br><span class="line">    PubfundProjectFile projectFile = validThrow(<span class="keyword">this</span>.pubfundProjectFileDao.getProjectFile(projectId), <span class="string">"招标文件不存在"</span>);</span><br><span class="line">    <span class="comment">// 数据权限校验</span></span><br><span class="line">    LoginUser user = getAndCheckLoginUser();</span><br><span class="line">    <span class="keyword">if</span> (!user.getOperatorId().equals(project.getAgencyOperatorId())) &#123;</span><br><span class="line">        <span class="keyword">throw</span> ExcpUtil.genServiceException(<span class="string">"无权查看该项目"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、业务校验（上下文越权）"><a href="#三、业务校验（上下文越权）" class="headerlink" title="三、业务校验（上下文越权）"></a>三、业务校验（上下文越权）</h3><p><strong>说明</strong>：<br>上下文越权，主要就是绕过了状态机校验、包括一些业务上的特殊限制。<br><strong>后果</strong>：<br>只通过前端校验，后端不校验的情况下，在双开界面下，或者通过http工具发送请求，就会绕开这些限制。<br><strong>后果演示</strong>：<br>在一个界面创建期次，然后新开一个界面提交期次，此时回到第一个界面，依然能够保存。<br><strong>解决</strong>：提高意识。</p>
+<h3 id="四、并发及幂等校验"><a href="#四、并发及幂等校验" class="headerlink" title="四、并发及幂等校验"></a>四、并发及幂等校验</h3><p><strong>说明</strong>：<br>是上下文越权的特例，侧重于并发访问下导致的问题，主要是消息、关键性一次性的节点，平台目前还没有推行一套token防并发的方案，前端的一些控制也是治标不治本，但是不管怎么样后端也是要校验的。<br><strong>解决</strong>：提高意识，一些方案，如基于版本号的乐观锁、基于状态的乐观锁、去重表，以及其他一些复杂的方案。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (userInfo.isExpert) &#123;</span><br><span class="line">    <span class="comment">// 状态更新加锁校验（利用数据库事务的原子性，本质上也是基于状态的幂等校验）</span></span><br><span class="line">    count = <span class="keyword">this</span>.pubfundExpertDao.updateStatusNoLock(itemId,</span><br><span class="line">    <span class="comment">// beforeStatusNo</span></span><br><span class="line">    BidOpenPageEnum.SCORE_GATHER_PAGE.getExpertStatus().getCode(),</span><br><span class="line">    <span class="comment">// afterStatusNo</span></span><br><span class="line">    PubfundExpertContext.ExamineStatus.WAIT_ASSIGN_AMOUNT.getCode(),</span><br><span class="line">    Lists.newArrayList(user.getOperatorId()));</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 状态更新加锁校验（利用数据库事务的原子性，本质上也是基于状态的幂等校验）</span></span><br><span class="line">    count = <span class="keyword">this</span>.pubfundProjectItemDao.updateExamineStatusLock(itemId,</span><br><span class="line">    <span class="comment">// beforeStatusNo</span></span><br><span class="line">    PubfundProjectItemContext.BidExamineStatus.WAIT_SCORE_GATHER.getCode(), </span><br><span class="line">    <span class="comment">// afterStatusNo</span></span><br><span class="line">    PubfundProjectItemContext.BidExamineStatus.WAIT_ASSIGN_AMOUNT.getCode());</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 幂等校验</span></span><br><span class="line"><span class="keyword">if</span> (count &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.amountAssignService.computeSupplierBidLimit(itemId, RE_COMPUTE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="五、关注事务和日志"><a href="#五、关注事务和日志" class="headerlink" title="五、关注事务和日志"></a>五、关注事务和日志</h3><p><strong>存在的问题</strong>：<br>（1）涉及db更新的接口，不少地方都忘记加事务控制；<br>（2）加了事务控制，也要思考程序在某些关键步骤（尤其是涉及外部调用失败）执行失败该如何回滚，比如本地的db优先执行，外部调用放到代码后面；<br>（3）关键节点和一些比较容易出错的操作，要做好详细的日志，作日志不是简单记录一下，要记录关键信息，便于以后排查问题搜索，根据某个字段能搜出整个流程日志。</p>
+<h3 id="六、一份样本"><a href="#六、一份样本" class="headerlink" title="六、一份样本"></a>六、一份样本</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 垂直权限校验</span></span><br><span class="line"><span class="meta">@AuthZcy</span>(categorys = &#123;Category.PROCUREMENT_AGENCY, EVALUATION_EXPERTS&#125;, privileges = &#123;TREASURY_AGENCY_OPENBID, TREASURY_EXPERT_EXAMINE&#125;)</span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/startAssignBidAmount"</span>, method = RequestMethod.POST)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Boolean <span class="title">startAssignBidAmount</span><span class="params">(@RequestParam(value = <span class="string">"itemId"</span>)</span> Long itemId) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.pubfundBidOpenService.startAssignBidAmount(itemId);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Transactional</span> <span class="comment">// 1.事务控制</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Boolean <span class="title">startAssignBidAmount</span><span class="params">(Long itemId)</span> </span>&#123;</span><br><span class="line">    validThrow(itemId, <span class="string">"标项id不能为空"</span>);</span><br><span class="line">    LoginUser user = getAndCheckLoginUser();</span><br><span class="line">    PubfundProjectItem item = validThrow(<span class="keyword">this</span>.pubfundProjectItemDao.selectById(itemId), <span class="string">"标项不存在"</span>);</span><br><span class="line">    PubfundProject project = validThrow(<span class="keyword">this</span>.pubfundProjectDao.selectById(item.getProjectId()), <span class="string">"项目不存在"</span>);</span><br><span class="line">    <span class="comment">// 2.数据权限校验</span></span><br><span class="line">    UserInfo userInfo = getAndCheckUser(user, project.getAgencyOperatorId(), itemId);</span><br><span class="line">    <span class="comment">// 3.状态机校验</span></span><br><span class="line">    checkPageAction(userInfo, project, item, BidOpenActionEnum.BID_ASSIGN, <span class="keyword">true</span>);</span><br><span class="line"> </span><br><span class="line">    List&lt;PubfundSupplierBid&gt; suppliers = <span class="keyword">this</span>.queryBidSuccSuppliers(itemId, project, <span class="keyword">true</span>, <span class="keyword">true</span>);</span><br><span class="line">    validThrow(!CollectionUtils.isEmpty(suppliers), <span class="string">"没有评审通过的供应商，请废标"</span>);</span><br><span class="line">    <span class="comment">// 4.关键节点：基于状态机的幂等校验</span></span><br><span class="line">    <span class="keyword">int</span> count = <span class="keyword">this</span>.pubfundProjectItemDao.updateExamineStatus(itemId, project.getId(), PubfundProjectItemContext.BidExamineStatus.BID_FINISH.getCode());</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> ExcpUtil.genServiceException(<span class="string">"已经分配过存款额"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 分配存款额</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="七、全文总结"><a href="#七、全文总结" class="headerlink" title="七、全文总结"></a>七、全文总结</h3><ol>
+<li>一个可靠的接口，可能有40%以上的校验代码；</li>
+<li><p>前端都是不可靠的，一方面是因为浏览器兼容问题，js校验在某些场景下并不能控住，一方面是接口都有可能被绕过的。</p>
+<blockquote>
+<p>墨菲定律：会出错的事总会出错，担心的坏事更有可能发生</p>
+</blockquote>
+</li>
+<li><p>对于增、删、改、审等涉及到db更新的操作，要从上述几个方面去思考，不同场景并不一定要求非要这样做，可以有选择地控制，关键是要有这个意识。</p>
+</li>
+<li>再次强调一下讲的几个方面：参数校验、垂直越权、水平越权、上下文越权、幂等校验、关注事务和日志。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/security/" rel="tag"># security</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/23/GFW-fanqiang/" rel="next" title="GFW与翻墙原理">
+                <i class="fa fa-chevron-left"></i> GFW与翻墙原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/12/dubbo-spi/" rel="prev" title="Dubbo的SPI扩展机制">
+                Dubbo的SPI扩展机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-参数校验"><span class="nav-number">1.</span> <span class="nav-text">1. 参数校验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-格式校验"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 格式校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-特殊业务校验"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 特殊业务校验</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-权限校验"><span class="nav-number">2.</span> <span class="nav-text">2. 权限校验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-垂直越权"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 垂直越权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-水平越权"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 水平越权</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、业务校验（上下文越权）"><span class="nav-number">3.</span> <span class="nav-text">三、业务校验（上下文越权）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、并发及幂等校验"><span class="nav-number">4.</span> <span class="nav-text">四、并发及幂等校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、关注事务和日志"><span class="nav-number">5.</span> <span class="nav-text">五、关注事务和日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、一份样本"><span class="nav-number">6.</span> <span class="nav-text">六、一份样本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、全文总结"><span class="nav-number">7.</span> <span class="nav-text">七、全文总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
