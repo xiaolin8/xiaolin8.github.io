@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="agile," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="电子卖场团队是一支自组织，一体化和全功能的敏捷团队。自组织体现在团队中的每个成员都会得到充分的尊重和自由，每个成员都可以主导某个实践（如项目回顾会议）和改进（如推动团队成员一起提高单元测试覆盖率）。一体化体现在团队合作上。全功能体现在团队成员既可以研发，也可以做前端和测试，从而打破角色边界提高总体产出。我们在进行一次敏捷实践时会经历五个步骤，分别是计划，编码，测试，发布和回顾。  1. 如何打造合">
+<meta name="keywords" content="agile">
+<meta property="og:type" content="article">
+<meta property="og:title" content="敏捷开发经验小结">
+<meta property="og:url" content="https://hu3.coding.me/2019/06/06/agile-in-action/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="电子卖场团队是一支自组织，一体化和全功能的敏捷团队。自组织体现在团队中的每个成员都会得到充分的尊重和自由，每个成员都可以主导某个实践（如项目回顾会议）和改进（如推动团队成员一起提高单元测试覆盖率）。一体化体现在团队合作上。全功能体现在团队成员既可以研发，也可以做前端和测试，从而打破角色边界提高总体产出。我们在进行一次敏捷实践时会经历五个步骤，分别是计划，编码，测试，发布和回顾。  1. 如何打造合">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r0gtseunj20n00g5nbh.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r0mjlu9tj20cg02ajrj.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r0q0kuvfj208a05u41t.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r0qudogvj208i043jrx.jpg">
+<meta property="og:updated_time" content="2019-08-07T05:37:55.559Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="敏捷开发经验小结">
+<meta name="twitter:description" content="电子卖场团队是一支自组织，一体化和全功能的敏捷团队。自组织体现在团队中的每个成员都会得到充分的尊重和自由，每个成员都可以主导某个实践（如项目回顾会议）和改进（如推动团队成员一起提高单元测试覆盖率）。一体化体现在团队合作上。全功能体现在团队成员既可以研发，也可以做前端和测试，从而打破角色边界提高总体产出。我们在进行一次敏捷实践时会经历五个步骤，分别是计划，编码，测试，发布和回顾。  1. 如何打造合">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r0gtseunj20n00g5nbh.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2019/06/06/agile-in-action/"/>
+
+
+
+
+
+  <title>敏捷开发经验小结 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2019/06/06/agile-in-action/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">敏捷开发经验小结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-06T12:38:31+08:00">
+                2019-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/06/agile-in-action/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/06/agile-in-action/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>电子卖场团队是一支自组织，一体化和全功能的敏捷团队。<br>自组织体现在团队中的每个成员都会得到充分的尊重和自由，每个成员都可以主导某个实践（如项目回顾会议）和改进（如推动团队成员一起提高单元测试覆盖率）。<br>一体化体现在团队合作上。全功能体现在团队成员既可以研发，也可以做前端和测试，从而打破角色边界提高总体产出。我们在进行一次敏捷实践时会经历五个步骤，分别是计划，编码，测试，发布和回顾。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r0gtseunj20n00g5nbh.jpg" alt=""></p>
+<h3 id="1-如何打造合作型团队"><a href="#1-如何打造合作型团队" class="headerlink" title="1. 如何打造合作型团队"></a>1. 如何打造合作型团队</h3><p>能打造出Facebook里所提倡的“精英团队”固然非常好，但这样会对团队中的每位成员都有较高的要求。我所在的团队希望通过将团队合 作精神运用在项目的各个阶段来打造出一支强有力的合作型小团队，并且取得了很不错的战绩：每两周发布一个版本，完成了几次零Bug的项目，实现了一年线上 零故障。</p>
+<h4 id="1-1-需求串讲评审"><a href="#1-1-需求串讲评审" class="headerlink" title="1.1 需求串讲评审"></a>1.1 需求串讲评审</h4><p>提倡需求串讲。上游的质量决定了下游的质量。在软件开发中需求文档属于最上游的输出，所以我们格外重视需求评审。为了让团队成员能充分理解需求，并提高团队 成员的参与度，项目需求不能总由产品经理来讲解，而应采用轮流讲解的方式，每次迭代由不同的人员讲解。需求文档会提前发给所有团队成员，请大家消化和准 备。在进行需求评审时选某一名成员上台讲解需求。虽然需求评审最核心的任务是在“评”上，但如果团队成员都不能很好地理解需求或者不能很好地参与到需求评 审上，是很难做好需求评审的。</p>
+<h4 id="1-2-全员参与设计"><a href="#1-2-全员参与设计" class="headerlink" title="1.2 全员参与设计"></a>1.2 全员参与设计</h4><p>为了提高设计和评审的效率，并且能够让全员充分参与到设计和评审中，我们团队提倡结对设计、简单设计、交叉设计和全员参与设计评审。</p>
+<ul>
+<li>提倡结对设计。需求评审完之后，会让团队成员一起来认领任务，但每个任务必须由两名成员认领，这两名成员分别是这个任务的主Owner和辅Owner，并结对设计这个任务。</li>
+<li>提倡简单设计。第一是设计快并易懂，第二是只做必要的设计。在设计评审前做的设计只能算设计草稿，用Visio等软件做设计比较费时间，在设计评审后还要 修改，如此反复很浪费时间。而事实上一支笔和一张纸足以完成一次设计，先在纸上画出自己的设计思路，然后同结对的成员进行讨论，最后评审完之后将设计图拍 照提交到文档库。对于互联网产品的开发，提倡只做必要的设计，需要时再重构。因为根据以往的经验，扩展性良好的业务设计通常会有三个问题：第一，设计和开 发时间比较长；第二，代码不易读；第三，大部分扩展以后都不会用到。</li>
+<li>提倡交叉设计。为了让团队中每个人都能充分了解各个模块，所以在不同的项目中每个人负责的模块会不一样。项目1中设计A模块的人，可能会在项目2中设计B模块。</li>
+<li>全员参与设计评审。为了全体成员都能充分参与到设计评审中，我们制定了几个固定的策略。<ul>
+<li>评审时间要短。因为大部分人在会议中只能专注20分钟，所以设计评审要在40分钟内结束，设计者可使用PPT或直接在黑板上画出设计思路。让参与者充分了解设计的模块。如果是对已有功能的修改，设计者必须先讲这块功能原来什么样，现在需要修改成什么样，涉及哪些修改点，是如何设计的。这能让其他模块的设计者更了解这个模块，参与到这个模块的设计评审中。</li>
+<li>如果设计方案审批没通过，则需要设计者返工。为了提高效率，不需要再开一次会议评审重新设计的方案，将相关人叫到座位旁边确认就可以。</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-3-结对Code-Review"><a href="#1-3-结对Code-Review" class="headerlink" title="1.3 结对Code Review"></a>1.3 结对Code Review</h4><ul>
+<li>提倡结对Code Review。如果模块是由一个人设计的，那么Code Review时审查者只能帮助队友Review出代码中是否有坏味道，却很难Review业务逻辑是否完全正确。因此，提倡结对Code Review，每个模块由两个人设计，然后分开开发，最后交叉Code Review，这样能Review对方代码中的业务逻辑是否正确。</li>
+<li>提倡主动Code Review。结对的成员相互Review代码会存在一定局限性，所以项目经理要对核心功能进行Review。如果团队中有人提前完成功能，也提倡他们主动帮其他人Review代码。</li>
+<li>代码审查的时间。在时间充裕时，提倡每天进行一次Code Review，好处是修改成本低。通常情况下，在提交测试前2天开始做Code Review，但如果时间比较紧，也会在项目结束后做Code Review。</li>
+</ul>
+<h4 id="1-4-寻求帮助的晨会"><a href="#1-4-寻求帮助的晨会" class="headerlink" title="1.4 寻求帮助的晨会"></a>1.4 寻求帮助的晨会</h4><p>晨会通常用于汇报工作进度，而我们希望将打造成寻求团队合作的会议。很多时候，项目质量低下主要是因为团队成员开发时间不够。如果某位成员实现某个功能发生 了延迟，那么他肯定没时间写单元测试，更没有时间帮别人做Code Review。此时，就应该在晨会上将这个问题告知团队其他成员。我们不会因某名成员实现功能延迟而责怪他，更不会让他加班追赶进度，而是在晨会时请其他 团队成员帮他完成单元测试和Code Review。我们是一个团队，有问题绝对不会让团队的某名成员独立承担。</p>
+<h4 id="1-5-不断精进的项目总结"><a href="#1-5-不断精进的项目总结" class="headerlink" title="1.5 不断精进的项目总结"></a>1.5 不断精进的项目总结</h4><p>这些方法不是团队创建之初就有的，是通过每次项目总结和下个项目实践不断精进出来的。在做项目总结时，所有成员都要针对本次项目的不足提出下个项目需要改善的地方，定出下个项目中可尝试的实践，并确定一位负责人和完成时间。</p>
+<p>根据经验，如果不确定负责人和完成时间，任何实践基本都很难完成。另外，我们通常只定一个实践在下个项目中执行，定多了也很难完成。而且为了让大家能够在项目总结会议中畅所欲言，通常会将项目总结会议办成一个茶话会的形式。</p>
+<h4 id="1-6-为团队质量而赌"><a href="#1-6-为团队质量而赌" class="headerlink" title="1.6 为团队质量而赌"></a>1.6 为团队质量而赌</h4><p>在项目开始前，开发人员和QA会轮流坐庄，赌本项目的Bug数会是多少个，输的一方要给赢的一方买饮料喝。这么做主要是为了在提高项目质量的同时培养团队合 作意识。如果开发要想获胜，那么团队中的每名开发人员都尽量不要产生Bug，避免拖累整个团队，而团队的其他成员为了实现目标会更加主动地帮助同学做 Code Review。但这个目标必须定得非常合理，如果项目中涉及到大量的前端开发，则Bug数会更多，目标要定低一点。在本次项目目标达成之后，下一个项目会 定更高的目标。</p>
+<h3 id="2-自组织管理"><a href="#2-自组织管理" class="headerlink" title="2. 自组织管理"></a>2. 自组织管理</h3><p>在《射雕英雄传》里，以全真七子的武功是打不过东邪黄药师的，但当他们摆出了“天罡北斗阵”时，却能和黄药师打成平手。这就是团队合作形成合力的威力。</p>
+<h4 id="2-1-何为自组织管理"><a href="#2-1-何为自组织管理" class="headerlink" title="2.1 何为自组织管理"></a>2.1 何为自组织管理</h4><p>我们提倡的自组织管理是指团队中的每一位成员都是团队的Owner，都为团队的目标负责，在团队事务上没有一位绝对的管理者，每位团队成员都可以作为团队事务的管理者，组织团队中的所有成员一起完成团队事务。</p>
+<h4 id="2-2-为什么进行自组织管理"><a href="#2-2-为什么进行自组织管理" class="headerlink" title="2.2 为什么进行自组织管理"></a>2.2 为什么进行自组织管理</h4><p>传统管理指的是在一个团队中由一个人负责团队的管理，而其他成员不参与团队事务的管理，管理者发布命令，团队成员执行命令。这样的管理存在诸多弊端。</p>
+<p>传统管理对于团队事务很难做到面面俱到。要创建一个优秀的团队，需要管理的团队事务非常多，例如项目管理、组织团队建设活动和团队分享活动等。如果仅由一位管理者来负责管理很难全部完成。即使全部完成了，由于没有充足的时间进行过程管理，其结果也会打折扣。</p>
+<p>传统管理执行力不够。在传统管理中，主管是指挥者，发布指令，团队成员是指令的执行者。但团队成员是人而不是机器，他们都有自己的想法，有时对于自己不认可的事情，即使内心不愿意，迫于主管的权利也只能执行，而这样做事的话往往执行力不足，经常需要主管的督促。</p>
+<p>传统管理很难充分发挥团队合力。团队的合力在于每位成员都在积极主动地为团队目标付出自己的一份力。团队中经常有一些较积极的成员会提出一些好的建议和想 法，比如希望一起做某个工具，来提高工作效率，他们希望主管认可其想法，并能组织大家完成这个想法。但在传统管理中，或者因为主管认为这个想法没有价值， 又或者因为管理者没有时间来组织这件事情，导致这些想法最终没有落地，于是利于团队工作的想法就会越来越少，最后只有管理者一个人来思考如何提高团队的工 作效率等事情。</p>
+<p>为了消除传统管理带来的弊端，我们团队尝试进行自组织管理实践。让团队中的每一位成员都参与到团队事务管理中，让某些方面表现出过人之处的成员，管理其擅长并感兴趣的团队事务。</p>
+<p>比如让喜欢旅游和娱乐活动的成员负责团队建设活动；让擅长写单元测试的成员组织大家一起提高单元测试覆盖率和质量；让擅长项目管理的同事负责项目管理；让对项目管理有兴趣有想法的同事负责组织大家开发开源项目；让喜欢写作和分享的同事负责打造团队分享的氛围。</p>
+<h4 id="2-3-如何进行自组织管理"><a href="#2-3-如何进行自组织管理" class="headerlink" title="2.3 如何进行自组织管理"></a>2.3 如何进行自组织管理</h4><p>目前，我们团队还没有实现高度的自组织管理，主要由主管向团队所有成员分配团队事务，然后团队成员组织大家一起完成这项团队事务。而组织的形式采取任务发布和认领的方式。</p>
+<p><strong>任务的发布和认领</strong></p>
+<p>组织者把团队事务分解成若干子任务，并制作成一张任务认领表放在confluence上让所有感兴趣的成员去认领。表1是一个典型的任务认领表，有些任务需要注明任务的详细信息。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r0mjlu9tj20cg02ajrj.jpg" alt=""></p>
+<p>领取的时候必须写上计划完成时间。实践表明，领取任务的同学自己写上计划完成时间会有一种无形的督促力，能够提高任务的完成度。</p>
+<p>另外，分解出来的子任务需要的时间越短越容易被领取。我们通常划分出来的一项子任务只需要1天左右的时间就能完成，完成了以后可以继续领取其他子任务。如果有些子任务没有人认领，组织者一般会去认领这些子任务，或者主动询问其他没有认领的同事有无兴趣认领这项任务。</p>
+<h4 id="2-4-促进任务的完成"><a href="#2-4-促进任务的完成" class="headerlink" title="2.4 促进任务的完成"></a>2.4 促进任务的完成</h4><p>组织者不仅负责任务的分配，更应该2促进任务的完成。比如组织提高单元测试的同事会针对比较难写的单元测试Case写一些分享文档，帮助大家攻克难写的单元 测试。如果在做某项子任务的过程中出现了问题，组织者要主动帮助他们解决问题。还需要对于所有的认领者给予适当的激励。比如，每个模块完成时在团队群里发 一条表扬的通知，或者请按时完成任务的同事喝饮料，以激励和提醒其他同事按时完成认领的任务。</p>
+<p><strong>鼓励每位成员都组织一项感兴趣的公共事务</strong></p>
+<p>如果只有一位团队成员组织公共事务，那么领取任务的积极性可能不会很高。而如果团队中的每位成员都组织一项公共事务的话，积极性就会高很多。</p>
+<p>因为人都有互惠心理，当你支持其他同事组织的团队事务时，别人就会主动支持你组织的团队事务，这样无形当中就形成了一种积极合作的氛围，从而推动所有公共事务的进展。</p>
+<h4 id="2-5-主管在自组织管理中的作用"><a href="#2-5-主管在自组织管理中的作用" class="headerlink" title="2.5 主管在自组织管理中的作用"></a>2.5 主管在自组织管理中的作用</h4><p>主管在自组织管理中充当着支持者、协调者和指导者的角色。一支传统管理团队向自组织管理团队转型，需要主管的大力支持和帮助。</p>
+<p><strong>支持组织者的工作</strong></p>
+<p>主管不仅需要口头上支持组织者的工作，比如在周会上鼓励团队每位成员去认领任务，更要在行动上支持组织者的工作，比如首先认领组织者划分的子任务。</p>
+<p><strong>赞同并支持团队成员实现自己的想法</strong></p>
+<p>主管管理的目的应该是帮助团队顺利完成工作，并且帮助团队成员快速成长。因此，当主管听到团队中一些积极的同事提出好的想法时，只要这个想法符合团队目标，应该尽量帮助他完善这个想法并支持他去做。</p>
+<p>而对于不合理的建议，也应该帮助团队成员进行分析和思考，帮助他思考出这个建议不合理的原因，并使他的思考更加成熟和正确，以期望下一次能提出更好的建议。而不是没有仔细思考这个想法就拒绝了。如果贸然拒绝的次数多了，团队中积极的想法就会越来越少。</p>
+<p><strong>鼓励团队合作</strong></p>
+<p>肯定了团队成员的想法后，很多成员都会想自己去把这件事情做成，这时主管应该鼓励他采用团队合作的方式。让他分享这件事情，看看团队中是否有同学有兴趣一起做。这样不仅能快速地使这个想法落地，而且提高了团队的合作能力。</p>
+<p><strong>勇于承担责任</strong></p>
+<p>从传统管理向自组织管理转型的过渡期可能会出现一些问题，因为很多团队成员可能由于缺乏管理经验，造成项目延期或故障。这时主管应该主动承担责任，通过这种 方式信任和保护团队成员，使团队成员积极努力地把自己负责的管理职能做好。否则，一旦有问题，团队成员可能就会猜疑，甚至抱怨这种管理方式是否合理。</p>
+<h4 id="2-6-如何打造自组织团队"><a href="#2-6-如何打造自组织团队" class="headerlink" title="2.6 如何打造自组织团队"></a>2.6 如何打造自组织团队</h4><p>进行这样的自组织管理，不仅需要管理者的大力支持，更需要每位团队成员的配合和支持，所以培养团队合作氛围和团队管理能力尤其重要。</p>
+<p><strong>培养团队合作氛围</strong></p>
+<p>因为我们进行自组织管理的团队事务都倾向于通过团队合作来完成，不提倡单兵作战，所以自组织团队必须有很好的团队合作氛围。</p>
+<p>在招聘时，我们倾向于招聘喜欢团队合作的成员加入团队。在工作中，通过一起解决问题来提高团队合作氛围。比如，如果晚上将发布软件的某个版本，而团队中的某 个成员开发的模块有点问题，团队成员会一起加班来分析并解决问题。在工作之外，团队会经常做一些非零和博弈活动来培养团队氛围。比如一起吃午餐、打桌球、 打牌和唱歌等。</p>
+<p><strong>锻炼团队成员的管理能力</strong></p>
+<p>因为自组织团队需要每位成员都参与到团队事务管理中，所以需要培养团队内的每位成员都有一定的管理经验。对于缺乏管理经验的成员，可以先让他们做一些简单的管理事务，如团队分享管理和团队活动管理等。</p>
+<h4 id="2-7-自组织管理的效果"><a href="#2-7-自组织管理的效果" class="headerlink" title="2.7 自组织管理的效果"></a>2.7 自组织管理的效果</h4><p>在自组织管理中，团队中的每位成员既是管理者，又是执行者。每位成员管理着自己擅长并感兴趣的事情，这样事情通常都能很好地完成。而且团队中的每位成员都能站在管理者的角度来思考问题，增加了团队成员之间彼此的理解，工作效率自然有所提高。</p>
+<p>我们团队通过自组织管理完成了诸多团队事务，例如开发了一个Eclipse Code Review插件Tala，完成了单元测试行覆盖率70％、整个系统的功能导航图等。</p>
+<p>自组织管理的最大特点是弱管理，鼓励团队成员自我管理，主动思考，多担当。团队成员具有强烈的自我驱动、自我完善、自我管理的意识，不仅能主动支持团队的公共事务，并且还能主动发现团队和业务中的问题，对这些问题提出改进建议，努力解决这些问题。</p>
+<p>我在工作之余翻译国外的并发文献时，也运用了这种自组织管理方式来组织翻译活动。我在论坛发帖，目前已征集到十几位爱好者，翻译完成几十篇并发编程的译文，对翻译完的译文进行了互相校对。这样的形式比我一个人翻译要高效很多。</p>
+<h3 id="3-结对编程"><a href="#3-结对编程" class="headerlink" title="3. 结对编程"></a>3. 结对编程</h3><p><strong>什么是结对编程</strong></p>
+<p>结对编程（Pair Programming）是一种敏捷软件开发实践，指两个程序员并排坐在一台电脑前，面对同一个显示器，使用同一个键盘和鼠标一起工作。一个人输入代码，而另一个人审查他输入的每一行代码。输入代码的人称作驾驶员，审查代码的人称作观察员（或导航员）， 两个程序员定期互换角色。他们在一起完成需求分析、系统设计、编码、单元测试、整合测试（Integration Test）、写文档等工作。基本上所有的开发环节都一起肩并肩地、平等地、互补地进行工作（如图1所示）。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r0q0kuvfj208a05u41t.jpg" alt=""></p>
+<p>上面是极限编程（eXtreme Programming，XP）对结对编程的描述，它有如下主要的优点：</p>
+<ul>
+<li>有利于提升项目质量，减少Bug；</li>
+<li>有利于知识传递，降低学习成本；</li>
+<li>多人熟悉同一段代码，减少项目风险；</li>
+<li>与别人一起工作会增加责任和纪律性等。</li>
+</ul>
+<p>尽管结对编程有诸多诱人的优点，但实行结对编程实践的却为数不多，其主要原因可能有：</p>
+<ul>
+<li>结对编程需要投入更多的资源；</li>
+<li>结对双方需同时注意力集中，否则效率更低；</li>
+<li>结对人员能力要求相适，否则起不到观察者的作用，甚至产生依赖；</li>
+<li>不成功的配对，经常引发争吵，产生内耗，导致团队不和谐等。</li>
+<li>结对编程是颇具争议的敏捷实践之一，除上述一些优缺点外，可能大家还有更多不同的看法，但分析利弊不是本文所要讨论的重点。</li>
+</ul>
+<p><strong>实践经验</strong></p>
+<p>就我所在的项目团队而言，6人左右的开发团队需要支持多个中小型独立产品的需求开发，在繁重的业务压力下，用户价值的快速交付是首要的，所以想尝试共用一台电脑进行结对开发的实践只能是一种奢望。让团队开发人员尽可能熟悉相互间的产品代码，提升项目开发效率以及保证良好的项目质量，是我们在项目开发过程中需要重点解决的问题。</p>
+<p>我们试图通过集体Code Review和设计交流分享等活动，来提升代码质量以及相互间业务代码的熟悉度，但一直收效甚微。问题主要在于这种集中式活动时间较难安排，人多交流效果不佳，性价比不高。后来，得益于公司的导师机制，在一对新人和导师身上，找到了敏捷结对的原型。由于他们的紧密合作，遇到问题及时沟通，新人在项目进度和质量都有不错表现，很好地融入了团队。在后续的项目过程中，我们不断地尝试和优化这种结对形式，逐渐形成相对固定的工作方法。</p>
+<p>与XP结对编程相比，敏捷结对编程最为显著的差异是结对进行需求分析、系统设计和问题讨论，但分别编码实现，通过过程中频繁的Review来实现结对的效果。开发人员两两结对，共同认领开发任务，一起对所承担的开发任务负责。在需求理解、设计阶段双方一起设计和讨论，然后分工各自编码实现，并通过Code Review以确保实现与设计一致。对结对过程中发现的问题，随时沟通和讨论。由于产品业务逻辑相对不是特别复杂，所以通过这种小范围、高效的沟通，可以解决项目中的绝大部分问题，实现更高的开发效率并确保代码质量。目前，在开发流程中的主要结对活动如图2所示。</p>
+<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r0qudogvj208i043jrx.jpg" alt=""></p>
+<p>结对活动（如图3所示）给我们带来了哪些好处？</p>
+<ul>
+<li>提升项目质量。结对开发人员在需求理解、设计思路上进行了充分的沟通和讨论，能尽早地发现和解决问题，避免前期因需求理解偏差、设计缺陷问题造成返工。</li>
+<li>知识传递。对于新员工或经验略逊的开发人员，通过经常性的沟通和讨论，能迅速地进入角色和积累经验，发挥了传帮带的作用。</li>
+<li>backup，规避项目风险。结对人员之间互为backup，有利于团队成员之间熟悉业务代码，若有人员异动时有利于项目风险控制。</li>
+</ul>
+<p>无论新老结对还是强弱结对，都要尽力避免一方对另一方产生依赖，要给新人足够的成长和锻炼空间，让其独立思考和解决问题，并允许在可控范围内尝试失败，以获取宝贵经验得到成长。否则，团队只会多一个执行者，结对难以达到预想的效果。同时，一定程度的独立活动，可以让大家保留自己的工作习惯，而且形式更为自由和灵活。当然，大家可能会有疑问，如何保证结对人选中资深工程师工作的正确性，因为新人和弱者很有可能无法提出想要的Review帮助。这个问题在我们的结对中不可避免，有选择地邀请其他资深专家Review，也许会是个不错的解决方案，特别是对于一些重要的复杂业务逻辑。</p>
+<p>参加结对的工程师应具备独立思考和解决问题的能力，并且具备较好的团队协作意识。否则，不仅不能有好的结对效果，反而会带来一些新问题。此外，结对也不仅限在研发工程师之间，研发和测试工程师之间或同产品经理之间的结对（如图4所示），同样可以带来不错的效果。</p>
+<p>引入敏捷实践，贵在充分理解、结合实际，能扬长避短，且是一个适应、发展的过程，而按部就班绝对不是个好主意。有选择地结对对我们来说也许是上策，在结对的人选、场合、结对的环节等方面进行选择性的实施。</p>
+<h3 id="3-敏捷回顾"><a href="#3-敏捷回顾" class="headerlink" title="3. 敏捷回顾"></a>3. 敏捷回顾</h3><p>回顾（review）是敏捷开发中的一个必不可少的实践，也是把整个敏捷开发过程连接成一个闭环的关键节点</p>
+<p><strong>敏捷回顾最高指导原则</strong></p>
+<p>无论我们发现了什么，考虑到当时的已知情况、个人的技术水平和能力、可用的资源，以及手上的状况，我们理解并坚信：每个人对自己的工作都已全力以赴。</p>
+<p><strong>敏捷回顾的目标</strong><br>发现问题，持续改进。</p>
+<p><strong>敏捷回顾常碰到的问题</strong></p>
+<p>   唉，又要开总结会了…每次时间都那么长问题讨论来讨论去就那几个，没啥新意都不记得这段时间做过啥了新迭代KO，总结放在一天时间太紧</p>
+<p><strong>敏捷回顾会议内容</strong></p>
+<p>1.产品数据<br>目的：通过分析用户数据来看我们的产品设计是否赢得了用户的认可<br>做法：收集前一迭代上线后的相关产品数据，如新功能使用日UV、PV等，当然如果发布后第二天召开回顾会议，可能不能马上收集到相关数据，也可以分析上上迭代的新功能使用情况。</p>
+<p>2.项目质量<br>目的：通过项目过程数据来看质量<br>做法：分别从冒烟测试通过率、bug分析、集成测试方面来衡量项目质量，找到做的好与不好的原因。bug分析可以通过QC导出统计报表，从多维度进行分析，bug等级，引入层级等方面，如下图：</p>
+<p>3.各抒己见</p>
+<p>目的：总结项目中做的好的，不好的</p>
+<p>做法：从KEEP（做的好的，要保持的），CHANGE（做的不好的，需要改进的），TRY（可以尝试的）三个方面进行总结。首先回顾下上次总结会议列出来的CHANGE和TRY事项，看看前一迭代做的怎么样；接着总结前一迭代的情况（每个团队成员在回顾会议前都先想好，写到便签条上，防止说的时候人云亦云），将每个人说的汇总，并由大家投票列出哪些可以在下一迭代中改进以及尝试，列出具体的action，建议不要多余三项，否则太发散什么都做不好。如下图：</p>
+<p>4.个人总结</p>
+<p>目的：督促项目成员自己做总结，看有哪些收获和遗憾，不仅要项目成功，成员也有要有所成长，也便于项目经理后续的任务安排有所侧重</p>
+<p>做法：成员轮流发言，总结自己在前一项目中的收获和遗憾，尽量具体，收获指的是工程师在技术方面学到了些什么，总结了才会有成长，遗憾则指的是项目启动时给自己设定的目标或计划没有完成的。</p>
+<p>以上就是我们敏捷回顾中的4个部分，在组织会议上可以适当采取轮流主持，以及准备些水果、零食，利于大家保持放松，经过前一个迭代的紧张开发和测试，通过敏捷回顾稍作休息，整装待发。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/agile/" rel="tag"># agile</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/06/clean-code/" rel="next" title="整洁代码随想">
+                <i class="fa fa-chevron-left"></i> 整洁代码随想
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/13/rate-limiter/" rel="prev" title="限流总结">
+                限流总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-如何打造合作型团队"><span class="nav-number">1.</span> <span class="nav-text">1. 如何打造合作型团队</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-需求串讲评审"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 需求串讲评审</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-全员参与设计"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 全员参与设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-结对Code-Review"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 结对Code Review</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-寻求帮助的晨会"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 寻求帮助的晨会</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-不断精进的项目总结"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 不断精进的项目总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-为团队质量而赌"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 为团队质量而赌</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-自组织管理"><span class="nav-number">2.</span> <span class="nav-text">2. 自组织管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-何为自组织管理"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 何为自组织管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-为什么进行自组织管理"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 为什么进行自组织管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-如何进行自组织管理"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 如何进行自组织管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-促进任务的完成"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 促进任务的完成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-主管在自组织管理中的作用"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 主管在自组织管理中的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-如何打造自组织团队"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 如何打造自组织团队</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-自组织管理的效果"><span class="nav-number">2.7.</span> <span class="nav-text">2.7 自组织管理的效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-结对编程"><span class="nav-number">3.</span> <span class="nav-text">3. 结对编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-敏捷回顾"><span class="nav-number">4.</span> <span class="nav-text">3. 敏捷回顾</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

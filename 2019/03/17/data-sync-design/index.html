@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 1. 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份">
+<meta name="description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份底层存">
 <meta name="keywords" content="数据同步, design">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据同步机制设计">
 <meta property="og:url" content="https://hu3.coding.me/2019/03/17/data-sync-design/index.html">
 <meta property="og:site_name" content="一壶浊酒喜相逢">
-<meta property="og:description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 1. 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份">
+<meta property="og:description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份底层存">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1h7rzslj20j60a50uc.jpg">
@@ -95,10 +95,10 @@
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2e77o2cj20cx063757.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2f0759kj211b0iwwjm.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2hqtl9uj20lf03vmxh.jpg">
-<meta property="og:updated_time" content="2019-08-06T04:38:10.752Z">
+<meta property="og:updated_time" content="2019-08-07T05:45:15.021Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据同步机制设计">
-<meta name="twitter:description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 1. 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份">
+<meta name="twitter:description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份底层存">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg">
 
 
@@ -354,7 +354,7 @@
 
       
         <p>数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。</p>
-<h3 id="1-什么是单元化"><a href="#1-什么是单元化" class="headerlink" title="1. 什么是单元化"></a>1. 什么是单元化</h3><p>可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。</p>
+<h3 id="什么是单元化"><a href="#什么是单元化" class="headerlink" title="什么是单元化"></a>什么是单元化</h3><p>可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。</p>
 <p>考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份底层存储中，如下图所示：</p>
 <p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg" alt=""></p>
 <p>存在以下几个问题：</p>
@@ -535,7 +535,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -548,7 +548,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -581,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是单元化"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是单元化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何进行数据同步"><span class="nav-number">2.</span> <span class="nav-text">如何进行数据同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何获取全量-增量的历史数据？"><span class="nav-number">2.1.</span> <span class="nav-text">如何获取全量+增量的历史数据？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决重复插入？"><span class="nav-number">2.2.</span> <span class="nav-text">如何解决重复插入？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决唯一索引冲突？"><span class="nav-number">2.3.</span> <span class="nav-text">如何解决唯一索引冲突？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于DDL语句如何处理？"><span class="nav-number">2.4.</span> <span class="nav-text">对于DDL语句如何处理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决数据回环问题？"><span class="nav-number">2.5.</span> <span class="nav-text">如何解决数据回环问题？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#INSERT操作"><span class="nav-number">2.5.1.</span> <span class="nav-text">INSERT操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UPDATE操作"><span class="nav-number">2.5.2.</span> <span class="nav-text">UPDATE操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DELETE操作"><span class="nav-number">2.5.3.</span> <span class="nav-text">DELETE操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据同步架构设计"><span class="nav-number">3.</span> <span class="nav-text">数据同步架构设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据同步回环问题解决方案"><span class="nav-number">4.</span> <span class="nav-text">数据同步回环问题解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-往目标库插入不生成binlog"><span class="nav-number">4.1.</span> <span class="nav-text">1. 往目标库插入不生成binlog</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是单元化"><span class="nav-number">1.</span> <span class="nav-text">什么是单元化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何进行数据同步"><span class="nav-number">2.</span> <span class="nav-text">如何进行数据同步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何获取全量-增量的历史数据？"><span class="nav-number">2.1.</span> <span class="nav-text">如何获取全量+增量的历史数据？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决重复插入？"><span class="nav-number">2.2.</span> <span class="nav-text">如何解决重复插入？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决唯一索引冲突？"><span class="nav-number">2.3.</span> <span class="nav-text">如何解决唯一索引冲突？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对于DDL语句如何处理？"><span class="nav-number">2.4.</span> <span class="nav-text">对于DDL语句如何处理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决数据回环问题？"><span class="nav-number">2.5.</span> <span class="nav-text">如何解决数据回环问题？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#INSERT操作"><span class="nav-number">2.5.1.</span> <span class="nav-text">INSERT操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UPDATE操作"><span class="nav-number">2.5.2.</span> <span class="nav-text">UPDATE操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DELETE操作"><span class="nav-number">2.5.3.</span> <span class="nav-text">DELETE操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据同步架构设计"><span class="nav-number">3.</span> <span class="nav-text">数据同步架构设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据同步回环问题解决方案"><span class="nav-number">4.</span> <span class="nav-text">数据同步回环问题解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-往目标库插入不生成binlog"><span class="nav-number">4.1.</span> <span class="nav-text">1. 往目标库插入不生成binlog</span></a></li></ol></li></ol></div>
             
 
           </div>
