@@ -87,19 +87,19 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份底层存">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1h7rzslj20j60a50uc.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1oo62mej20q80ggacr.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1q6at9uj20nz0fo40w.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1t0nos4j20di082abz.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2e77o2cj20cx063757.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2f0759kj211b0iwwjm.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5d2hqtl9uj20lf03vmxh.jpg">
-<meta property="og:updated_time" content="2019-08-07T05:45:15.021Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5d1h7rzslj20j60a50uc.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5d1oo62mej20q80ggacr.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5d1q6at9uj20nz0fo40w.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5d1t0nos4j20di082abz.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5d2e77o2cj20cx063757.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5d2f0759kj211b0iwwjm.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5d2hqtl9uj20lf03vmxh.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据同步机制设计">
 <meta name="twitter:description" content="数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。 什么是单元化可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。 考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份底层存">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg">
 
 
 
@@ -356,7 +356,7 @@
         <p>数据同步是异地多活的基础，所有具备数据存储能力的组件如：数据库、缓存、MQ等，数据都可以进行同步，形成一个庞大而复杂的数据同步拓扑。</p>
 <h3 id="什么是单元化"><a href="#什么是单元化" class="headerlink" title="什么是单元化"></a>什么是单元化</h3><p>可以理解为将数据划分到多个单元进行存储。”单元”是一个抽象的概念，通常与数据中心(IDC)概念相关，一个单元可以包含多个IDC，也可以只包含一个IDC。本文假设一个单元只对应一个IDC。</p>
 <p>考虑一开始只有一个IDC的情况，所有用户的数据都会写入同一份底层存储中，如下图所示：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5d1ej4o0sj20ab08cq3r.jpg" alt=""></p>
 <p>存在以下几个问题：</p>
 <ol>
 <li><p><strong>不同地区的用户体验不同</strong>。一个IDC必然只能部署在一个地区，例如部署在北京，那么北京的用户访问将会得到快速响应；但是对于上海的用户，访问延迟一般就会大一点，上海到北京的一个RTT可能有20ms左右。</p>
@@ -365,7 +365,7 @@
 </li>
 </ol>
 <p>为了解决这些问题，我们可以将服务部署到多个不同的IDC中，不同IDC之间的数据互相进行同步。如下图：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1h7rzslj20j60a50uc.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5d1h7rzslj20j60a50uc.jpg" alt=""></p>
 <p>当一个机房挂了之后，我们可以将这个机房用户的流量调度到另外一个正常的机房，由于不同机房之间的数据是实时同步的，用户流量调度过去后，也可以正常访问数据 (故障发生那一刻的少部分数据可能会丢失)。</p>
 <p><strong>机房容灾</strong> —— <strong>两地三中心</strong></p>
 <p>上面的案例中，我们使用了2个IDC，但是2个IDC并不能具备机房容灾能力。至少需要3个IDC，例如，一些基于多数派协议的一致性组件，如zookeeper，redis、etcd、consul等，需要得到大部分节点的同意。例如我们部署了3个节点，在只有2个机房的情况下， 必然是一个机房部署2个节点，一个机房部署一个节点。当部署了2个节点的机房挂了之后，只剩下一个节点，无法形成多数派。在3机房的情况下，每个机房部署一个节点，任意一个机房挂了，还剩2个节点，还是可以形成多数派。</p>
@@ -383,14 +383,14 @@
 </ul>
 <p>这些组件都要完成最基本的2件事：从源库拉取binlog并进行解析，我们把这部分功能称之为<strong>binlog syncer</strong>；将获取到的binlog转换成SQL插入目标库，这个功能称之为<strong>sql writer</strong>。</p>
 <p>为什么划分成两块独立的功能？因为binlog订阅解析的实际应用场景并不仅仅是数据同步</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1oo62mej20q80ggacr.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5d1oo62mej20q80ggacr.jpg" alt=""></p>
 <p>因此，通常我们把binlog syncer单独作为一个模块，其只负责解析从数据库中拉取并解析binlog，并在内存中缓存(或持久化存储)。另外，binlog syncer另外提一个sdk，业务方通过这个sdk从binlog syncer中获取解析后的binlog信息，然后完成自己的特定业务逻辑处理。</p>
 <p>显然，在数据同步的场景下，我们可以基于这个sdk，编写一个组件专门用于将binlog转换为sql，插入目标库，实现数据同步，如下图所示：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1q6at9uj20nz0fo40w.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5d1q6at9uj20nz0fo40w.jpg" alt=""></p>
 <p>北京用户的数据不断写入离自己最近的机房的DB，通过binlog syncer订阅这个库binlog，然后下游的binlog writer将binlog转换成SQL，插入到目标库。上海用户类似，只不过方向相反，不再赘述。通过这种方式，我们可以实时的将两个库的数据同步到对端。当然事情并非这么简单，我们有一些重要的事情需要考虑。</p>
 <h4 id="如何获取全量-增量的历史数据？"><a href="#如何获取全量-增量的历史数据？" class="headerlink" title="如何获取全量+增量的历史数据？"></a>如何获取全量+增量的历史数据？</h4><p>通常，mysql不会保存所有的历史binlog。</p>
 <p>expire_logs_days = 0，默认不清空</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5d1t0nos4j20di082abz.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5d1t0nos4j20di082abz.jpg" alt=""></p>
 <p>通常，如果binlog如果从来没被清理过，那么binlog文件名字后缀通常是000001，如果不是这个值，则说明可能已经被清理过。当然，这也不是绝对，例如执行”reset master”命令，可以将所有的binlog清空，然后从000001重新开始计数。</p>
 <p>反正! 我们知道了，binlog可能不会一直保留，所以直接同步binlog，可能只能获取到部分数据。因此，通常的策略是，<strong>由DBA先dump一份源库的完整数据快照，增量部分，再通过binlog订阅解析进行同步</strong>。</p>
 <h4 id="如何解决重复插入？"><a href="#如何解决重复插入？" class="headerlink" title="如何解决重复插入？"></a>如何解决重复插入？</h4><p>考虑以下情况下，源库中的一条记录没有唯一索引。对于这个记录的binlog，通过sql writer将binlog转换成sql插入目标库时，抛出了异常，此时我们并不知道知道是否插入成功了，则需要进行重试。如果之前已经是插入目标库成功，只是目标库响应时网络超时(socket timeout)了，导致的异常，这个时候重试插入，就会存在多条记录，造成数据不一致。</p>
@@ -406,13 +406,13 @@
 <p>考虑A库的记录R被连续更新了2次，第一次更新成R1，第二次被更新成R2；这两条记录变更信息都被同步到B库，B也产生了R1和R2。由于B的数据也在往A同步，B的R1会被先同步到A，而A现在的值是R2，由于值不一样，将会被更新成R1，并产生新的binlog；此时B的R2再同步会A，发现A的值是R1，又更新成R2，也产生binlog。由于B同步回A的操作，让A又产生了新的binlog，A又要同步到B，如此反复，陷入无限循环中。</p>
 <h5 id="DELETE操作"><a href="#DELETE操作" class="headerlink" title="DELETE操作"></a>DELETE操作</h5><p>同样存在先后顺序问题。例如先插入一条记录，再删除。B在A删除后，又将插入的数据同步回A，接着再将A的删除操作也同步回A，每次都会产生binlog，陷入无限回环。</p>
 <h3 id="数据同步架构设计"><a href="#数据同步架构设计" class="headerlink" title="数据同步架构设计"></a>数据同步架构设计</h3><p>前面的架构中，只涉及到2个DB的数据同步，如果有多个DB数据需要相互同步的情况下，架构将会变得非常复杂。例如：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5d2e77o2cj20cx063757.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5d2e77o2cj20cx063757.jpg" alt=""></p>
 <p>这个图演示的是四个DB之间数据需要相互同步，这种拓扑结构非常复杂。为了解决这种问题，我们可以将数据写入到一个数据中转站，例如MQ中进行保存，如下：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5d2f0759kj211b0iwwjm.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5d2f0759kj211b0iwwjm.jpg" alt=""></p>
 <p>我们在不同的机房各部署一套MQ集群，这个机房的binlog syncer将需要同步的DB binlog数据写入MQ对应的Topic中。对端机房如果需要同步这个数据，只需要通过binlog writer订阅这个topic，消费topic中的binlog数据，插入到目标库中即可。一些MQ支持consumer group的概念，不同的consumer group的消费位置offset相互隔离，从而达到一份数据，同时供多个消费者进行订阅的能力。</p>
 <p>当然，一些binlog订阅解析组件，可能实现了类似于MQ的功能，此时，则不需要独立部署MQ。    </p>
 <h3 id="数据同步回环问题解决方案"><a href="#数据同步回环问题解决方案" class="headerlink" title="数据同步回环问题解决方案"></a>数据同步回环问题解决方案</h3><h4 id="1-往目标库插入不生成binlog"><a href="#1-往目标库插入不生成binlog" class="headerlink" title="1. 往目标库插入不生成binlog"></a>1. 往目标库插入不生成binlog</h4><p>在mysql中，我们可以设置session变量，来控制当前会话上的更新操作，不产生binlog。这样当往目标库插入数据时，由于不产生binlog，也就不会被同步会源库了。为了演示这个效果，笔者清空了本机上的所有binlog(执行reset master)</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5d2hqtl9uj20lf03vmxh.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5d2hqtl9uj20lf03vmxh.jpg" alt=""></p>
 
       
     </div>

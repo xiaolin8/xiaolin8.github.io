@@ -87,15 +87,15 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="1. 同步超时  请求超时，客户端给服务端发送请求时超时，此时服务端没有收到客户端的请求； 服务端内部超时，服务端可能存在DB操作、IO操作、调用其他服务超时； 响应超时，服务端给客户端返回响应时超时，此时服务端已经处理了请求。  客户端无论是何种超时，对于客户端来说都是透明的，即客户端无法知道具体发生超时的点。客户端对于超时的处理，有如下两种常见方法：  查询，通过主动查询去拉取超时请求的状态。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hubqk01fj20fe028aaw.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hue6qonij20gk03vt9a.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5huezwn1oj20fg04a75i.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5huh3ho2yj20e803o3zs.jpg">
-<meta property="og:updated_time" content="2019-08-06T09:06:20.431Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hubqk01fj20fe028aaw.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hue6qonij20gk03vt9a.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5huezwn1oj20fg04a75i.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5huh3ho2yj20e803o3zs.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.177Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微服务调用超时处理">
 <meta name="twitter:description" content="1. 同步超时  请求超时，客户端给服务端发送请求时超时，此时服务端没有收到客户端的请求； 服务端内部超时，服务端可能存在DB操作、IO操作、调用其他服务超时； 响应超时，服务端给客户端返回响应时超时，此时服务端已经处理了请求。  客户端无论是何种超时，对于客户端来说都是透明的，即客户端无法知道具体发生超时的点。客户端对于超时的处理，有如下两种常见方法：  查询，通过主动查询去拉取超时请求的状态。">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hubqk01fj20fe028aaw.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hubqk01fj20fe028aaw.jpg">
 
 
 
@@ -349,7 +349,7 @@
       
 
       
-        <h3 id="1-同步超时"><a href="#1-同步超时" class="headerlink" title="1. 同步超时"></a>1. 同步超时</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hubqk01fj20fe028aaw.jpg" alt=""></p>
+        <h3 id="1-同步超时"><a href="#1-同步超时" class="headerlink" title="1. 同步超时"></a>1. 同步超时</h3><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5hubqk01fj20fe028aaw.jpg" alt=""></p>
 <ol>
 <li>请求超时，客户端给服务端发送请求时超时，此时服务端没有收到客户端的请求；</li>
 <li>服务端内部超时，服务端可能存在DB操作、IO操作、调用其他服务超时；</li>
@@ -363,9 +363,9 @@
 </li>
 </ul>
 <h4 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h4><p>对于①.请求超时和③.响应超时服务端是无法感知的，也就没法进行处理。而在②.服务端内部超时时服务端应该快速失败，立即响应客户端。如果是服务端调用其他服务(例如，服务C)超时，服务端除了快速失败之外，还需要调用服务C的冲正操作。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hue6qonij20gk03vt9a.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5hue6qonij20gk03vt9a.jpg" alt=""></p>
 <p>服务C的冲正接口需要能够判断之前是否接收过服务端超时的请求，如果接收过请求并做了处理，则应该执行反向的回滚操作，如果没有接收过，则忽略冲正请求。</p>
-<h3 id="2-异步超时"><a href="#2-异步超时" class="headerlink" title="2. 异步超时"></a>2. 异步超时</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5huezwn1oj20fg04a75i.jpg" alt=""></p>
+<h3 id="2-异步超时"><a href="#2-异步超时" class="headerlink" title="2. 异步超时"></a>2. 异步超时</h3><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5huezwn1oj20fg04a75i.jpg" alt=""></p>
 <ol>
 <li>请求超时，客户端给服务端发送请求时超时，此时服务端没有收到客户端的请求；</li>
 <li>服务端内部超时，服务端可能存在DB操作、IO操作、调用其他服务超时；</li>
@@ -376,7 +376,7 @@
 <h4 id="服务端-1"><a href="#服务端-1" class="headerlink" title="服务端"></a>服务端</h4><p>服务端对于请求超时和同步响应超时无能为力，不过对于异步响应超时、服务端内部超时是可以处理的，具体如下：</p>
 <p>对于异步通知超时可以采用最大努力通知，服务端要求客户端在收到异步通知时明确回应服务端接收成功，如果服务端没有收到客户端的回应，服务端重发异步结果。关于异步结果通知超时处理具体可以参考微信支付中的<a href="https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_7&amp;index=8" target="_blank" rel="noopener">支付结果通知文档</a></p>
 <p>服务端内部超时，我们应该尽最大努力使得用户的请求处理成功。如果是服务端调用其他服务超时，可以通过查询其他服务，根据查询到的结果再进行后续的操作，并将最终的结果通过异步通知反馈给客户端。</p>
-<h3 id="消息队列超时"><a href="#消息队列超时" class="headerlink" title="消息队列超时"></a>消息队列超时</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5huh3ho2yj20e803o3zs.jpg" alt=""></p>
+<h3 id="消息队列超时"><a href="#消息队列超时" class="headerlink" title="消息队列超时"></a>消息队列超时</h3><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5huh3ho2yj20e803o3zs.jpg" alt=""></p>
 <ol>
 <li>生产者投递消息超时，对应上图的①,②；</li>
 <li>消费者消费消息超时。</li>

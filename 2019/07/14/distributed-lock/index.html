@@ -87,14 +87,14 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="zookeeper可靠性比redis强太多，只是效率低了点，如果并发量不是特别大，追求可靠性，首选zookeeper。为了效率，则首选redis实现。 使用场景 不同的业务服务器，不同的进程  需要怎样的锁 可重入锁（可以多次加锁）可避免死锁（Thread+引用计数，避免了频繁的加锁解锁，又避免了死锁）同一个class中的synchronized方法可互相调用而不会发生死锁 ReentrantLo">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5q2l1fcrej20gm0d90tj.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5q2lesqkwj20hz0bumy3.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5q2lopo8zj20jv09vgm3.jpg">
-<meta property="og:updated_time" content="2019-08-06T09:09:04.953Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5q2l1fcrej20gm0d90tj.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5q2lesqkwj20hz0bumy3.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5q2lopo8zj20jv09vgm3.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.183Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式锁总结">
 <meta name="twitter:description" content="zookeeper可靠性比redis强太多，只是效率低了点，如果并发量不是特别大，追求可靠性，首选zookeeper。为了效率，则首选redis实现。 使用场景 不同的业务服务器，不同的进程  需要怎样的锁 可重入锁（可以多次加锁）可避免死锁（Thread+引用计数，避免了频繁的加锁解锁，又避免了死锁）同一个class中的synchronized方法可互相调用而不会发生死锁 ReentrantLo">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5q2l1fcrej20gm0d90tj.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5q2l1fcrej20gm0d90tj.jpg">
 
 
 
@@ -385,8 +385,8 @@
 <p>节点崩溃重启，会出现多个客户端持有锁<br>假设一共有5个Redis节点：A, B, C, D, E。设想发生了如下的事件序列：<br>(1)客户端1成功锁住了A, B, C，获取锁成功（但D和E没有锁住）。<br>(2)节点C崩溃重启了，但客户端1在C上加的锁没有持久化下来，丢失了。<br>(3)节点C重启后，客户端2锁住了C, D, E，获取锁成功。<br>这样，客户端1和客户端2同时获得了锁（针对同一资源）。</p>
 <p><strong>延迟重启</strong><br>等待的时间大于锁的有效时间。采用这种方式，这个节点在重启前所参与的锁都会过期，它在重启后就不会对现有的锁造成影响。</p>
 <p><strong>时间跳跃问题</strong><br>(1)假设一共有5个Redis节点：A, B, C, D, E。设想发生了如下的事件序列：<br>(2)客户端1从Redis节点A, B, C成功获取了锁（多数节点）。由于网络问题，与D和E通信失败。<br>(3)节点C上的时钟发生了向前跳跃，导致它上面维护的锁快速过期。<br>客户端2从Redis节点C, D, E成功获取了同一个资源的锁（多数节点）。<br>客户端1和客户端2现在都认为自己持有了锁。</p>
-<p><strong>超时导致锁失效问题</strong><br>RedLock算法并没有解决，操作共享资源超时，导致锁失效的问题。<br><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5q2l1fcrej20gm0d90tj.jpg" alt=""></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5q2lesqkwj20hz0bumy3.jpg" alt=""></p>
+<p><strong>超时导致锁失效问题</strong><br>RedLock算法并没有解决，操作共享资源超时，导致锁失效的问题。<br><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5q2l1fcrej20gm0d90tj.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5q2lesqkwj20hz0bumy3.jpg" alt=""></p>
 <h4 id="基于Zookeeper实现分布式锁"><a href="#基于Zookeeper实现分布式锁" class="headerlink" title="基于Zookeeper实现分布式锁"></a>基于Zookeeper实现分布式锁</h4><ul>
 <li>临时有序节点</li>
 <li>在节点上绑定监听器，一旦节点有变化，ZK会通知客户端，客户端检查自己创建的节点是不是所有节点序号中最小的</li>
@@ -398,7 +398,7 @@
 </li>
 <li>性能不高：每次都需要动态创建、删除临时节点，而且只能通过leader服务器</li>
 </ul>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5q2lopo8zj20jv09vgm3.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5q2lopo8zj20jv09vgm3.jpg" alt=""></p>
 <h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><ol>
 <li><a href="https://www.cnblogs.com/rjzheng/p/9310976.html" target="_blank" rel="noopener">https://www.cnblogs.com/rjzheng/p/9310976.html</a></li>
 <li><a href="https://redis.io/topics/distlock" target="_blank" rel="noopener">https://redis.io/topics/distlock</a></li>

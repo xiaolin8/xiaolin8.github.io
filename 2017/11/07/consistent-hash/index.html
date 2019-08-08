@@ -87,17 +87,17 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="直接增加分表肯定不行，原先的hash规则会被打乱… 全量数据迁移代价实在太高… 一致性hash，简称DHT  首先，我们把全量的缓存空间当做一个环形存储结构。环形空间总共分成2^32个缓存区，在Redis中则是把缓存key分配到16384个slot。  每一个缓存key都可以通过Hash算法转化为一个32位的二进制数，也就对应着环形空间的某一个缓存区。我们把所有的缓存key映射到环形空间的不同位置">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g312vm8srqj20iw0i80vm.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g312vxwj9rj20kl0jggpr.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g312wa6wtdj20l50jaq79.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g312wwnscvj20l10jejvx.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g312xy0qsxj20l20jbdkb.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3132jec2oj20k80jy0xk.jpg">
-<meta property="og:updated_time" content="2019-08-07T03:17:40.924Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g312vm8srqj20iw0i80vm.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g312vxwj9rj20kl0jggpr.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g312wa6wtdj20l50jaq79.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g312wwnscvj20l10jejvx.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g312xy0qsxj20l20jbdkb.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3132jec2oj20k80jy0xk.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一致性Hash算法">
 <meta name="twitter:description" content="直接增加分表肯定不行，原先的hash规则会被打乱… 全量数据迁移代价实在太高… 一致性hash，简称DHT  首先，我们把全量的缓存空间当做一个环形存储结构。环形空间总共分成2^32个缓存区，在Redis中则是把缓存key分配到16384个slot。  每一个缓存key都可以通过Hash算法转化为一个32位的二进制数，也就对应着环形空间的某一个缓存区。我们把所有的缓存key映射到环形空间的不同位置">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g312vm8srqj20iw0i80vm.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g312vm8srqj20iw0i80vm.jpg">
 
 
 
@@ -360,31 +360,31 @@
 <li><p>每一个缓存key都可以通过Hash算法转化为一个32位的二进制数，也就对应着环形空间的某一个缓存区。我们把所有的缓存key映射到环形空间的不同位置。</p>
 </li>
 </ol>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g312vm8srqj20iw0i80vm.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g312vm8srqj20iw0i80vm.jpg" alt=""></p>
 <ol start="3">
 <li>我们的每一个缓存节点（Shard）也遵循同样的Hash算法，比如利用IP做Hash，映射到环形空间当中。</li>
 </ol>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g312vxwj9rj20kl0jggpr.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g312vxwj9rj20kl0jggpr.jpg" alt=""></p>
 <p>4.如何让key和节点对应起来呢？很简单，每一个key的顺时针方向最近节点，就是key所归属的存储节点。所以图中key1存储于node1，key2，key3存储于node2，key4存储于node3。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g312wa6wtdj20l50jaq79.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g312wa6wtdj20l50jaq79.jpg" alt=""></p>
 <ol>
 <li>增加节点</li>
 </ol>
 <p>当缓存集群的节点有所增加的时候，整个环形空间的映射仍然会保持一致性哈希的顺时针规则，所以有一小部分key的归属会受到影响。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g312wwnscvj20l10jejvx.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g312wwnscvj20l10jejvx.jpg" alt=""></p>
 <p>有哪些key会受到影响呢？图中加入了新节点node4，处于node1和node2之间，按照顺时针规则，从node1到node4之间的缓存不再归属于node2，而是归属于新节点node4。因此受影响的key只有key2。</p>
 <p>最终把key2的缓存数据从node2迁移到node4，就形成了新的符合一致性哈希规则的缓存结构。</p>
 <ol start="2">
 <li>删除节点</li>
 </ol>
 <p>当缓存集群的节点需要删除的时候（比如节点挂掉），整个环形空间的映射同样会保持一致性哈希的顺时针规则，同样有一小部分key的归属会受到影响。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g312xy0qsxj20l20jbdkb.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g312xy0qsxj20l20jbdkb.jpg" alt=""></p>
 <p>有哪些key会受到影响呢？图中删除了原节点node3，按照顺时针规则，原本node3所拥有的缓存数据就需要“托付”给node3的顺时针后继节点node1。因此受影响的key只有key4。</p>
 <p>最终把key4的缓存数据从node3迁移到node1，就形成了新的符合一致性哈希规则的缓存结构。</p>
 <p>既然缓存节点都是按照IP来hash到环形空间，如果出现分布不均的情况怎么办？</p>
 <p><strong>虚拟节点</strong></p>
 <p>把原来的物理节点映射成N个虚拟节点，最后把所有的子节点映射到环形空间上。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3132jec2oj20k80jy0xk.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3132jec2oj20k80jy0xk.jpg" alt=""></p>
 <p>如上图所示，假如node1的ip是192.168.1.109，那么原node1节点在环形空间的位置就是hash（“192.168.1.109”）。</p>
 <p>我们基于node1构建两个虚拟节点，node1-1 和 node1-2，虚拟节点在环形空间的位置可以利用（IP+后缀）计算，例如：</p>
 <p>hash（“192.168.1.109#1”），hash（“192.168.1.109#2”）</p>

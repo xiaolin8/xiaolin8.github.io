@@ -87,18 +87,18 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="在某些情况下，降低响应时间、提高系统吞吐量和提高服务可用性三者相互矛盾，不可兼得。例如：增加缓存可以降低平均响应时间，但是处理线程数量会因为缓存过大而有所限制，从而降低系统吞吐量；为了提高服务可用性，对异常请求重复调用是一个常用的做法，但是这会提高响应时间并降低系统吞吐量。 系统面临如下三个挑战：1. 日益增长的用户数量，2. 日渐复杂的业务，3. 急剧膨胀的数据。 设计原则最小可用原则两个关注点">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5pzm2apdcj208p096wf6.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5pzrq4an9j20a9066q3b.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5pztnz5oyj20460a074o.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5q05qz9vrj20eo0590sv.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5q0z6agdoj20ah08474z.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5q14omgxuj2089090wf1.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5q14x9eu4j208407udgi.jpg">
-<meta property="og:updated_time" content="2019-08-06T09:04:37.020Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5pzm2apdcj208p096wf6.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5pzrq4an9j20a9066q3b.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5pztnz5oyj20460a074o.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5q05qz9vrj20eo0590sv.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5q0z6agdoj20ah08474z.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5q14omgxuj2089090wf1.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5q14x9eu4j208407udgi.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.180Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="性能优化模式">
 <meta name="twitter:description" content="在某些情况下，降低响应时间、提高系统吞吐量和提高服务可用性三者相互矛盾，不可兼得。例如：增加缓存可以降低平均响应时间，但是处理线程数量会因为缓存过大而有所限制，从而降低系统吞吐量；为了提高服务可用性，对异常请求重复调用是一个常用的做法，但是这会提高响应时间并降低系统吞吐量。 系统面临如下三个挑战：1. 日益增长的用户数量，2. 日渐复杂的业务，3. 急剧膨胀的数据。 设计原则最小可用原则两个关注点">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5pzm2apdcj208p096wf6.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5pzm2apdcj208p096wf6.jpg">
 
 
 
@@ -363,16 +363,16 @@
 <h4 id="奥卡姆剃刀原则"><a href="#奥卡姆剃刀原则" class="headerlink" title="奥卡姆剃刀原则"></a>奥卡姆剃刀原则</h4><p>一般而言，一个系统的代码量会随着其功能增加而变多。系统的健壮性有时候也需要通过编写异常处理代码来实现。异常考虑越周全，异常处理代码量越大。但是随着代码量的增大，引入Bug的概率也就越大，系统也就越不健壮。从另外一个角度来讲，异常流程处理代码也要考虑健壮性问题，这就形成了无限循环。所以在系统设计和代码编写过程中，奥卡姆剃刀原则要求：一个功能模块如非必要，就不要；一段代码如非必写，就不写。</p>
 <p>奥卡姆剃刀原则和最小可用原则有所区别。最小可用原则主要运用于产品MVP阶段，本文所指的奥卡姆剃刀原则主要指系统设计和代码编写两个方面，这是完全不同的两个概念。MVP包含系统设计和代码编写，但同时，系统设计和代码编写也可以发生在成熟系统的迭代阶段。</p>
 <h3 id="性能恶化模式"><a href="#性能恶化模式" class="headerlink" title="性能恶化模式"></a>性能恶化模式</h3><h4 id="长请求拥塞反模式（High-Latency-Invocating-AntiPattern）"><a href="#长请求拥塞反模式（High-Latency-Invocating-AntiPattern）" class="headerlink" title="长请求拥塞反模式（High Latency Invocating AntiPattern）"></a>长请求拥塞反模式（High Latency Invocating AntiPattern）</h4><p>这是一种单次请求时延变长而导致系统性能恶化甚至崩溃的恶化模式。对于多线程服务，大量请求时间变长会使线程堆积、内存使用增加，最终可能会通过如下三种方式之一恶化系统性能： 1. 线程数目变多导致线程之间CPU资源使用冲突，反过来进一步延长了单次请求时间； 2. 线程数量增多以及线程中缓存变大，内存消耗随之剧增，对于基于Java语言的服务而言，又会更频繁地full GC，反过来单次请求时间会变得更长； 3. 内存使用增多，会使操作系统内存不足，必须使用Swap，可能导致服务彻底崩溃。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5pzm2apdcj208p096wf6.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5pzm2apdcj208p096wf6.jpg" alt=""></p>
 <p>长请求拥塞反模式所导致的性能恶化现象非常普遍，所以识别该模式非常重要。典型的场景如下：某复杂业务系统依赖于多个服务，其中某个服务的响应时间变长，随之系统整体响应时间变长，进而出现CPU、内存、Swap报警。系统进入长请求拥塞反模式的典型标识包括：被依赖服务可用性变低、响应时间变长、服务的某段计算逻辑时间变长等。</p>
 <h4 id="多次请求杠杆反模式（Levered-Multilayer-Invocating-AntiPattern）"><a href="#多次请求杠杆反模式（Levered-Multilayer-Invocating-AntiPattern）" class="headerlink" title="多次请求杠杆反模式（Levered Multilayer Invocating AntiPattern）"></a>多次请求杠杆反模式（Levered Multilayer Invocating AntiPattern）</h4><p>客户端一次用户点击行为往往会触发多次服务端请求，这是一次请求杠杆；每个服务端请求进而触发多个更底层服务的请求，这是第二次请求杠杆。每一层请求可能导致一次请求杠杆，请求层级越多，杠杆效应就越大。在多次请求杠杆反模式下运行的分布式系统，处于深层次的服务需要处理大量请求，容易会成为系统瓶颈。与此同时，大量请求也会给网络带来巨大压力，特别是对于单次请求数据量很大的情况，网络可能会成为系统彻底崩溃的导火索。典型恶化流程图如下图：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5pzrq4an9j20a9066q3b.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5pzrq4an9j20a9066q3b.jpg" alt=""></p>
 <p>多次请求杠杆所导致的性能恶化现象非常常见，例如：对于美团推荐系统，一个用户列表请求会有多个算法参与，每个算法会召回多个列表单元（商家或者团购），每个列表单元有多种属性和特征，而这些属性和特征数据服务又分布在不同服务和机器上面，所以客户端的一次用户展现可能导致了成千上万的最底层服务调用。对于存在多次请求杠杆反模式的分布式系统，性能恶化与流量之间往往遵循指数曲线关系。这意味着，在平常流量下正常运行服务系统，在流量高峰时通过线性增加机器解决不了可用性问题。所以，识别并避免系统进入多次请求杠杆反模式对于提高系统可用性而言非常关键。</p>
 <h4 id="反复缓存反模式（Recurrent-Caching-AntiPattern）"><a href="#反复缓存反模式（Recurrent-Caching-AntiPattern）" class="headerlink" title="反复缓存反模式（Recurrent Caching AntiPattern）"></a>反复缓存反模式（Recurrent Caching AntiPattern）</h4><p>为了降低响应时间，系统往往在本地内存中缓存很多数据。缓存数据越多，命中率就越高，平均响应时间就越快。为了降低平均响应时间，有些开发者会不加限制地缓存各种数据，在正常流量情况下，系统响应时间和吞吐量都有很大改进。但是当流量高峰来临时，系统内存使用开始增多，触发了JVM进行full GC，进而导致大量缓存被释放（因为主流Java内存缓存都采用SoftReference和WeakReference所导致的），而大量请求又使得缓存被迅速填满，这就是反复缓存。反复缓存导致了频繁的full GC，而频繁full GC往往会导致系统性能急剧恶化。典型恶化流程图如下图：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5pztnz5oyj20460a074o.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5pztnz5oyj20460a074o.jpg" alt=""></p>
 <h3 id="性能优化模式"><a href="#性能优化模式" class="headerlink" title="性能优化模式"></a>性能优化模式</h3><h4 id="水平分割模式（Horizontal-partitioning-Pattern）"><a href="#水平分割模式（Horizontal-partitioning-Pattern）" class="headerlink" title="水平分割模式（Horizontal partitioning Pattern）"></a>水平分割模式（Horizontal partitioning Pattern）</h4><h5 id="原理和动机"><a href="#原理和动机" class="headerlink" title="原理和动机"></a>原理和动机</h5><p><strong>一次请求总耗时=解析请求耗时 + ∑(获取数据耗时+处理数据耗时) + 组装返回结果耗时</strong></p>
 <p>大部分耗时长的服务主要时间都花在中间两个环节，即获取数据和处理数据环节。<br>对于非计算密集性的系统，主要耗时都用在获取数据上面。获取数据主要有三个来源：本地缓存，远程缓存或者数据库，远程服务。<br>三者之中，进行远程数据库访问或远程服务调用相对耗时较长，特别是对于需要进行多次远程调用的系统，串行调用所带来的累加效应会极大地延长单次请求响应时间，这就增大了系统进入长请求拥塞反模式的概率。<br>如果能够对不同的业务请求并行处理，请求总耗时就会大大降低。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5q05qz9vrj20eo0590sv.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5q05qz9vrj20eo0590sv.jpg" alt=""></p>
 <p>水平分割模式首先将整个请求流程切分为必须相互依赖的多个Stage，而每个Stage包含相互独立的多种业务处理（包括计算和数据获取）。完成切分之后，水平分割模式串行处理多个Stage，但是在Stage内部并行处理。如此，一次请求总耗时等于各个Stage耗时总和，每个Stage所耗时间等于该Stage内部最长的业务处理时间。</p>
 <p>水平分割模式有两个关键优化点：减少Stage数量和降低每个Stage耗时。为了减少Stage数量，需要对一个请求中不同业务之间的依赖关系进行深入分析并进行解耦，将能够并行处理的业务尽可能地放在同一个Stage中，最终将流程分解成无法独立运行的多个Stage。降低单个Stage耗时一般有两种思路：1. 在Stage内部再尝试水平分割（即递归水平分割)，2. 对于一些可以放在任意Stage中进行并行处理的流程，将其放在耗时最长的Stage内部进行并行处理，避免耗时较短的Stage被拉长。</p>
 <p>水平分割模式不仅可以降低系统平均响应时间，而且可以降低TP95响应时间（这两者有时候相互矛盾，不可兼得）。通过降低平均响应时间和TP95响应时间，水平分割模式往往能够大幅度提高系统吞吐量以及高峰时期系统可用性，并大大降低系统进入长请求拥塞反模式的概率。</p>
@@ -418,7 +418,7 @@
 <h4 id="恒变分离模式（Runtime-3NF-Pattern）"><a href="#恒变分离模式（Runtime-3NF-Pattern）" class="headerlink" title="恒变分离模式（Runtime 3NF Pattern）"></a>恒变分离模式（Runtime 3NF Pattern）</h4><h5 id="原理和动机-2"><a href="#原理和动机-2" class="headerlink" title="原理和动机"></a>原理和动机</h5><p>基于性能的设计要求变化的数据和不变的数据分开，这一点和基于面向对象的设计原则相悖。在面向对象的设计中，为了便于对一个对象有整体的把握，紧密相关的数据集合往往被组装进一个类，存储在一个数据库表，即使有部分数据冗余（关于面向对象与性能冲突的讨论网上有很多文章，本文不细讲）。很多系统的主要工作是处理变化的数据，如果变化的数据和不变的数据被紧密组装在一起，系统对变化数据的操作将引入额外的开销。而如果易变数据占总数据比例非常小，这种额外开销将会通过杠杆效应恶化系统性能。分离易变和恒定不变的数据在对象创建、内存管理、网络传输等方面都有助于性能提高。</p>
 <p>恒变分离模式的原理非常类似与数据库设计中的第三范式（3NF）：第三范式主要解决的是静态存储中重复存储的问题，而恒变分离模式解决的是系统动态运行时候恒定数据重复创建、传输、存储和处理的问题。按照3NF，如果一个数据表的每一记录都依赖于一些非主属性集合，而这些非主属性集合大量重复出现，那么应该考虑对被依赖的非主属性集合定义一个新的实体（构建一个新的数据表），原数据库的记录依赖于新实体的ID。如此一来数据库重复存储数据量将大大降低。类似的，按照恒变分离模式，对于一个实体，如果系统处理的只是这个实体的少量变化属性，应该将不变的属性定义为一个新实体（运行时的另一个类，数据库中的另一个表），原来实体通过ID来引用新实体，那么原有实体在运行系统中的数据传输、创建、网络开销都会大大降低。</p>
 <h5 id="案例分析"><a href="#案例分析" class="headerlink" title="案例分析"></a>案例分析</h5><p>我们的挑战是提供一个高性能、高一致性要求的团购服务（DealService）。系统存在一些多次请求杠杆反模式问题，客户端一次请求会导致几十次DealService读取请求，每次获取上百个团购详情信息，服务端单机需要支持每秒万次级别的吞吐量。基于需求，系统大体框架设计如下：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5q0z6agdoj20ah08474z.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5q0z6agdoj20ah08474z.jpg" alt=""></p>
 <p>每个DealService定期从持久层同步所有发生变化的deal信息，所有的deal信息保存在内存里面。在最初的设计里面，数据库只有一个数据表DealModelTable，程序里面也只有一个实体类DealModel。由于销量、价格、用户评价等信息的频发变化，为了达到高一致性要求，服务系统每分钟需要从数据库同步几万条记录。随着美团团购数量的增多和用户活跃度的增加，系统出现了三个问题：</p>
 <ol>
 <li>团购服务网卡频繁报警，由于这是高性能低延时服务，又导致了大量的客户端超时异常；</li>
@@ -454,9 +454,9 @@
 <li>客户端Hash，对于需要通过Hash将请求分配到不同数据服务机器的服务，尽量在客户端进行Hash，对于落入同一等价集群的请求采用批处理方式进行调用。</li>
 </ol>
 <h5 id="案例分析-1"><a href="#案例分析-1" class="headerlink" title="案例分析"></a>案例分析</h5><p>我们的挑战来自于美团的推荐、个性化列表和个性化搜索服务。这些个性化系统需要获取各种用户、商家和团购信息。信息类型包括基本属性和统计属性。最初，不同属性数据由不同的服务提供，有些是RPC服务，有些是Redis服务，有些是HBase或者数据库，参见下图：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5q14omgxuj2089090wf1.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5q14omgxuj2089090wf1.jpg" alt=""></p>
 <p>通常而言，客户端每个用户请求都会触发多个算法。一方面，每个算法都会召回几十甚至几百个团购或者商家ID，团购和商家基础属性被均匀地分配到几十台Redis里面（如下图），产生了大量的Redis请求，极端情况下，一次客户端请求所触发的团购基础数据请求就超过了上千次；另一方面，用户特征属性信息有十几种，每种属性也由单独的服务提供，服务端网络调用次数暴增。在一段时间里，很多系统都进入了多次请求杠杆反模式，Redis服务器的网卡经常被打死，多次进行扩容，提高线程池线程数量，丝毫没有改善。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5q14x9eu4j208407udgi.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5q14x9eu4j208407udgi.jpg" alt=""></p>
 <p>在对系统进行分析之后，按照数据局部性模式的原则，我们采用了如下手段，彻底解决了系统多次请求杠杆反模式的问题：</p>
 <ol>
 <li>采用大内存服务器存储所有的团购和商家基础信息，每个算法只要一次网络请求就可以获取所有的信息；</li>

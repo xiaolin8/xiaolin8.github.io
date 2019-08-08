@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="堆内存划分为 Eden、Survivor 和 Tenured/Old 空间，如下图所示：  从年轻代空间（包括 Eden 和 Survivor 区域）回收内存被称为 Minor GC，对老年代GC称为Major GC,而Full GC是对整个堆来说的，在最近几个版本的JDK里默认包括了对永生带即方法区的回收（JDK8中无永生带了），出现Full GC的时候经常伴随至少一次的Minor GC,但非绝">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5qyj0l9loj20fx06q42l.jpg">
-<meta property="og:updated_time" content="2019-08-07T03:37:41.220Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5qyj0l9loj20fx06q42l.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:48.995Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="full-gc怎么办？">
 <meta name="twitter:description" content="堆内存划分为 Eden、Survivor 和 Tenured/Old 空间，如下图所示：  从年轻代空间（包括 Eden 和 Survivor 区域）回收内存被称为 Minor GC，对老年代GC称为Major GC,而Full GC是对整个堆来说的，在最近几个版本的JDK里默认包括了对永生带即方法区的回收（JDK8中无永生带了），出现Full GC的时候经常伴随至少一次的Minor GC,但非绝">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5qyj0l9loj20fx06q42l.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5qyj0l9loj20fx06q42l.jpg">
 
 
 
@@ -347,7 +347,7 @@
 
       
         <p>堆内存划分为 Eden、Survivor 和 Tenured/Old 空间，如下图所示：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5qyj0l9loj20fx06q42l.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5qyj0l9loj20fx06q42l.jpg" alt=""></p>
 <p>从年轻代空间（包括 Eden 和 Survivor 区域）回收内存被称为 Minor GC，对老年代GC称为Major GC,而Full GC是对整个堆来说的，在最近几个版本的JDK里默认包括了对永生带即方法区的回收（JDK8中无永生带了），出现Full GC的时候经常伴随至少一次的Minor GC,但非绝对的。Major GC的速度一般会比Minor GC慢10倍以上。下边看看有那种情况触发JVM进行Full GC及应对策略。</p>
 <h3 id="1-System-gc-方法的调用"><a href="#1-System-gc-方法的调用" class="headerlink" title="1. System.gc()方法的调用"></a>1. System.gc()方法的调用</h3><p>此方法的调用是建议JVM进行Full GC,虽然只是建议而非一定,但很多情况下它会触发 Full GC,从而增加Full GC的频率,也即增加了间歇性停顿的次数。强烈影响系建议能不使用此方法就别使用，让虚拟机自己去管理它的内存，可通过通过-XX:+ DisableExplicitGC来禁止RMI调用System.gc。</p>
 <h3 id="2-老年代代空间不足"><a href="#2-老年代代空间不足" class="headerlink" title="2. 老年代代空间不足"></a>2. 老年代代空间不足</h3><p>老年代空间只有在新生代对象转入及创建为大对象、大数组时才会出现不足的现象，当执行Full GC后空间仍然不足，则抛出如下错误：<br>java.lang.OutOfMemoryError: Java heap space<br>为避免以上两种状况引起的Full GC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组。</p>

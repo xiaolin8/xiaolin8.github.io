@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="定义 JMM是一种规范，目的是解决由于多线程通过共享内存进行通信时，存在的本地内存数据不一致、编译器会对代码指令重排序、处理器会对代码乱序执行等带来的问题，保证并发编程场景中的原子性、可见性和有序性。 对象、数组在堆内存中，局部变量、方法定义参数、异常处理器参数不会有内存可见性问题，也不受内存模型的影响。 JMM属于语言级的内存模型，它确保在不同的编译器和不同的处理器平台之上，通过禁止特定类型的编">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1ftt9xhfcf5j20qo0gsq70.jpg">
-<meta property="og:updated_time" content="2019-07-29T02:41:22.749Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1ftt9xhfcf5j20qo0gsq70.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java内存模型">
 <meta name="twitter:description" content="定义 JMM是一种规范，目的是解决由于多线程通过共享内存进行通信时，存在的本地内存数据不一致、编译器会对代码指令重排序、处理器会对代码乱序执行等带来的问题，保证并发编程场景中的原子性、可见性和有序性。 对象、数组在堆内存中，局部变量、方法定义参数、异常处理器参数不会有内存可见性问题，也不受内存模型的影响。 JMM属于语言级的内存模型，它确保在不同的编译器和不同的处理器平台之上，通过禁止特定类型的编">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2gy1ftt9xhfcf5j20qo0gsq70.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2gy1ftt9xhfcf5j20qo0gsq70.jpg">
 
 
 
@@ -362,7 +362,7 @@
 <li>将更新的共享变量刷新到主内存中</li>
 <li>线程B从主内存更新最新的共享变量</li>
 </ul>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1ftt9xhfcf5j20qo0gsq70.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1ftt9xhfcf5j20qo0gsq70.jpg" alt=""></p>
 <h4 id="happen-before原则"><a href="#happen-before原则" class="headerlink" title="happen-before原则"></a>happen-before原则</h4><p>如果一个操作执行的结果需要对另一个操作可见，那么这两个操作之间必须存在happens-before关系。</p>
 <p>它是判断数据是否存在竞争、线程是否安全的主要依据，依靠这个原则，我们解决在并发环境下两操作之间是否可能存在冲突的所有问题。</p>
 <ul>

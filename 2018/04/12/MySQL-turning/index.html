@@ -87,15 +87,15 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="EXPLAIN  type列，连接类型。一个好的sql语句至少要达到range级别。杜绝出现all级别 key列，使用到的索引名。如果没有选择索引，值是NULL。可以采取强制索引方式 key_len列，索引长度 rows列，扫描行数。该值是个预估值 extra列，详细说明。注意常见的不太友好的值有：Using filesort, Using temporary  SQL语句中IN包含的值不应过多M">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t3bbjgrlj20m807j0vz.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t3du43pmj20av08xgmd.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t3fymc56j20hb0bz7bj.jpg">
-<meta property="og:updated_time" content="2019-08-07T05:53:46.370Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2t3bbjgrlj20m807j0vz.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2t3du43pmj20av08xgmd.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2t3fymc56j20hb0bz7bj.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.147Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL优化技巧">
 <meta name="twitter:description" content="EXPLAIN  type列，连接类型。一个好的sql语句至少要达到range级别。杜绝出现all级别 key列，使用到的索引名。如果没有选择索引，值是NULL。可以采取强制索引方式 key_len列，索引长度 rows列，扫描行数。该值是个预估值 extra列，详细说明。注意常见的不太友好的值有：Using filesort, Using temporary  SQL语句中IN包含的值不应过多M">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg">
 
 
 
@@ -349,7 +349,7 @@
       
 
       
-        <h3 id="EXPLAIN"><a href="#EXPLAIN" class="headerlink" title="EXPLAIN"></a>EXPLAIN</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg" alt=""></p>
+        <h3 id="EXPLAIN"><a href="#EXPLAIN" class="headerlink" title="EXPLAIN"></a>EXPLAIN</h3><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2t2e5tdnlj20m802vq5w.jpg" alt=""></p>
 <ol>
 <li>type列，连接类型。一个好的sql语句至少要达到range级别。杜绝出现all级别</li>
 <li>key列，使用到的索引名。如果没有选择索引，值是NULL。可以采取强制索引方式</li>
@@ -421,7 +421,7 @@
 <li>对于中文，可以使用 MySQL 5.7.6 之后的版本，或者第三方插件。</li>
 </ol>
 <h4 id="避免在where子句中对字段进行表达式操作"><a href="#避免在where子句中对字段进行表达式操作" class="headerlink" title="避免在where子句中对字段进行表达式操作"></a>避免在where子句中对字段进行表达式操作</h4><h4 id="避免隐式类型转换"><a href="#避免隐式类型转换" class="headerlink" title="避免隐式类型转换"></a>避免隐式类型转换</h4><h4 id="对于联合索引来说，要遵守最左前缀法则"><a href="#对于联合索引来说，要遵守最左前缀法则" class="headerlink" title="对于联合索引来说，要遵守最左前缀法则"></a>对于联合索引来说，要遵守最左前缀法则</h4><h4 id="必要时可以使用force-index来强制查询走某个索引"><a href="#必要时可以使用force-index来强制查询走某个索引" class="headerlink" title="必要时可以使用force index来强制查询走某个索引"></a>必要时可以使用force index来强制查询走某个索引</h4><h4 id="注意范围查询语句"><a href="#注意范围查询语句" class="headerlink" title="注意范围查询语句"></a>注意范围查询语句</h4><p>对于联合索引来说，如果存在范围查询，比如between,&gt;,&lt;等条件时，会造成后面的索引字段失效。</p>
-<h4 id="关于JOIN优化"><a href="#关于JOIN优化" class="headerlink" title="关于JOIN优化"></a>关于JOIN优化</h4><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2t3bbjgrlj20m807j0vz.jpg" alt=""></p>
+<h4 id="关于JOIN优化"><a href="#关于JOIN优化" class="headerlink" title="关于JOIN优化"></a>关于JOIN优化</h4><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2t3bbjgrlj20m807j0vz.jpg" alt=""></p>
 <ul>
 <li>LEFT JOIN A表为驱动表</li>
 <li>INNER JOIN MySQL会自动找出那个数据少的表作用驱动表</li>
@@ -431,9 +431,9 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> A <span class="keyword">left</span> <span class="keyword">join</span> B <span class="keyword">on</span> B.name = A.name </span><br><span class="line"><span class="keyword">where</span> B.name <span class="keyword">is</span> <span class="literal">null</span></span><br><span class="line"> <span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> B;</span><br></pre></td></tr></table></figure>
 <h5 id="尽量使用inner-join，避免left-join"><a href="#尽量使用inner-join，避免left-join" class="headerlink" title="尽量使用inner join，避免left join"></a>尽量使用inner join，避免left join</h5><p>参与联合查询的表至少为2张表，一般都存在大小之分。如果连接方式是inner join，在没有其他过滤条件的情况下MySQL会自动选择小表作为驱动表，但是left join在驱动表的选择上遵循的是左边驱动右边的原则，即left join左边的表名为驱动表。</p>
 <h5 id="合理利用索引"><a href="#合理利用索引" class="headerlink" title="合理利用索引"></a>合理利用索引</h5><p>被驱动表的索引字段作为on的限制字段。</p>
-<h5 id="利用小表去驱动大表"><a href="#利用小表去驱动大表" class="headerlink" title="利用小表去驱动大表"></a>利用小表去驱动大表</h5><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2t3du43pmj20av08xgmd.jpg" alt=""></p>
+<h5 id="利用小表去驱动大表"><a href="#利用小表去驱动大表" class="headerlink" title="利用小表去驱动大表"></a>利用小表去驱动大表</h5><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2t3du43pmj20av08xgmd.jpg" alt=""></p>
 <h5 id="巧用STRAIGHT-JOIN"><a href="#巧用STRAIGHT-JOIN" class="headerlink" title="巧用STRAIGHT_JOIN"></a>巧用STRAIGHT_JOIN</h5><p>inner join是由mysql选择驱动表，但是有些特殊情况需要选择另个表作为驱动表，比如有group by、order by等「Using filesort」、「Using temporary」时。STRAIGHT_JOIN来强制连接顺序，在STRAIGHT_JOIN左边的表名就是驱动表，右边则是被驱动表。<strong>在使用STRAIGHT_JOIN有个前提条件是该查询是内连接，也就是inner join。其他链接不推荐使用STRAIGHT_JOIN，否则可能造成查询结果不准确</strong>。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2t3fymc56j20hb0bz7bj.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2t3fymc56j20hb0bz7bj.jpg" alt=""></p>
 <p>这个方式有时可能减少3倍的时间。</p>
 
       

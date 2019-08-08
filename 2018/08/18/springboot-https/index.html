@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="简单来说，修改 Tomcat 容器配置，加一层对应的安全约束配置即可。 申请SSL证书打开阿里云证书，可以申请免费证书一年有效。一年后继续免费申请一年即可。 下载，这块选择 Tomcat ，因为这次集成只需要修改 Spring Boot 内嵌容器 Tomcat 配置。如果是 nginx ，也可以对应下载并集成配置   配置 HTTPS将 .pfx 文件复制到 resources 根目录，然后配置">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hg4o2hixj20aq09taaj.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5puodhe4uj20pa032ta8.jpg">
-<meta property="og:updated_time" content="2019-08-06T09:05:55.618Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hg4o2hixj20aq09taaj.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5puodhe4uj20pa032ta8.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.079Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Boot 集成配置 HTTPS">
 <meta name="twitter:description" content="简单来说，修改 Tomcat 容器配置，加一层对应的安全约束配置即可。 申请SSL证书打开阿里云证书，可以申请免费证书一年有效。一年后继续免费申请一年即可。 下载，这块选择 Tomcat ，因为这次集成只需要修改 Spring Boot 内嵌容器 Tomcat 配置。如果是 nginx ，也可以对应下载并集成配置   配置 HTTPS将 .pfx 文件复制到 resources 根目录，然后配置">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hg4o2hixj20aq09taaj.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hg4o2hixj20aq09taaj.jpg">
 
 
 
@@ -350,8 +350,8 @@
         <p>简单来说，修改 Tomcat 容器配置，加一层对应的安全约束配置即可。</p>
 <h3 id="申请SSL证书"><a href="#申请SSL证书" class="headerlink" title="申请SSL证书"></a>申请SSL证书</h3><p>打开阿里云证书，可以申请免费证书一年有效。一年后继续免费申请一年即可。</p>
 <p>下载，这块选择 Tomcat ，因为这次集成只需要修改 Spring Boot 内嵌容器 Tomcat 配置。如果是 nginx ，也可以对应下载并集成配置</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hg4o2hixj20aq09taaj.jpg" alt=""></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5puodhe4uj20pa032ta8.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5hg4o2hixj20aq09taaj.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5puodhe4uj20pa032ta8.jpg" alt=""></p>
 <h3 id="配置-HTTPS"><a href="#配置-HTTPS" class="headerlink" title="配置 HTTPS"></a>配置 HTTPS</h3><p>将 .pfx 文件复制到 resources 根目录，然后配置 application-prod.properties （生产配置文件）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## HTTPS</span></span><br><span class="line">server.ssl.key-store=classpath:xx.com.pfx</span><br><span class="line">server.ssl.key-store-password=123456</span><br><span class="line">server.ssl.key-store-type=PKCS12</span><br><span class="line">server.port=443</span><br></pre></td></tr></table></figure>
 <p>然后新增 HttpsConfig 类，代码如下</p>

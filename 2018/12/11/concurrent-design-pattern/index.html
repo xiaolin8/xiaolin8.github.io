@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="1. 单例模式1234567891011public class StaticSingleton &amp;#123;    private StaticSingleton()&amp;#123;         System.out.println(&quot;StaticSingleton is create&quot;);    &amp;#125;    private static class SingletonHolder &amp;#">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5qzrpmk4yj20eo0e6wel.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5qzs2a0bpj20ts0egjso.jpg">
-<meta property="og:updated_time" content="2019-08-07T04:17:31.294Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5qzrpmk4yj20eo0e6wel.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5qzs2a0bpj20ts0egjso.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.142Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发设计模式">
 <meta name="twitter:description" content="1. 单例模式1234567891011public class StaticSingleton &amp;#123;    private StaticSingleton()&amp;#123;         System.out.println(&quot;StaticSingleton is create&quot;);    &amp;#125;    private static class SingletonHolder &amp;#">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5qzrpmk4yj20eo0e6wel.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5qzrpmk4yj20eo0e6wel.jpg">
 
 
 
@@ -364,9 +364,9 @@
 <li>java.lang.Short</li>
 </ul>
 <h3 id="3-Future模式"><a href="#3-Future模式" class="headerlink" title="3. Future模式"></a>3. Future模式</h3><p>核心思想是异步调用<br>非异步：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5qzrpmk4yj20eo0e6wel.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5qzrpmk4yj20eo0e6wel.jpg" alt=""></p>
 <p>第一次的call_return由于任务还没完成，所以返回的是一个空的。<br>但是这个返回类似于购物中的订单，将来可以根据这个订单来得到一个结果。<br>所以这个Future模式意思就是，“未来”可以得到，就是指这个订单或者说是契约，“承诺”未来就会给结果。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5qzs2a0bpj20ts0egjso.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5qzs2a0bpj20ts0egjso.jpg" alt=""></p>
 <p>调用者得到的是一个Data，一开始可能是一个FutureData，因为RealData构建很慢。在未来的某个时间，可以通过FutureData来得到RealData。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FutureMain</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException,</span></span><br><span class="line"><span class="function">            ExecutionException </span>&#123;</span><br><span class="line">        <span class="comment">// 构造FutureTask</span></span><br><span class="line">        FutureTask&lt;String&gt; future = <span class="keyword">new</span> FutureTask&lt;String&gt;(<span class="keyword">new</span> RealData(<span class="string">"a"</span>));</span><br><span class="line">        ExecutorService executor = Executors.newFixedThreadPool(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">// 执行FutureTask，相当于上例中的 client.request("a") 发送请求</span></span><br><span class="line">        <span class="comment">// 在这里开启线程进行RealData的call()执行</span></span><br><span class="line">        executor.submit(future);</span><br><span class="line">        System.out.println(<span class="string">"请求完毕"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 这里依然可以做额外的数据操作，这里使用sleep代替其他业务逻辑的处理</span></span><br><span class="line">            Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 相当于data.getResult ()，取得call()方法的返回值</span></span><br><span class="line">        <span class="comment">// 如果此时call()方法没有执行完成，则依然会等待</span></span><br><span class="line">        System.out.println(<span class="string">"数据 = "</span> + future.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="4-生产者消费者"><a href="#4-生产者消费者" class="headerlink" title="4. 生产者消费者"></a>4. 生产者消费者</h3><p>生产者-消费者模式是一个经典的多线程设计模式。它为多线程间的协作提供了良好的解决方案。 在生产者-消费者模式中，通常由两类线程，即若干个生产者线程和若干个消费者线程。生产者线 程负责提交用户请求，消费者线程则负责具体处理生产者提交的任务。生产者和消费者之间则通 过共享内存缓冲区进行通信。</p>

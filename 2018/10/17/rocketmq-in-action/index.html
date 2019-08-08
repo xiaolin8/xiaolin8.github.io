@@ -87,29 +87,29 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="谈到消息系统的设计，就回避不了两个问题：  消息的顺序问题 消息的重复问题  那么RocketMQ是怎么解决这两个问题的？ 1. 顺序消息消息有序指的是可以按照消息的发送顺序来消费。例如：一笔订单产生了 3 条消息，分别是订单创建、订单付款、订单完成。消费时，要按照顺序依次消费才有意义。与此同时多笔订单之间又是可以并行消费的。首先来看如下示例： 假如生产者产生了2条消息：M1、M2，要保证这两条消">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5qzxae1tjj20kj09tjun.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5qzxl4ivej20kq09rq5n.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5qzxwdednj20km0a1acu.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5qzyep889j20kl09xadb.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r020lfqxj20db04jdhw.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r028ie9oj20cq04igo5.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r02rcx5wj20h908qdie.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r02zim5fj20h607y41j.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r037cwqvj20h70880vt.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r03ncc01j20h9097wi2.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r05338ojj20hc096785.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r05nlfx0j20hf0ap75a.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r07ui4wdj206v0gmq5a.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r08exbjbj20k003k74k.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r09bloytj20kp0dd13k.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r0aa8ovej20jk0d0q45.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r0b0xl7dj20j80a0t9m.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5r0bf2k5rj20as05ugmn.jpg">
-<meta property="og:updated_time" content="2019-08-07T04:36:26.037Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5qzxae1tjj20kj09tjun.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5qzxl4ivej20kq09rq5n.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5qzxwdednj20km0a1acu.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5qzyep889j20kl09xadb.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r020lfqxj20db04jdhw.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r028ie9oj20cq04igo5.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r02rcx5wj20h908qdie.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r02zim5fj20h607y41j.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r037cwqvj20h70880vt.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r03ncc01j20h9097wi2.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r05338ojj20hc096785.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r05nlfx0j20hf0ap75a.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r07ui4wdj206v0gmq5a.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r08exbjbj20k003k74k.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r09bloytj20kp0dd13k.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r0aa8ovej20jk0d0q45.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r0b0xl7dj20j80a0t9m.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5r0bf2k5rj20as05ugmn.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.023Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="rocketmq实践">
 <meta name="twitter:description" content="谈到消息系统的设计，就回避不了两个问题：  消息的顺序问题 消息的重复问题  那么RocketMQ是怎么解决这两个问题的？ 1. 顺序消息消息有序指的是可以按照消息的发送顺序来消费。例如：一笔订单产生了 3 条消息，分别是订单创建、订单付款、订单完成。消费时，要按照顺序依次消费才有意义。与此同时多笔订单之间又是可以并行消费的。首先来看如下示例： 假如生产者产生了2条消息：M1、M2，要保证这两条消">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5qzxae1tjj20kj09tjun.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5qzxae1tjj20kj09tjun.jpg">
 
 
 
@@ -371,17 +371,17 @@
 <p>那么RocketMQ是怎么解决这两个问题的？</p>
 <h3 id="1-顺序消息"><a href="#1-顺序消息" class="headerlink" title="1. 顺序消息"></a>1. 顺序消息</h3><p>消息有序指的是可以按照消息的发送顺序来消费。例如：一笔订单产生了 3 条消息，分别是订单创建、订单付款、订单完成。消费时，要按照顺序依次消费才有意义。与此同时多笔订单之间又是可以并行消费的。首先来看如下示例：</p>
 <p>假如生产者产生了2条消息：M1、M2，要保证这两条消息的顺序，应该怎样做？你脑中想到的可能是这样：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5qzxae1tjj20kj09tjun.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5qzxae1tjj20kj09tjun.jpg" alt=""></p>
 <p>假定M1发送到S1，M2发送到S2，如果要保证M1先于M2被消费，那么需要M1到达消费端被消费后，通知S2，然后S2再将M2发送到消费端。</p>
 <p>这个模型存在的问题是，如果M1和M2分别发送到两台Server上，就不能保证M1先达到MQ集群，也不能保证M1被先消费。换个角度看，如果M2先于M1达到MQ集群，甚至M2被消费后，M1才达到消费端，这时消息也就乱序了，说明以上模型是不能保证消息的顺序的。如何才能在MQ集群保证消息的顺序？一种简单的方式就是将M1、M2发送到同一个Server上：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5qzxl4ivej20kq09rq5n.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5qzxl4ivej20kq09rq5n.jpg" alt=""></p>
 <p>这样可以保证M1先于M2到达MQServer（生产者等待M1发送成功后再发送M2），根据先达到先被消费的原则，M1会先于M2被消费，这样就保证了消息的顺序。</p>
 <p>这个模型也仅仅是理论上可以保证消息的顺序，在实际场景中可能会遇到下面的问题：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5qzxwdednj20km0a1acu.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5qzxwdednj20km0a1acu.jpg" alt=""></p>
 <p>只要将消息从一台服务器发往另一台服务器，就会存在网络延迟问题。如上图所示，如果发送M1耗时大于发送M2的耗时，那么M2就仍将被先消费，仍然不能保证消息的顺序。即使M1和M2同时到达消费端，由于不清楚消费端1和消费端2的负载情况，仍然有可能出现M2先于M1被消费的情况。</p>
 <p>那如何解决这个问题？将M1和M2发往同一个消费者，且发送M1后，需要消费端响应成功后才能发送M2。</p>
 <p>聪明的你可能已经想到另外的问题：如果M1被发送到消费端后，消费端1没有响应，那是继续发送M2呢，还是重新发送M1？一般为了保证消息一定被消费，肯定会选择重发M1到另外一个消费端2，就如下图所示。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5qzyep889j20kl09xadb.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5qzyep889j20kl09xadb.jpg" alt=""></p>
 <p>这样的模型就严格保证消息的顺序，细心的你仍然会发现问题，消费端1没有响应Server时有两种情况，一种是M1确实没有到达(数据在网络传送中丢失)，另外一种消费端已经消费M1且已经发送响应消息，只是MQ Server端没有收到。如果是第二种情况，重发M1，就会造成M1被重复消费。也就引入了我们要说的第二个问题，消息重复问题，这个后文会详细讲解。</p>
 <p>回过头来看消息顺序问题，严格的顺序消息非常容易理解，也可以通过文中所描述的方式来简单处理。总结起来，要实现严格的顺序消息，简单且可行的办法就是：</p>
 <blockquote>
@@ -418,27 +418,27 @@
 <p>RocketMQ不保证消息不重复，如果你的业务需要保证严格的不重复消息，需要你自己在业务端去重。</p>
 <h3 id="3-事务消息"><a href="#3-事务消息" class="headerlink" title="3. 事务消息"></a>3. 事务消息</h3><p>RocketMQ除了支持普通消息，顺序消息，另外还支持事务消息。首先讨论一下什么是事务消息以及支持事务消息的必要性。我们以一个转帐的场景为例来说明这个问题：Bob向Smith转账100块。</p>
 <p>在单机环境下，执行事务的情况，大概是下面这个样子：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r020lfqxj20db04jdhw.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r020lfqxj20db04jdhw.jpg" alt=""></p>
 <p>当用户增长到一定程度，Bob和Smith的账户及余额信息已经不在同一台服务器上了，那么上面的流程就变成了这样：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r028ie9oj20cq04igo5.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r028ie9oj20cq04igo5.jpg" alt=""></p>
 <p>这时候你会发现，同样是一个转账的业务，在集群环境下，耗时居然成倍的增长，这显然是不能够接受的。那如何来规避这个问题？</p>
 <blockquote>
 <p><strong>大事务 = 小事务 + 异步</strong></p>
 </blockquote>
 <p>将大事务拆分成多个小事务异步执行。这样基本上能够将跨机事务的执行效率优化到与单机一致。转账的事务就可以分解成如下两个小事务：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r02rcx5wj20h908qdie.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r02rcx5wj20h908qdie.jpg" alt=""></p>
 <p>图中执行本地事务（Bob账户扣款）和发送异步消息应该保证同时成功或者同时失败，也就是扣款成功了，发送消息一定要成功，如果扣款失败了，就不能再发送消息。那问题是：我们是先扣款还是先发送消息呢？</p>
 <p>首先看下先发送消息的情况，大致的示意图如下：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r02zim5fj20h607y41j.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r02zim5fj20h607y41j.jpg" alt=""></p>
 <p>存在的问题是：如果消息发送成功，但是扣款失败，消费端就会消费此消息，进而向Smith账户加钱。</p>
 <p>先发消息不行，那就先扣款吧，大致的示意图如下：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r037cwqvj20h70880vt.jpg" alt=""><br>存在的问题跟上面类似：如果扣款成功，发送消息失败，就会出现Bob扣钱了，但是Smith账户未加钱。</p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r037cwqvj20h70880vt.jpg" alt=""><br>存在的问题跟上面类似：如果扣款成功，发送消息失败，就会出现Bob扣钱了，但是Smith账户未加钱。</p>
 <p>可能大家会有很多的方法来解决这个问题，比如：直接将发消息放到Bob扣款的事务中去，如果发送失败，抛出异常，事务回滚。这样的处理方式也符合“恰好”不需要解决的原则。</p>
 <blockquote>
 <p>这里需要说明一下：如果使用Spring来管理事物的话，大可以将发送消息的逻辑放到本地事物中去，发送消息失败抛出异常，Spring捕捉到异常后就会回滚此事物，以此来保证本地事物与发送消息的原子性。</p>
 </blockquote>
 <p>RocketMQ支持事务消息，下面来看看RocketMQ是怎样来实现的。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r03ncc01j20h9097wi2.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r03ncc01j20h9097wi2.jpg" alt=""></p>
 <p>RocketMQ第一阶段发送Prepared消息时，会拿到消息的地址，第二阶段执行本地事物，第三阶段通过第一阶段拿到的地址去访问消息，并修改消息的状态。</p>
 <p>细心的你可能又发现问题了，如果确认消息发送失败了怎么办？RocketMQ会定期扫描消息集群中的事物消息，如果发现了Prepared消息，它会向消息发送端(生产者)确认，Bob的钱到底是减了还是没减呢？如果减了是回滚还是继续发送确认消息呢？RocketMQ会根据发送端设置的策略来决定是回滚还是继续发送确认消息。这样就保证了消息发送与本地事务同时成功或同时失败。</p>
 <p>那我们来看下RocketMQ源码，是如何处理事务消息的。客户端发送事务消息的部分（完整代码请查看：rocketmq-example工程下的com.alibaba.rocketmq.example.transaction.TransactionProducer）：</p>
@@ -452,10 +452,10 @@
 </ol>
 <p>如果endTransaction方法执行失败，数据没有发送到broker，导致事务消息的 状态更新失败，broker会有回查线程定时（默认1分钟）扫描每个存储事务状态的表格文件，如果是已经提交或者回滚的消息直接跳过，如果是prepared状态则会向Producer发起CheckTransaction请求，Producer会调用DefaultMQProducerImpl.checkTransactionState()方法来处理broker的定时回调请求，而checkTransactionState会调用我们的事务设置的决断方法来决定是回滚事务还是继续执行，最后调用endTransactionOneway让broker来更新消息的最终状态。</p>
 <p>再回到转账的例子，如果Bob的账户的余额已经减少，且消息已经发送成功，Smith端开始消费这条消息，这个时候就会出现消费失败和消费超时两个问题，解决超时问题的思路就是一直重试，直到消费端消费消息成功，整个过程中有可能会出现消息重复的问题，按照前面的思路解决即可。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r05338ojj20hc096785.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r05338ojj20hc096785.jpg" alt=""></p>
 <p>这样基本上可以解决消费端超时问题，但是如果消费失败怎么办？阿里提供给我们的解决方法是：人工解决。大家可以考虑一下，按照事务的流程，因为某种原因Smith加款失败，那么需要回滚整个流程。如果消息系统要实现这个回滚流程的话，系统复杂度将大大提升，且很容易出现Bug，估计出现Bug的概率会比消费失败的概率大很多。这也是RocketMQ目前暂时没有解决这个问题的原因，在设计实现消息系统时，我们需要衡量是否值得花这么大的代价来解决这样一个出现概率非常小的问题，这也是大家在解决疑难问题时需要多多思考的地方。</p>
 <h3 id="4-Producer如何发送消息"><a href="#4-Producer如何发送消息" class="headerlink" title="4. Producer如何发送消息"></a>4. Producer如何发送消息</h3><p>Producer轮询某topic下的所有队列的方式来实现发送方的负载均衡，如下图所示：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r05nlfx0j20hf0ap75a.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r05nlfx0j20hf0ap75a.jpg" alt=""></p>
 <p>首先分析一下RocketMQ的客户端发送消息的源码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构造Producer</span></span><br><span class="line">DefaultMQProducer producer = <span class="keyword">new</span> DefaultMQProducer(<span class="string">"ProducerGroupName"</span>);</span><br><span class="line"><span class="comment">// 初始化Producer，整个应用生命周期内，只需要初始化1次</span></span><br><span class="line">producer.start();</span><br><span class="line"><span class="comment">// 构造Message</span></span><br><span class="line">Message msg = <span class="keyword">new</span> Message(<span class="string">"TopicTest1"</span>,<span class="comment">// topic</span></span><br><span class="line">                        <span class="string">"TagA"</span>,<span class="comment">// tag：给消息打标签,用于区分一类消息，可为null</span></span><br><span class="line">                        <span class="string">"OrderID188"</span>,<span class="comment">// key：自定义Key，可以用于去重，可为null</span></span><br><span class="line">                        (<span class="string">"Hello MetaQ"</span>).getBytes());<span class="comment">// body：消息内容</span></span><br><span class="line"><span class="comment">// 发送消息并返回结果</span></span><br><span class="line">SendResult sendResult = producer.send(msg);</span><br><span class="line"><span class="comment">// 清理资源，关闭网络连接，注销自己</span></span><br><span class="line">producer.shutdown();</span><br></pre></td></tr></table></figure>
 <p>在整个应用生命周期内，生产者需要调用一次start方法来初始化，初始化主要完成的任务有：</p>
@@ -481,7 +481,7 @@
 <p>${rocketmq.home}/store/consumequeue/${topicName}/${queueId}/${fileName}</p>
 </blockquote>
 <p>Consume Queue文件组织，如图所示：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r07ui4wdj206v0gmq5a.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r07ui4wdj206v0gmq5a.jpg" alt=""></p>
 <ol>
 <li>根据topic和queueId来组织文件，图中TopicA有两个队列0,1，那么TopicA和QueueId=0组成一个ConsumeQueue，TopicA和QueueId=1组成另一个ConsumeQueue。</li>
 <li>按照消费端的GroupName来分组重试队列，如果消费端消费失败，消息将被发往重试队列中，比如图中的%RETRY%ConsumerGroupA。</li>
@@ -491,7 +491,7 @@
 <p>死信队列（Dead Letter Queue）一般用于存放由于某种原因无法传递的消息，比如处理失败或者已经过期的消息。</p>
 </blockquote>
 <p>Consume Queue中存储单元是一个20字节定长的二进制数据，顺序写顺序读，如下图所示：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r08exbjbj20k003k74k.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r08exbjbj20k003k74k.jpg" alt=""></p>
 <ol>
 <li>CommitLog Offset是指这条消息在Commit Log文件中的实际偏移量</li>
 <li>Size存储中消息的大小</li>
@@ -502,11 +502,11 @@
 <p>${user.home} \store\${commitlog}\${fileName}</p>
 </blockquote>
 <p>CommitLog的消息存储单元长度不固定，文件顺序写，随机读。消息的存储结构如下表所示，按照编号顺序以及编号对应的内容依次存储。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r09bloytj20kp0dd13k.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r09bloytj20kp0dd13k.jpg" alt=""></p>
 <h4 id="5-3-消息存储实现"><a href="#5-3-消息存储实现" class="headerlink" title="5.3 消息存储实现"></a>5.3 消息存储实现</h4><p>消息存储实现，比较复杂，也值得大家深入了解，后面会单独成文来分析(目前正在收集素材)，这小节只以代码说明一下具体的流程。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set the storage time</span></span><br><span class="line">msg.setStoreTimestamp(System.currentTimeMillis());</span><br><span class="line"><span class="comment">// Set the message body BODY CRC (consider the most appropriate setting</span></span><br><span class="line">msg.setBodyCRC(UtilAll.crc32(msg.getBody()));</span><br><span class="line">StoreStatsService storeStatsService = <span class="keyword">this</span>.defaultMessageStore.getStoreStatsService();</span><br><span class="line"><span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">    <span class="keyword">long</span> beginLockTimestamp = <span class="keyword">this</span>.defaultMessageStore.getSystemClock().now();</span><br><span class="line">    <span class="comment">// Here settings are stored timestamp, in order to ensure an orderly global</span></span><br><span class="line">    msg.setStoreTimestamp(beginLockTimestamp);</span><br><span class="line">    <span class="comment">// MapedFile：操作物理文件在内存中的映射以及将内存数据持久化到物理文件中</span></span><br><span class="line">    MapedFile mapedFile = <span class="keyword">this</span>.mapedFileQueue.getLastMapedFile();</span><br><span class="line">    <span class="comment">// 将Message追加到文件commitlog</span></span><br><span class="line">    result = mapedFile.appendMessage(msg, <span class="keyword">this</span>.appendMessageCallback);</span><br><span class="line">    <span class="keyword">switch</span> (result.getStatus()) &#123;</span><br><span class="line">    <span class="keyword">case</span> PUT_OK:<span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> END_OF_FILE:</span><br><span class="line">         <span class="comment">// Create a new file, re-write the message</span></span><br><span class="line">         mapedFile = <span class="keyword">this</span>.mapedFileQueue.getLastMapedFile();</span><br><span class="line">         result = mapedFile.appendMessage(msg, <span class="keyword">this</span>.appendMessageCallback);</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">     DispatchRequest dispatchRequest = <span class="keyword">new</span> DispatchRequest(</span><br><span class="line">                topic,<span class="comment">// 1</span></span><br><span class="line">                queueId,<span class="comment">// 2</span></span><br><span class="line">                result.getWroteOffset(),<span class="comment">// 3</span></span><br><span class="line">                result.getWroteBytes(),<span class="comment">// 4</span></span><br><span class="line">                tagsCode,<span class="comment">// 5</span></span><br><span class="line">                msg.getStoreTimestamp(),<span class="comment">// 6</span></span><br><span class="line">                result.getLogicsOffset(),<span class="comment">// 7</span></span><br><span class="line">                msg.getKeys(),<span class="comment">// 8</span></span><br><span class="line">                <span class="comment">/**</span></span><br><span class="line"><span class="comment">                 * Transaction</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                msg.getSysFlag(),<span class="comment">// 9</span></span><br><span class="line">                msg.getPreparedTransactionOffset());<span class="comment">// 10</span></span><br><span class="line">    <span class="comment">// 1.分发消息位置到ConsumeQueue</span></span><br><span class="line">    <span class="comment">// 2.分发到IndexService建立索引</span></span><br><span class="line">    <span class="keyword">this</span>.defaultMessageStore.putDispatchRequest(dispatchRequest);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="5-4-消息的索引文件"><a href="#5-4-消息的索引文件" class="headerlink" title="5.4 消息的索引文件"></a>5.4 消息的索引文件</h4><p>如果一个消息包含key值的话，会使用IndexFile存储消息索引，文件的内容结构如图：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r0aa8ovej20jk0d0q45.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r0aa8ovej20jk0d0q45.jpg" alt=""></p>
 <p>索引文件主要用于根据key来查询消息的，流程主要是：</p>
 <ol>
 <li>根据查询的 key 的 hashcode%slotNum 得到具体的槽的位置(slotNum 是一个索引文件里面包含的最大槽的数目，例如图中所示 slotNum=5000000)</li>
@@ -515,7 +515,7 @@
 </ol>
 <h3 id="6-消息订阅"><a href="#6-消息订阅" class="headerlink" title="6. 消息订阅"></a>6. 消息订阅</h3><p>RocketMQ消息订阅有两种模式，一种是Push模式，即MQServer主动向消费端推送；另外一种是Pull模式，即消费端在需要时，主动到MQServer拉取。但在具体实现时，Push和Pull模式都是采用消费端主动拉取的方式。</p>
 <p>首先看下消费端的负载均衡：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r0b0xl7dj20j80a0t9m.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r0b0xl7dj20j80a0t9m.jpg" alt=""></p>
 <p>消费端会通过RebalanceService线程，10秒钟做一次基于topic下的所有队列负载：</p>
 <ol>
 <li>遍历Consumer下的所有topic，然后根据topic订阅所有的消息</li>
@@ -523,7 +523,7 @@
 <li>然后根据具体的分配策略来分配消费队列，分配的策略包含：平均分配、消费端配置等</li>
 </ol>
 <p>如同上图所示：如果有 5 个队列，2 个 consumer，那么第一个 Consumer 消费 3 个队列，第二 consumer 消费 2 个队列。这里采用的就是平均分配策略，它类似于分页的过程，TOPIC下面的所有queue就是记录，Consumer的个数就相当于总的页数，那么每页有多少条记录，就类似于某个Consumer会消费哪些队列。<br>通过这样的策略来达到大体上的平均消费，这样的设计也可以很方面的水平扩展Consumer来提高消费能力。<br>消费端的Push模式是通过长轮询的模式来实现的，就如同下图：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5r0bf2k5rj20as05ugmn.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5r0bf2k5rj20as05ugmn.jpg" alt=""></p>
 <p>Consumer端每隔一段时间主动向broker发送拉消息请求，broker在收到Pull请求后，如果有消息就立即返回数据，Consumer端收到返回的消息后，再回调消费者设置的Listener方法。如果broker在收到Pull请求时，消息队列里没有数据，broker端会阻塞请求直到有数据传递或超时才返回。</p>
 <p>当然，Consumer端是通过一个线程将阻塞队列LinkedBlockingQueue<pullrequest>中的PullRequest发送到broker拉取消息，以防止Consumer一致被阻塞。而Broker端，在接收到Consumer的PullRequest时，如果发现没有消息，就会把PullRequest扔到ConcurrentHashMap中缓存起来。broker在启动时，会启动一个线程不停的从ConcurrentHashMap取出PullRequest检查，直到有数据返回。</pullrequest></p>
 

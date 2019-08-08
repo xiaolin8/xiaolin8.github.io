@@ -87,14 +87,14 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="1. 快速入门工程1. 配置属性 YAML 注意键和值由冒号及空白字符分开。强调下，空白字符是必须的 .properties 文件默认编码方式是 iso-8859 ，Spring Boot 应用以 UTF-8 的编码方式读取，就导致出现乱码问题  2. 创建属性类1234567891011121314151617181920212223import org.springframework.bea">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hhi4yo8nj20m904h3yu.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hfj67g32j20ua0gy76t.jpg">
-<meta property="og:updated_time" content="2019-08-06T09:05:24.248Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hhi4yo8nj20m904h3yu.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hfj67g32j20ua0gy76t.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.145Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot 自动配置原理">
 <meta name="twitter:description" content="1. 快速入门工程1. 配置属性 YAML 注意键和值由冒号及空白字符分开。强调下，空白字符是必须的 .properties 文件默认编码方式是 iso-8859 ，Spring Boot 应用以 UTF-8 的编码方式读取，就导致出现乱码问题  2. 创建属性类1234567891011121314151617181920212223import org.springframework.bea">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg">
 
 
 
@@ -348,7 +348,7 @@
       
 
       
-        <p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg" alt=""></p>
+        <p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5hgfd3dqmj20m10gkq59.jpg" alt=""></p>
 <h3 id="1-快速入门工程"><a href="#1-快速入门工程" class="headerlink" title="1. 快速入门工程"></a>1. 快速入门工程</h3><h4 id="1-配置属性"><a href="#1-配置属性" class="headerlink" title="1. 配置属性"></a>1. 配置属性</h4><ul>
 <li>YAML 注意键和值由冒号及空白字符分开。强调下，空白字符是必须的</li>
 <li>.properties 文件默认编码方式是 iso-8859 ，Spring Boot 应用以 UTF-8 的编码方式读取，就导致出现乱码问题</li>
@@ -377,7 +377,7 @@
 </ul>
 <h4 id="2-3-ConfigurationProperties-数据验证"><a href="#2-3-ConfigurationProperties-数据验证" class="headerlink" title="2.3 @ConfigurationProperties 数据验证"></a>2.3 @ConfigurationProperties 数据验证</h4><p>当属性类被 @Validated 注解标注时，Spring Boot 初始化时会验证类的字段。在类的字段上添加 JSR-303 约束注解，进行数据验证。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.annotation.Validated;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.validation.constraints.NotEmpty;</span><br><span class="line"><span class="keyword">import</span> javax.validation.constraints.NotNull;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 书属性</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"demo.book"</span>)</span><br><span class="line"><span class="meta">@Validated</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 书名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@NotEmpty</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 作者</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@NotNull</span></span><br><span class="line">    <span class="keyword">private</span> String writer;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... 省略 getters / setters 方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hhi4yo8nj20m904h3yu.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5hhi4yo8nj20m904h3yu.jpg" alt=""></p>
 <h3 id="3-外化配置"><a href="#3-外化配置" class="headerlink" title="3. 外化配置"></a>3. 外化配置</h3><p>配置分离存储在 classpath 之外</p>
 <h4 id="3-1-外化配置优先级"><a href="#3-1-外化配置优先级" class="headerlink" title="3.1 外化配置优先级"></a>3.1 外化配置优先级</h4><p><code>java -jar target/chapter-2-spring-boot-config-1.0.jar --demo.book.writer=Jeff</code></p>
 <p><code>SpringApplication.setAddCommandLineProperties(false);</code></p>
@@ -415,7 +415,7 @@
 </li>
 </ol>
 <h4 id="4-2-自动配置原理浅析"><a href="#4-2-自动配置原理浅析" class="headerlink" title="4.2 自动配置原理浅析"></a>4.2 自动配置原理浅析</h4><p>spring-boot-autoconfigure 包</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5hfj67g32j20ua0gy76t.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5hfj67g32j20ua0gy76t.jpg" alt=""></p>
 <p>通过 @EnableAutoConfiguration 核心注解初始化，并扫描 ClassPath 目录中自动配置类对应依赖。比如工程中有木有添加 Thymeleaf 的 Starter 组件依赖。如果有，就按按一定规则获取默认配置并自动初始化所需要的 Bean。</p>
 <h4 id="4-3-EnableAutoConfiguration-核心注解的工作原理"><a href="#4-3-EnableAutoConfiguration-核心注解的工作原理" class="headerlink" title="4.3 @EnableAutoConfiguration 核心注解的工作原理"></a>4.3 @EnableAutoConfiguration 核心注解的工作原理</h4><p>@EnableAutoConfiguration 注解核心点是 @Import 的自动配置导入选择器类 AutoConfigurationImportSelector 。</p>
 <ul>

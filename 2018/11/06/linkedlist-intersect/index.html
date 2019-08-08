@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="1. 如何判断一个链表是否有环，如果有，则返回第一个进入环的节点，没有则返回null 设置两个指针 pLow, pFast, 都从第一个节点出发 pLow每次前进一个节点 pFast每次前进两个节点 如果pFast遇到了null节点, 则说明链表无环, 返回null 如果pLow和pFast相遇, 则说明链表有环 确定第一个进入环的节点:  记从头节点到入环节点的距离为x 入环节点到pLow和pF">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4gyvnbo4uj20dl06w3yj.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4gz6r5mbmj20c4061t8q.jpg">
-<meta property="og:updated_time" content="2019-08-06T13:33:21.989Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g4gyvnbo4uj20dl06w3yj.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g4gz6r5mbmj20c4061t8q.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.021Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="链表相交问题">
 <meta name="twitter:description" content="1. 如何判断一个链表是否有环，如果有，则返回第一个进入环的节点，没有则返回null 设置两个指针 pLow, pFast, 都从第一个节点出发 pLow每次前进一个节点 pFast每次前进两个节点 如果pFast遇到了null节点, 则说明链表无环, 返回null 如果pLow和pFast相遇, 则说明链表有环 确定第一个进入环的节点:  记从头节点到入环节点的距离为x 入环节点到pLow和pF">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4gyvnbo4uj20dl06w3yj.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g4gyvnbo4uj20dl06w3yj.jpg">
 
 
 
@@ -382,12 +382,12 @@
 <li><strong>case 1: 两个链表的入环节点相同</strong></li>
 </ul>
 <p>两个链表相交入环节点作为尾部节点, 转换为问题二.</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4gyvnbo4uj20dl06w3yj.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g4gyvnbo4uj20dl06w3yj.jpg" alt=""></p>
 <ul>
 <li><strong>case 2:  如果两个链表的入环节点不同</strong></li>
 </ul>
 <p>固定一个入环节点, 从另一个入环节点出发, 遍历环一周, 如果遇到第一个入环节点, 则两个链表相交, 返回任意一个入环节点即可.</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4gz6r5mbmj20c4061t8q.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g4gz6r5mbmj20c4061t8q.jpg" alt=""></p>
 <ul>
 <li><strong>case 3: 如果遍历环一周, 没有遇到第一个入环节点, 则两个链表不相交.</strong></li>
 </ul>

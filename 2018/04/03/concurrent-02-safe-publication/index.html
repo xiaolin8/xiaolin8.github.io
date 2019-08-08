@@ -87,19 +87,19 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="线程安全线程安全的类：不管采用何种调度方式，主调代码中不需要任何额外的同步或协调。  原子性：互斥操作 可见性：一个线程对主存的修改可以即时被线程看到 有序性：指令重排 volatile  原子性Atomic 包AtomicXXX：CAS、Unsafe.compareAndSwapXXX   AtomicLong 与 LongAdder(JDK8)AtomicLong 底层是通过CAS来保障原子性">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cedfbvmqj20t00saq8q.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cegv1bc1j20vw0vq0yq.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3ceyges9vj20wk088god.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cfmzny5aj20xe0n4grb.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cg0vil2uj20jc0fsq58.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cg4bw9h1j20ka0f6jti.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cgbfqx3dj20kn0cr0x8.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3chd42cdwj20te0e2tbg.jpg">
-<meta property="og:updated_time" content="2019-08-06T13:44:46.548Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cedfbvmqj20t00saq8q.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cegv1bc1j20vw0vq0yq.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3ceyges9vj20wk088god.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cfmzny5aj20xe0n4grb.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cg0vil2uj20jc0fsq58.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cg4bw9h1j20ka0f6jti.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cgbfqx3dj20kn0cr0x8.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3chd42cdwj20te0e2tbg.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.165Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发编程02安全发布对象">
 <meta name="twitter:description" content="线程安全线程安全的类：不管采用何种调度方式，主调代码中不需要任何额外的同步或协调。  原子性：互斥操作 可见性：一个线程对主存的修改可以即时被线程看到 有序性：指令重排 volatile  原子性Atomic 包AtomicXXX：CAS、Unsafe.compareAndSwapXXX   AtomicLong 与 LongAdder(JDK8)AtomicLong 底层是通过CAS来保障原子性">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cedfbvmqj20t00saq8q.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cedfbvmqj20t00saq8q.jpg">
 
 
 
@@ -360,27 +360,27 @@
 <li>有序性：指令重排 volatile</li>
 </ol>
 <h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><h4 id="Atomic-包"><a href="#Atomic-包" class="headerlink" title="Atomic 包"></a>Atomic 包</h4><p>AtomicXXX：CAS、Unsafe.compareAndSwapXXX</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cedfbvmqj20t00saq8q.jpg" alt=""></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cegv1bc1j20vw0vq0yq.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cedfbvmqj20t00saq8q.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cegv1bc1j20vw0vq0yq.jpg" alt=""></p>
 <h4 id="AtomicLong-与-LongAdder-JDK8"><a href="#AtomicLong-与-LongAdder-JDK8" class="headerlink" title="AtomicLong 与 LongAdder(JDK8)"></a>AtomicLong 与 LongAdder(JDK8)</h4><p>AtomicLong 底层是通过CAS来保障原子性的更新的。</p>
 <p>LongAdder的核心原理：跟ConcurrentHashMap差不多内部分多个桶，每次分散加锁，提高并发度。</p>
 <p>求和时，如果有并发更新，可能会导致统计的数据有误。</p>
 <p>LongAdder适合更高的并发场景，并发度较低时建议使用AtomicLong 更简单轻量。</p>
 <h4 id="AtomicReference"><a href="#AtomicReference" class="headerlink" title="AtomicReference"></a>AtomicReference</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unsafe.compareAndSwapInt(currentValue, valueOffset, expect, update);</span><br></pre></td></tr></table></figure>
 <p>将 currentValue 修改为 update 这个值</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3ceyges9vj20wk088god.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3ceyges9vj20wk088god.jpg" alt=""></p>
 <p><code>AtomicReference 不能保证多线程修改引用对象的属性时线程安全性</code></p>
 <h4 id="AtomicReferenceFieldUpdater"><a href="#AtomicReferenceFieldUpdater" class="headerlink" title="AtomicReferenceFieldUpdater"></a>AtomicReferenceFieldUpdater</h4><p>AtomicIntegerFieldUpdater、AtomicLongFieldUpdater<br>用来并发修改对象的field值</p>
 <p>该字段要用 volatile声明，同时不能被static修饰</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cfmzny5aj20xe0n4grb.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cfmzny5aj20xe0n4grb.jpg" alt=""></p>
 <h4 id="AtomicStampReference"><a href="#AtomicStampReference" class="headerlink" title="AtomicStampReference"></a>AtomicStampReference</h4><p>它主要解决CAS的ABA问题</p>
 <p>J.U.C 提供了两个类解决ABA问题，一个是AtomicStampReference ，另一个是 AtomicMarkableReference</p>
 <h4 id="AtomicLongArray"><a href="#AtomicLongArray" class="headerlink" title="AtomicLongArray"></a>AtomicLongArray</h4><p>对Long数组进行原子操作，可并发修改指定位置的元素</p>
 <h4 id="AtomicBoolean"><a href="#AtomicBoolean" class="headerlink" title="AtomicBoolean"></a>AtomicBoolean</h4><p>isHappened.compareAndSet(false, true)<br>可保证代码只会执行一次</p>
 <h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><h4 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h4><p>底层由JVM进行原子性控制</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cg0vil2uj20jc0fsq58.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cg0vil2uj20jc0fsq58.jpg" alt=""></p>
 <p><u><code>注意：父类用 synchronized 修饰的同步方法块，子类调用时该方法是不加锁的，因为 synchronized 不属于方法声明的一部分</code></u></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cg4bw9h1j20ka0f6jti.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cg4bw9h1j20ka0f6jti.jpg" alt=""></p>
 <h4 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h4><ol>
 <li>synchronized ：不可中断锁，适合竞争不激烈的情况，可读性较好</li>
 <li>lock：可中断锁，灵活多样化，适合竞争激烈的场景</li>
@@ -390,7 +390,7 @@
 <ul>
 <li>对volatile变量写时，会在写操作之后加入一条store屏障指令，将本地内存中的共享变量刷新到主存中</li>
 </ul>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cgbfqx3dj20kn0cr0x8.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cgbfqx3dj20kn0cr0x8.jpg" alt=""></p>
 <ul>
 <li>volatile 适合作为状态标记符</li>
 </ul>
@@ -409,7 +409,7 @@
 <ul>
 <li><strong>public 访问级别发布</strong></li>
 </ul>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3chd42cdwj20te0e2tbg.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3chd42cdwj20te0e2tbg.jpg" alt=""></p>
 <p>通过 public 级别发布了对象的属性，这样发布对象是不安全的</p>
 <ul>
 <li><strong>在构造完成之前发布</strong></li>

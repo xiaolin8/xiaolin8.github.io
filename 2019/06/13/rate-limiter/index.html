@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="限流背景高并发神器 缓存 降级：低价值的服务、影响到核心流程，暂时屏蔽掉 限流：限制并发/请求量，比如稀缺资源(秒杀、抢购)、写服务(评论、下单)、频繁的复杂查询(评论的后几页)  限流目的通过对请求的频率(一定时间窗口内的请求数)进行限制来保护系统，一旦达到临界值，就可以拒绝服务(跳转到错误页、告知资源没有了)、排队等待(秒杀、评论、下单)、降级(返回兜底数据，如库存默认有货) 限流算法计数器令">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g557y4uk7xj20e50gqdhu.jpg">
-<meta property="og:updated_time" content="2019-08-06T13:15:24.161Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g557y4uk7xj20e50gqdhu.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.013Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="限流总结">
 <meta name="twitter:description" content="限流背景高并发神器 缓存 降级：低价值的服务、影响到核心流程，暂时屏蔽掉 限流：限制并发/请求量，比如稀缺资源(秒杀、抢购)、写服务(评论、下单)、频繁的复杂查询(评论的后几页)  限流目的通过对请求的频率(一定时间窗口内的请求数)进行限制来保护系统，一旦达到临界值，就可以拒绝服务(跳转到错误页、告知资源没有了)、排队等待(秒杀、评论、下单)、降级(返回兜底数据，如库存默认有货) 限流算法计数器令">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg">
 
 
 
@@ -353,7 +353,7 @@
 <li><strong>限流</strong>：限制并发/请求量，比如稀缺资源(秒杀、抢购)、写服务(评论、下单)、频繁的复杂查询(评论的后几页)</li>
 </ul>
 <h4 id="限流目的"><a href="#限流目的" class="headerlink" title="限流目的"></a>限流目的</h4><p>通过对请求的频率(一定时间窗口内的请求数)进行限制来保护系统，一旦达到临界值，就可以拒绝服务(跳转到错误页、告知资源没有了)、排队等待(秒杀、评论、下单)、降级(返回兜底数据，如库存默认有货)</p>
-<h3 id="限流算法"><a href="#限流算法" class="headerlink" title="限流算法"></a>限流算法</h3><h4 id="计数器"><a href="#计数器" class="headerlink" title="计数器"></a>计数器</h4><h4 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h4><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg" alt=""></p>
+<h3 id="限流算法"><a href="#限流算法" class="headerlink" title="限流算法"></a>限流算法</h3><h4 id="计数器"><a href="#计数器" class="headerlink" title="计数器"></a>计数器</h4><h4 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h4><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g557xinhgyj20fr0d8acm.jpg" alt=""></p>
 <p>令牌桶算法是一个存放固定容量令牌的桶，按照固定速率往桶里添加令牌。令牌桶算法的描述如下：</p>
 <ul>
 <li><p>假设限制2r/s，则按照500毫秒的固定速率往桶中添加令牌；</p>
@@ -365,7 +365,7 @@
 <li><p>如果桶中的令牌不足n个，则不会删除令牌，且该数据包将被限流（要么丢弃，要么缓冲区等待）。</p>
 </li>
 </ul>
-<h4 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h4><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g557y4uk7xj20e50gqdhu.jpg" alt=""></p>
+<h4 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h4><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g557y4uk7xj20e50gqdhu.jpg" alt=""></p>
 <p>漏桶作为计量工具（The Leaky Bucket Algorithm as a Meter）时，可以用于流量整形（Traffic Shaping）和流量控制（TrafficPolicing），漏桶算法的描述如下：</p>
 <ul>
 <li><p>一个固定容量的漏桶，按照常量固定速率流出水滴；</p>

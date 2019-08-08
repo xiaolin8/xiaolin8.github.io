@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="线程池线程池的好处 重用存在的线程，减少对象创建、消亡的开销，性能佳，降低资源消耗； 可有效控制最大并发线程数，提高系统资源利用率，同时可以避免过多资源竞争，避免阻塞，提高响应速度； 提供定时执行、定期执行、单线程、并发数控制等功能，以达到提高线程的可管理性。  Executors利用工厂模式向我们提供了4种线程池实现方式，但是并不推荐使用，原因是使用Executors创建线程池不会传入相关参数而">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3dsofmxd0j20rs0eiq7w.jpg">
-<meta property="og:updated_time" content="2019-08-06T13:50:15.790Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3dsofmxd0j20rs0eiq7w.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.060Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发编程06线程池">
 <meta name="twitter:description" content="线程池线程池的好处 重用存在的线程，减少对象创建、消亡的开销，性能佳，降低资源消耗； 可有效控制最大并发线程数，提高系统资源利用率，同时可以避免过多资源竞争，避免阻塞，提高响应速度； 提供定时执行、定期执行、单线程、并发数控制等功能，以达到提高线程的可管理性。  Executors利用工厂模式向我们提供了4种线程池实现方式，但是并不推荐使用，原因是使用Executors创建线程池不会传入相关参数而">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3dsofmxd0j20rs0eiq7w.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3dsofmxd0j20rs0eiq7w.jpg">
 
 
 
@@ -393,7 +393,7 @@
 <li>将封装好的FutureTask提交到execute()中</li>
 </ol>
 <p>结论：submit()真正实现的任务处理流程跟execute()一样，也可以说submit()就是调用了execute()</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3dsofmxd0j20rs0eiq7w.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3dsofmxd0j20rs0eiq7w.jpg" alt=""></p>
 <ol>
 <li>提交任务到线程池；</li>
 <li>线程池判断核心线程池里的线程是否都在执行任务，如果不是，则创建一个新的工作线程来执行任务。如果核心线程池里的线程都在执行任务，则进入下一个流程。</li>

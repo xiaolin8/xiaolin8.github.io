@@ -87,18 +87,18 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="Java 内存模型 是一个规范，它规范了 java 虚拟机是如何与计算机内存协同工作的。屏蔽掉各种系统硬件和操作系统的内存访问差异，以达到跨平台运行的目的，它规定了一个线程如何以及何时能够看到其他线程修改过的共享变量的值， 以及在必须时，如何同步地访问共享变量。 堆的优势：可以动态分配大小，生存期无需事先告诉编译器需要多少内存，因为是自动分配的。缺点：由于需要动态分配内存，所以速度会慢一些。 栈的">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3b6ij9u9fj21640i0tnl.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cckyv4hzj210e0mogzs.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3ccs4ncv7j20rs0efk2v.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3ccsfqku1j20rs0ezqda.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cdbvxqxqj20b808rabk.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cdinbm3hj20we0260tt.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cdsv5qulj20vy0ws7b1.jpg">
-<meta property="og:updated_time" content="2019-08-06T13:42:38.284Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3b6ij9u9fj21640i0tnl.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cckyv4hzj210e0mogzs.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3ccs4ncv7j20rs0efk2v.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3ccsfqku1j20rs0ezqda.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cdbvxqxqj20b808rabk.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cdinbm3hj20we0260tt.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cdsv5qulj20vy0ws7b1.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.019Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发编程01基本概念">
 <meta name="twitter:description" content="Java 内存模型 是一个规范，它规范了 java 虚拟机是如何与计算机内存协同工作的。屏蔽掉各种系统硬件和操作系统的内存访问差异，以达到跨平台运行的目的，它规定了一个线程如何以及何时能够看到其他线程修改过的共享变量的值， 以及在必须时，如何同步地访问共享变量。 堆的优势：可以动态分配大小，生存期无需事先告诉编译器需要多少内存，因为是自动分配的。缺点：由于需要动态分配内存，所以速度会慢一些。 栈的">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3b6ij9u9fj21640i0tnl.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3b6ij9u9fj21640i0tnl.jpg">
 
 
 
@@ -362,17 +362,17 @@
 <li>load 是把变量从 CPU local memory 读入 JVM stack，你可以认为它是把数据从 CPU cache 读入到“ JVM 寄存器”， store 反之</li>
 <li>个人的理解：read 是一个 copy 操作，从主存拷贝对象到工作内存；load 就相当于把工作内存的对象和栈上的引用建立连接。</li>
 </ol>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3b6ij9u9fj21640i0tnl.jpg" alt=""></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cckyv4hzj210e0mogzs.jpg" alt=""></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3ccs4ncv7j20rs0efk2v.jpg" alt=""></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3ccsfqku1j20rs0ezqda.jpg" alt=""></p>
-<h3 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cdbvxqxqj20b808rabk.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3b6ij9u9fj21640i0tnl.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cckyv4hzj210e0mogzs.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3ccs4ncv7j20rs0efk2v.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3ccsfqku1j20rs0ezqda.jpg" alt=""></p>
+<h3 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a>CountDownLatch</h3><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cdbvxqxqj20b808rabk.jpg" alt=""></p>
 <p>CountDownLatch 位于 JUC 包，可以用它实现类似计数器的功能。比如有一个任务需要等待其他4个任务执行完毕才能执行。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">CountDownLatch</span><span class="params">(<span class="keyword">int</span> count)</span> </span>&#123;  &#125;;  </span><br><span class="line"><span class="comment">//参数count为计数值</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cdinbm3hj20we0260tt.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cdinbm3hj20we0260tt.jpg" alt=""></p>
 <h3 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h3><p>Semaphore可以阻塞线程并控制同时访问的线程个数，通过acquire()获取一个许可，如果没有就阻塞等待，而release()释放一个许可。</p>
 <p><strong>模拟并发</strong>：使用Semaphore控制并发数，CountDownLatch保证线程执行完后再执行其他操作。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cdsv5qulj20vy0ws7b1.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cdsv5qulj20vy0ws7b1.jpg" alt=""></p>
 
       
     </div>

@@ -87,18 +87,18 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="Singleton的教学版本1234567891011// version 1.0public class Singleton &amp;#123;    private static Singleton singleton = null;    private Singleton() &amp;#123;  &amp;#125;    public static Singleton getInstance() &amp;#12">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g397s7i20zj20sc0eyju2.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3995oou32j20s20esacq.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g399718danj20t00h077a.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g399a11tbdj20x60h477e.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g399b1s1mcj213009sgn9.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g399cg3wwqj212u0ac40m.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g3cin5kmcvj20ik0kq0vk.jpg">
-<meta property="og:updated_time" content="2019-08-06T13:39:42.602Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g397s7i20zj20sc0eyju2.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3995oou32j20s20esacq.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g399718danj20t00h077a.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g399a11tbdj20x60h477e.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g399b1s1mcj213009sgn9.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g399cg3wwqj212u0ac40m.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g3cin5kmcvj20ik0kq0vk.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.063Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单例SINGLETON模式">
 <meta name="twitter:description" content="Singleton的教学版本1234567891011// version 1.0public class Singleton &amp;#123;    private static Singleton singleton = null;    private Singleton() &amp;#123;  &amp;#125;    public static Singleton getInstance() &amp;#12">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g397s7i20zj20sc0eyju2.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g397s7i20zj20sc0eyju2.jpg">
 
 
 
@@ -359,12 +359,12 @@
 <li>在getInstance()中，先做判断是否已形成实例，如果已形成则直接返回，否则创建实例。</li>
 </ol>
 <h3 id="存在线程安全问题"><a href="#存在线程安全问题" class="headerlink" title="存在线程安全问题"></a>存在线程安全问题</h3><p>在多线程情况下，如果多个线程同时调用getInstance()的话，那么，可能会有多个进程同时通过 (singleton== null)的条件检查，于是，多个实例就创建出来，并且很可能造成内存泄露问题。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g397s7i20zj20sc0eyju2.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g397s7i20zj20sc0eyju2.jpg" alt=""></p>
 <p>虽然我们的synchronized方法会帮助我们同步所有的线程，让我们并行线程变成串行的一个一个去new，那不还是一样的吗？同样会出现很多实例。看来，还得把那个判断(singleton== null)条件也同步起来。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3995oou32j20s20esacq.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3995oou32j20s20esacq.jpg" alt=""></p>
 <p>然而，读取的动作不需要线程同步啊</p>
 <p>看来，在线程同步前还得加一个(singleton== null)的条件判断，如果对象已经创建了，那么就不需要线程的同步了</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g399718danj20t00h077a.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g399718danj20t00h077a.jpg" alt=""></p>
 <p>这就是“双重检查”Double-Check</p>
 <p>然而，singleton = new Singleton()这句，并非是一个原子操作，事实上在 JVM 中这句话大概做了下面 3 件事情。</p>
 <ol>
@@ -374,14 +374,14 @@
 </ol>
 <p>指令重排序，最终的执行顺序可能是 1-2-3 也可能是 1-3-2。</p>
 <p>如果是后者，则在 3 执行完毕、2 未执行之前，被线程二抢占了，这时 instance 已经是非 null 了，所以线程二会直接返回 instance，然后使用，然后就报错了。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g399a11tbdj20x60h477e.jpg" alt=""></p>
-<h3 id="Singleton-的简化版本"><a href="#Singleton-的简化版本" class="headerlink" title="Singleton 的简化版本"></a>Singleton 的简化版本</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g399b1s1mcj213009sgn9.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g399a11tbdj20x60h477e.jpg" alt=""></p>
+<h3 id="Singleton-的简化版本"><a href="#Singleton-的简化版本" class="headerlink" title="Singleton 的简化版本"></a>Singleton 的简化版本</h3><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g399b1s1mcj213009sgn9.jpg" alt=""></p>
 <p>使用static、final，在类加载时就会实例化singleton对象，所以保证了线程安全性。<br>但是，我们还是想要懒加载，而不是把类的创建委托给类装载器</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g399cg3wwqj212u0ac40m.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g399cg3wwqj212u0ac40m.jpg" alt=""></p>
 <h3 id="Singleton-优雅版本"><a href="#Singleton-优雅版本" class="headerlink" title="Singleton 优雅版本"></a>Singleton 优雅版本</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Singleton&#123;</span><br><span class="line">   INSTANCE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>默认枚举实例的创建是线程安全的</p>
 <p>单元素的枚举类型已经成为实现Singleton的最佳方法。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g3cin5kmcvj20ik0kq0vk.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g3cin5kmcvj20ik0kq0vk.jpg" alt=""></p>
 
       
     </div>

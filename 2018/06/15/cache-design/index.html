@@ -87,15 +87,15 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="一种经典的错误做法：先删除缓存，再更新数据库，再加载最新数据到缓存中。 错误原因：假如，有两个并发操作，一个是更新、一个是查询。更新操作先删除了缓存，然后，查询操作只得去DB拿数据，接着，更新操作才更新DB。这样就产生了脏数据。 缓存更新模式SoR(system-of-record)：数据源，实际存放数据的地方。 缓存更新模式主要分为两类：  Cache-Aside Cache-As-SoR(Re">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5c3op6vjwj20go058gn2.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5c3oxl7dtj20go0563zt.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5c5pfn1t4j20cs0h8wfh.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1g5c78bavguj20hs0mstag.jpg">
-<meta property="og:updated_time" content="2019-08-06T04:40:00.983Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5c3op6vjwj20go058gn2.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5c3oxl7dtj20go0563zt.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5c5pfn1t4j20cs0h8wfh.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1g5c78bavguj20hs0mstag.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="缓存设计模式">
 <meta name="twitter:description" content="一种经典的错误做法：先删除缓存，再更新数据库，再加载最新数据到缓存中。 错误原因：假如，有两个并发操作，一个是更新、一个是查询。更新操作先删除了缓存，然后，查询操作只得去DB拿数据，接着，更新操作才更新DB。这样就产生了脏数据。 缓存更新模式SoR(system-of-record)：数据源，实际存放数据的地方。 缓存更新模式主要分为两类：  Cache-Aside Cache-As-SoR(Re">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5c3op6vjwj20go058gn2.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5c3op6vjwj20go058gn2.jpg">
 
 
 
@@ -357,8 +357,8 @@
 <li><strong>Cache-Aside</strong></li>
 <li><strong>Cache-As-SoR</strong>(<strong>Read Through</strong>、<strong>Write Through</strong>、<strong>Write Behind</strong>)</li>
 </ul>
-<h4 id="Cache-Aside"><a href="#Cache-Aside" class="headerlink" title="Cache-Aside"></a>Cache-Aside</h4><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5c3op6vjwj20go058gn2.jpg" alt=""></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5c3oxl7dtj20go0563zt.jpg" alt=""></p>
+<h4 id="Cache-Aside"><a href="#Cache-Aside" class="headerlink" title="Cache-Aside"></a>Cache-Aside</h4><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5c3op6vjwj20go058gn2.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5c3oxl7dtj20go0563zt.jpg" alt=""></p>
 <p>看图：Cache在前，业务代码围绕着Cache写：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读场景：先从缓存中获取数据</span></span><br><span class="line"><span class="keyword">if</span>(value == <span class="keyword">null</span>) &#123;</span><br><span class="line">    value = loadFromSoR(key);</span><br><span class="line">    myCache.put(key, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 写场景：先将数据写入SoR</span></span><br><span class="line">writeToSoR(key, value);</span><br><span class="line"><span class="comment">// 失效缓存，然后下次读时再加载缓存</span></span><br><span class="line">myCache.invalidate(key);</span><br></pre></td></tr></table></figure>
@@ -378,12 +378,12 @@
 </ul>
 <h4 id="Write-Through"><a href="#Write-Through" class="headerlink" title="Write-Through"></a>Write-Through</h4><p>和Read-Through类似，只是把缓存更新操作挪到了更新操作中。</p>
 <p>业务代码首先调用Cache写(新增/修改)数据，然后由Cache负责写SoR，而不是由业务代码(注意：SoR写入成功后，再写入Cache)。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5c5pfn1t4j20cs0h8wfh.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5c5pfn1t4j20cs0h8wfh.jpg" alt=""></p>
 <h3 id="Write-Behind-回写模式"><a href="#Write-Behind-回写模式" class="headerlink" title="Write-Behind 回写模式"></a>Write-Behind 回写模式</h3><p>这玩意其实就是Linux文件系统的Page Cache算法！</p>
 <p>不同于 Write-Through 是同步写 SoR 和 Cache，Write-Behind 是异步写。异步之后可以实现批量写、合并写、限时、限流。让 IO 操作奇快无比！</p>
 <p>但是，带来的问题就是数据一致性问题。数据不是强一致的，可能会丢失(非正常关机)。反正Trade-Off吧！</p>
 <p>另外，Write-Back 实现逻辑比较复杂，因为它需要track有哪些数据是被更新了的，需要刷到持久层上。操作系统的write-back机制会在仅当这个Cache需要失效的时候，才会被真正持久化，比如，内存不够了、进程退出了等等，所谓 Lazy Write。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1g5c78bavguj20hs0mstag.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1g5c78bavguj20hs0mstag.jpg" alt=""></p>
 <p>上面，我们没有考虑缓存（Cache）和持久层（Repository）的整体事务的问题。比如，更新Cache成功，更新数据库失败了怎么吗？或是反过来。关于这个事，如果你需要强一致性，你需要使用“两阶段提交协议”——prepare, commit/rollback，比如Java 7 的<a href="http://docs.oracle.com/javaee/7/api/javax/transaction/xa/XAResource.html" target="_blank" rel="noopener">XAResource</a>，还有MySQL 5.7的 <a href="http://dev.mysql.com/doc/refman/5.7/en/xa.html" target="_blank" rel="noopener">XA Transaction</a>，有些cache也支持XA，比如<a href="http://www.ehcache.org/documentation/3.0/xa.html" target="_blank" rel="noopener">EhCache</a>。当然，XA这样的强一致性的玩法会导致性能下降，关于分布式的事务的相关话题，你可以看看《<a href="https://coolshell.cn/articles/10910.html" target="_blank" rel="noopener">分布式系统的事务处理</a>》一文。</p>
 <h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
 <li><a href="https://coolshell.cn/articles/17416.html" target="_blank" rel="noopener">https://coolshell.cn/articles/17416.html</a></li>

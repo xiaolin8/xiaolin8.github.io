@@ -87,17 +87,17 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="JVM 配置常用参数 堆参数  回收器参数  如上表所示，目前主要有串行、并行和并发三种，对于大内存的应用而言，串行的性能太低，因此使用到的主要是并行和并发两种。并行和并发 GC 的策略通过 UseParallelGC 和 UseConcMarkSweepGC 来指定，还有一些细节的配置参数用来配置策略的执行方式。例如：XX:ParallelGCThreads， XX:CMSInitiatingO">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2bnvx3iz3j20rs0iajzk.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2bnwc3n1qj20hk05pgoq.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2bo04sbc0j20gw09cafj.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2bo79eb4lj20hb0ljwop.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2bo7kcp4bj20hf065wgq.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2bo7v6yqbj20rs0hjjz1.jpg">
-<meta property="og:updated_time" content="2019-08-07T03:26:08.922Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2bnvx3iz3j20rs0iajzk.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2bnwc3n1qj20hk05pgoq.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2bo04sbc0j20gw09cafj.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2bo79eb4lj20hb0ljwop.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2bo7kcp4bj20hf065wgq.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2bo7v6yqbj20rs0hjjz1.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.017Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM 配置常用参数">
 <meta name="twitter:description" content="JVM 配置常用参数 堆参数  回收器参数  如上表所示，目前主要有串行、并行和并发三种，对于大内存的应用而言，串行的性能太低，因此使用到的主要是并行和并发两种。并行和并发 GC 的策略通过 UseParallelGC 和 UseConcMarkSweepGC 来指定，还有一些细节的配置参数用来配置策略的执行方式。例如：XX:ParallelGCThreads， XX:CMSInitiatingO">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g2bnvx3iz3j20rs0iajzk.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g2bnvx3iz3j20rs0iajzk.jpg">
 
 
 
@@ -351,18 +351,18 @@
       
 
       
-        <h3 id="JVM-配置常用参数"><a href="#JVM-配置常用参数" class="headerlink" title="JVM 配置常用参数"></a>JVM 配置常用参数</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2bnvx3iz3j20rs0iajzk.jpg" alt=""></p>
+        <h3 id="JVM-配置常用参数"><a href="#JVM-配置常用参数" class="headerlink" title="JVM 配置常用参数"></a>JVM 配置常用参数</h3><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2bnvx3iz3j20rs0iajzk.jpg" alt=""></p>
 <p><strong>堆参数</strong></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2bnwc3n1qj20hk05pgoq.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2bnwc3n1qj20hk05pgoq.jpg" alt=""></p>
 <p><strong>回收器参数</strong></p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2bo04sbc0j20gw09cafj.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2bo04sbc0j20gw09cafj.jpg" alt=""></p>
 <p>如上表所示，目前主要有<strong>串行、并行和并发</strong>三种，对于大内存的应用而言，串行的性能太低，因此使用到的主要是并行和并发两种。并行和并发 GC 的策略通过 UseParallelGC 和 UseConcMarkSweepGC 来指定，还有一些细节的配置参数用来配置策略的执行方式。例如：XX:ParallelGCThreads， XX:CMSInitiatingOccupancyFraction 等。通常：Young 区对象回收只可选择并行（耗时间），Old 区选择并发（耗 CPU）。</p>
 <p>项目中常用配置</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2bo79eb4lj20hb0ljwop.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2bo79eb4lj20hb0ljwop.jpg" alt=""></p>
 <p>常用组合</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2bo7kcp4bj20hf065wgq.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2bo7kcp4bj20hf065wgq.jpg" alt=""></p>
 <p>常用 GC 调优策略</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g2bo7v6yqbj20rs0hjjz1.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g2bo7v6yqbj20rs0hjjz1.jpg" alt=""></p>
 
       
     </div>

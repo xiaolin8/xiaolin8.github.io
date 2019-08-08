@@ -86,15 +86,15 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="Dubbo 调用流程  Provider  start 启动服务 register 服务到服务中心   Consumer  subscribe 向注册中心订阅服务。只订阅使用到的服务，首次会拉取订阅的服务列表，缓存在本地  [异步] notify 当服务发生变化，获取最新的服务列表，更新本地缓存    invoke 调用  Conusmer 直接发起对 Provider 的调用，无需注册中心。而对">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5j546q4oqj20tu0im42w.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5j57hss5jj20t80gv0uh.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5j5i60iioj20hy0bhae4.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5j5nvvqkqj20hs0a3djs.jpg">
-<meta property="og:updated_time" content="2019-08-06T09:04:37.025Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5j546q4oqj20tu0im42w.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5j57hss5jj20t80gv0uh.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5j5i60iioj20hy0bhae4.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5j5nvvqkqj20hs0a3djs.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.002Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dubbo 服务暴露消费过程解析">
 <meta name="twitter:description" content="Dubbo 调用流程  Provider  start 启动服务 register 服务到服务中心   Consumer  subscribe 向注册中心订阅服务。只订阅使用到的服务，首次会拉取订阅的服务列表，缓存在本地  [异步] notify 当服务发生变化，获取最新的服务列表，更新本地缓存    invoke 调用  Conusmer 直接发起对 Provider 的调用，无需注册中心。而对">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g5j546q4oqj20tu0im42w.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g5j546q4oqj20tu0im42w.jpg">
 
 
 
@@ -348,7 +348,7 @@
       
 
       
-        <h3 id="Dubbo-调用流程"><a href="#Dubbo-调用流程" class="headerlink" title="Dubbo 调用流程"></a>Dubbo 调用流程</h3><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5j546q4oqj20tu0im42w.jpg" alt=""></p>
+        <h3 id="Dubbo-调用流程"><a href="#Dubbo-调用流程" class="headerlink" title="Dubbo 调用流程"></a>Dubbo 调用流程</h3><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5j546q4oqj20tu0im42w.jpg" alt=""></p>
 <ol>
 <li><p>Provider</p>
 <ul>
@@ -375,7 +375,7 @@
 </ul>
 </li>
 </ol>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5j57hss5jj20t80gv0uh.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5j57hss5jj20t80gv0uh.jpg" alt=""></p>
 <h3 id="服务暴露和服务引用"><a href="#服务暴露和服务引用" class="headerlink" title="服务暴露和服务引用"></a>服务暴露和服务引用</h3><h4 id="解析服务"><a href="#解析服务" class="headerlink" title="解析服务"></a>解析服务</h4><ol>
 <li>基于 dubbo.jar 内的 META-INF/spring.handles 配置，Spring 在遇到 dubbo 名称空间时，会回调 DubboNamespaceHandler</li>
 <li>所有的 dubbo 标签，都会统一用 DubboBeanDefinitionParser 进行解析，将 XML 标签解析成 Bean 对象</li>
@@ -383,7 +383,7 @@
 <li>将 URL 传给 Dubbo SPI，基于 SPI 自适应机制，根据 URL 协议进行不同服务的暴露或引用。</li>
 </ol>
 <h4 id="服务暴露"><a href="#服务暴露" class="headerlink" title="服务暴露"></a>服务暴露</h4><p>官方文<a href="http://dubbo.apache.org/zh-cn/docs/dev/implementation.html" target="_blank" rel="noopener">开发者指南 - 实现细节</a>给出服务提供者暴露一个服务的详细过程：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5j5i60iioj20hy0bhae4.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5j5i60iioj20hy0bhae4.jpg" alt=""></p>
 <h5 id="远程暴露"><a href="#远程暴露" class="headerlink" title="远程暴露"></a>远程暴露</h5><ol>
 <li>在有注册中心，需要注册提供者地址的情况下，ServiceConfig 解析出的 URL 格式为：registry:// registry-host/org.apache.dubbo.registry.RegistryService?export=URL.encode(“dubbo://service-host/{服务名}/{版本号}”)</li>
 <li>基于 Dubbo SPI 的自适应机制，通过 URL registry:// 协议头识别，就调用 RegistryProtocol#export() 方法<ol>
@@ -397,7 +397,7 @@
 <li>RegistryProtocol#export() 返回的 Exporter 实例存放到 ServiceConfig 的 List<exporter> exporters 中</exporter></li>
 </ol>
 <h3 id="服务引用"><a href="#服务引用" class="headerlink" title="服务引用"></a>服务引用</h3><p>官方文<a href="http://dubbo.apache.org/zh-cn/docs/dev/implementation.html" target="_blank" rel="noopener">开发者指南 - 实现细节</a>给出服务提供者暴露一个服务的详细过程：</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g5j5nvvqkqj20hs0a3djs.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g5j5nvvqkqj20hs0a3djs.jpg" alt=""></p>
 <ol>
 <li>从注册中心发现引用服务：ReferenceConfig 解析出的 URL 格式为：registry://registry-host:/org.apache.registry.RegistryService?refer=URL.encode(“conumer-host/com.foo.FooService?version=1.0.0”)。</li>
 <li>通过 URL 的 registry:// 协议头识别，就会调用 RegistryProtocol#refer() 方法<ol>

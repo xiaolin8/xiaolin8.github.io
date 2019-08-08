@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="Linux命令类tail1tail -300f fixed-center.log  #倒数300行并进入实时监听文件写入模式 grep12345678910grep forest f.txt     #文件查找grep forest f.txt cpf.txt #多文件查找grep &apos;log&apos; /home/admin -r -n #目录下查找所有符合关键字的文件cat f.txt | grep -">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1ftu4hwvoyij20sc0nsgoy.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2gy1ftu4ijuimij20sd0nswhk.jpg">
-<meta property="og:updated_time" content="2019-07-29T02:41:22.750Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1ftu4hwvoyij20sc0nsgoy.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2gy1ftu4ijuimij20sd0nswhk.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:48.998Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java线上问题排查总结">
 <meta name="twitter:description" content="Linux命令类tail1tail -300f fixed-center.log  #倒数300行并进入实时监听文件写入模式 grep12345678910grep forest f.txt     #文件查找grep forest f.txt cpf.txt #多文件查找grep &apos;log&apos; /home/admin -r -n #目录下查找所有符合关键字的文件cat f.txt | grep -">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2gy1ftu4hwvoyij20sc0nsgoy.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2gy1ftu4hwvoyij20sc0nsgoy.jpg">
 
 
 
@@ -354,9 +354,9 @@
 <h4 id="netstat"><a href="#netstat" class="headerlink" title="netstat"></a>netstat</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -nat|awk  <span class="string">'&#123;print $6&#125;'</span>|sort|uniq -c|sort -rn <span class="comment">#查看当前连接，注意close_wait偏高的情况</span></span><br></pre></td></tr></table></figure>
 <h4 id="btrace-amp-greys"><a href="#btrace-amp-greys" class="headerlink" title="btrace &amp; greys"></a>btrace &amp; greys</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sc -df xxx <span class="comment">#输出当前类的详情,包括源码位置和classloader结构</span></span><br><span class="line">trace class method  <span class="comment">#打印出当前方法调用的耗时情况</span></span><br></pre></td></tr></table></figure>
 <h3 id="系统异常排查流程"><a href="#系统异常排查流程" class="headerlink" title="系统异常排查流程"></a>系统异常排查流程</h3><p>常见的系统异常现象包括: CPU 占用率过高、CPU上下文切换频率次数较高、磁盘满了、磁盘 I/O 过于频繁、网络流量异常（连接数过多）、系统可用内存长期处于较低值（导致 oom killer）等等。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1ftu4hwvoyij20sc0nsgoy.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1ftu4hwvoyij20sc0nsgoy.jpg" alt=""></p>
 <h3 id="业务应用排查流程"><a href="#业务应用排查流程" class="headerlink" title="业务应用排查流程"></a>业务应用排查流程</h3><p>常见的业务服务异常现象包括:<br>PV量过高、服务调用耗时异常、线程死锁、多线程并发问题、频繁进行 Full GC、异常安全攻击扫描等。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2gy1ftu4ijuimij20sd0nswhk.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2gy1ftu4ijuimij20sd0nswhk.jpg" alt=""></p>
 <h4 id="GC的JVM参数"><a href="#GC的JVM参数" class="headerlink" title="GC的JVM参数"></a>GC的JVM参数</h4><blockquote>
 <p>-XX:+PrintGCDetails -XX:+PrintGCDateStamps`<br>-Xloggc:/usr/local/gc/gc.log -XX:+UseConcMarkSweepGC</p>
 </blockquote>

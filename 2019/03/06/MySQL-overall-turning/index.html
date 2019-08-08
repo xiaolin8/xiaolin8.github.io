@@ -87,14 +87,14 @@
 <meta property="og:site_name" content="一壶浊酒喜相逢">
 <meta property="og:description" content="阶段一：数据库表设计对于数据库来说，表结构设计很重要，如果设计不当，会直接影响到网站速度！例如慢查询、数据库死锁等。当然，有测试部门的团队，会做产品测试，找Bug。 阶段二：数据库部署项目初期访问量一般是寥寥无几，此阶段Web+数据库单台部署足以应对在1000左右的QPS（每秒查询率）。考虑到单点故障，应做到高可用性，可采用MySQL主从复制+Keepalived实现双机热备。主流HA软件有：Ke">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4eo95lamsj20o102pdg2.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4eo9ndi1fj20sy0aiaaz.jpg">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4eo9xcwpfj20yc0ap0u5.jpg">
-<meta property="og:updated_time" content="2019-08-06T13:37:08.181Z">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g4eo95lamsj20o102pdg2.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g4eo9ndi1fj20sy0aiaaz.jpg">
+<meta property="og:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g4eo9xcwpfj20yc0ap0u5.jpg">
+<meta property="og:updated_time" content="2019-08-08T04:29:49.150Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL全面优化">
 <meta name="twitter:description" content="阶段一：数据库表设计对于数据库来说，表结构设计很重要，如果设计不当，会直接影响到网站速度！例如慢查询、数据库死锁等。当然，有测试部门的团队，会做产品测试，找Bug。 阶段二：数据库部署项目初期访问量一般是寥寥无几，此阶段Web+数据库单台部署足以应对在1000左右的QPS（每秒查询率）。考虑到单点故障，应做到高可用性，可采用MySQL主从复制+Keepalived实现双机热备。主流HA软件有：Ke">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/960345a2ly1g4eo95lamsj20o102pdg2.jpg">
+<meta name="twitter:image" content="http://ws1.sinaimg.cn/large/960345a2ly1g4eo95lamsj20o102pdg2.jpg">
 
 
 
@@ -386,11 +386,11 @@
 <h4 id="5-4-数据库修复"><a href="#5-4-数据库修复" class="headerlink" title="5.4 数据库修复"></a>5.4 数据库修复</h4><p>有时候MySQL服务器突然断电、异常关闭，会导致表损坏，无法读取表数据。这时就可以用到MySQL自带的两个工具进行修复，myisamchk和mysqlcheck。前者只能修复MyISAM表，并且停止数据库，后者MyISAM和InnoDB都可以，在线修复。<br>注意：修复前最好先备份数据库。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">myisamchk常用参数：</span><br><span class="line">  -f --force    强制修复，覆盖老的临时文件，一般不使用</span><br><span class="line">  -r --recover  恢复模式</span><br><span class="line">  -q --quik     快速恢复</span><br><span class="line">  -a --analyze  分析表</span><br><span class="line">  -o --safe-recover 老的恢复模式，如果-r无法修复，可以使用此参数试试</span><br><span class="line">  -F --fast     只检查没有正常关闭的表</span><br><span class="line"></span><br><span class="line">例如：myisamchk -r -q *.MYI</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysqlcheck常用参数：</span><br><span class="line">  -a  --all-databases  检查所有的库</span><br><span class="line">  -r  --repair   修复表</span><br><span class="line">  -c  --check    检查表，默认选项</span><br><span class="line">  -a  --analyze  分析表</span><br><span class="line">  -o  --optimize 优化表</span><br><span class="line">  -q  --quik   最快检查或修复表</span><br><span class="line">  -F  --fast   只检查没有正常关闭的表</span><br><span class="line"></span><br><span class="line">例如：mysqlcheck -r -q -uroot -p123456 weibo</span><br></pre></td></tr></table></figure>
-<h4 id="5-5-MySQL服务器性能分析"><a href="#5-5-MySQL服务器性能分析" class="headerlink" title="5.5 MySQL服务器性能分析"></a>5.5 MySQL服务器性能分析</h4><p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4eo95lamsj20o102pdg2.jpg" alt=""></p>
+<h4 id="5-5-MySQL服务器性能分析"><a href="#5-5-MySQL服务器性能分析" class="headerlink" title="5.5 MySQL服务器性能分析"></a>5.5 MySQL服务器性能分析</h4><p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g4eo95lamsj20o102pdg2.jpg" alt=""></p>
 <p>重点关注：<br>id：CPU利用率百分比，平均小于60%正常，但已经比较繁忙了。<br>wa：CPU等待磁盘IO响应时间，一般大于5说明磁盘读写量大。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4eo9ndi1fj20sy0aiaaz.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g4eo9ndi1fj20sy0aiaaz.jpg" alt=""></p>
 <p>KB_read/s、KB_wrtn/s 每秒读写数据量，主要根据磁盘每秒最高读写速度评估。</p>
-<p><img src="https://ws1.sinaimg.cn/large/960345a2ly1g4eo9xcwpfj20yc0ap0u5.jpg" alt=""></p>
+<p><img src="http://ws1.sinaimg.cn/large/960345a2ly1g4eo9xcwpfj20yc0ap0u5.jpg" alt=""></p>
 <p>r/s、w/s：每秒读写请求次数，可以理解为IOPS（每秒输入输出量），是衡量磁盘性能的主要指标之一。<br>await：IO平均每秒响应时间，一般大于5说明磁盘响应慢，超过自身性能。<br>util：磁盘利用率百分比，平均小于60%正常，但已经比较繁忙了。</p>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>由于关系型数据库初衷设计限制，在大数据处理时会显得力不从心。因此NoSQL（非关系型数据库）火起来了，天生励志，具备分布式、高性能、高可靠等特性，弥补了关系型数据库某方面先天性不足，非常适合存储非结构化数据。主流NoSQL数据库有：MongoDB、HBase、Cassandra等。</p>
 <p><strong>单纯数据库层面优化效果提升并不多明显，主要还是要根据业务场景选择合适的数据库！</strong></p>
