@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="referrer" content="no-referrer" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=1" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Nginx," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介 高性能 优秀的架构（无需重构，长期有效） 高可靠 热部署  应用场景 静态资源服务 反向代理服务（缓存加速、负载均衡） API 服务（OpenResty）  基础配置 $符号代表变量 nginx -s quit 优雅重启 nginx -s reopen 优雅重启  nginx包含一个master进程和多个worker进程，如果开启缓存的话，还会启动缓存加载以及缓存管理的进程  work进程数">
+<meta name="keywords" content="Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx必知必会">
+<meta property="og:url" content="https://hu3.coding.me/2018/08/12/nginx-start/index.html">
+<meta property="og:site_name" content="一壶浊酒喜相逢">
+<meta property="og:description" content="简介 高性能 优秀的架构（无需重构，长期有效） 高可靠 热部署  应用场景 静态资源服务 反向代理服务（缓存加速、负载均衡） API 服务（OpenResty）  基础配置 $符号代表变量 nginx -s quit 优雅重启 nginx -s reopen 优雅重启  nginx包含一个master进程和多个worker进程，如果开启缓存的话，还会启动缓存加载以及缓存管理的进程  work进程数">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-12T04:47:14.792Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx必知必会">
+<meta name="twitter:description" content="简介 高性能 优秀的架构（无需重构，长期有效） 高可靠 热部署  应用场景 静态资源服务 反向代理服务（缓存加速、负载均衡） API 服务（OpenResty）  基础配置 $符号代表变量 nginx -s quit 优雅重启 nginx -s reopen 优雅重启  nginx包含一个master进程和多个worker进程，如果开启缓存的话，还会启动缓存加载以及缓存管理的进程  work进程数">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hu3.coding.me/2018/08/12/nginx-start/"/>
+
+
+
+
+
+  <title>Nginx必知必会 | 一壶浊酒喜相逢</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一壶浊酒喜相逢</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">回首向来萧瑟处，也无风雨也无晴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hu3.coding.me/2018/08/12/nginx-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiaolin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一壶浊酒喜相逢">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Nginx必知必会</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-12T12:45:39+08:00">
+                2018-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/12/nginx-start/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/12/nginx-start/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><ul>
+<li>高性能</li>
+<li>优秀的架构（无需重构，长期有效）</li>
+<li>高可靠</li>
+<li>热部署</li>
+</ul>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li>静态资源服务</li>
+<li>反向代理服务（缓存加速、负载均衡）</li>
+<li>API 服务（OpenResty）</li>
+</ul>
+<h3 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h3><ul>
+<li>$符号代表变量</li>
+<li>nginx -s quit 优雅重启</li>
+<li><p>nginx -s reopen 优雅重启</p>
+</li>
+<li><p>nginx包含一个master进程和多个worker进程，如果开启缓存的话，还会启动缓存加载以及缓存管理的进程</p>
+</li>
+<li>work进程数目的设置可以在nginx.conf指定，也可以根据cpu数目调整(worker_processes auto)</li>
+</ul>
+<p><strong>六大区域：<br>main(全局设置)、events(nginx工作模式)、http(http设置)、<br>sever(主机设置)、location(URL匹配)、upstream(负载均衡服务器设置)</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">main</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line"></span><br><span class="line">    upstream myproject &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    server &#123;</span><br><span class="line">        location &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">      </span><br><span class="line">    server &#123;</span><br><span class="line">        location &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-web-server"><a href="#1-web-server" class="headerlink" title="1. web server"></a>1. web server</h3><h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h4><p>Server的配置在http模块里面，通过listen port以及server_name识别具体http服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80 default_server; </span><br><span class="line">        server_name example.org www.example.org;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Notice:</p>
+<ul>
+<li>如果只允许本机访问，可以设置 listen localhost:80</li>
+<li>默认default server就是在nginx.conf文件里面第一个server的配置</li>
+<li>server_name 匹配多个的时候使用空格分离；也可以支持匹配符，比如 <em>.example.org, example.</em>;</li>
+</ul>
+<h4 id="location"><a href="#location" class="headerlink" title="location"></a>location</h4><p>正则表达式以~表示大小写区分的匹配， ~* 表示大小写不区分的匹配。<br>location ~ .html? { //匹配包含.html或者.htm的请求URIs<br>…<br>}</p>
+<ul>
+<li>= 精确匹配</li>
+<li>如果配置中包含 ^~, 则所有的正则表达式都不匹配</li>
+<li>Nginx匹配是取先匹配到的正则表达式，所以最经常访问的请求放在前面，可以加速匹配速度</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    location /images/ &#123; //请求/images/*.*的静态文件都会返回/data/images/*.*</span><br><span class="line">        root /data;</span><br><span class="line">    &#125;</span><br><span class="line">    location / &#123; //请求中不以/images开始的，全部会转发至http://www.example.com</span><br><span class="line">        proxy_pass http://www.example.com;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="return"><a href="#return" class="headerlink" title="return"></a>return</h4><p>return可以使用在location或者server模块中，用于返回一个错误码或者重定向。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location /wrong/url &#123;</span><br><span class="line">    return 404;</span><br><span class="line">&#125;</span><br><span class="line">location /permanently/moved/url &#123;</span><br><span class="line">    return 301 http://www.example.com/moved/here;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="rewrite"><a href="#rewrite" class="headerlink" title="rewrite"></a>rewrite</h4><p>rewrite可以使用在location或者server模块中，可以重写URI，来匹配到最合适的处理。<br>它包含两个必需参数和一个可选参数。第一个必需参数是可匹配到URI的正则表达式， 第二个必需参数是用于替换该URI的URI。一个可选参数是一个标识，决定后续处理逻辑。<br>可选参数有：</p>
+<ul>
+<li>last: 停止当前server或者location模块内rewrite执行。如果其他location也有匹配到该URI的rewrite, 也可以执行。</li>
+<li>break：停止当前server或者location模块内rewrite执行，并取消其他location针对该URI的检索。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    ...</span><br><span class="line">    rewrite ^(/download/.*)/media/(.*)\..*$ $1/mp3/$2.mp3 last; </span><br><span class="line">    ///download/media/example =&gt; /download/mp3/example.mp3</span><br><span class="line">    rewrite ^(/download/.*)/audio/(.*)\..*$ $1/mp3/$2.ra  last; </span><br><span class="line">    ///download/audio/example =&gt; /download/audio/example.ra</span><br><span class="line">    return  403; // 匹配不到的返回403</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="error-page"><a href="#error-page" class="headerlink" title="error_page"></a>error_page</h4><p>error_page 可以处理错误逻辑，返回正确的页面<br>error_page 404 /404.html;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">location /images/ &#123;</span><br><span class="line">    # Set the root directory to search for the file</span><br><span class="line">    root /data/www;</span><br><span class="line"> </span><br><span class="line">    # Disable logging of errors related to file existence</span><br><span class="line">    open_file_cache_errors off;</span><br><span class="line"> </span><br><span class="line">    # Make an internal redirect if the file is not found</span><br><span class="line">    error_page 404 = /fetch$uri;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-静态资源处理"><a href="#2-静态资源处理" class="headerlink" title="2. 静态资源处理"></a>2. 静态资源处理</h3><h4 id="root"><a href="#root" class="headerlink" title="root"></a>root</h4><p>root指定一个文件目录，该设置可以在http, server, location中。</p>
+<h4 id="index"><a href="#index" class="headerlink" title="index"></a>index</h4><p> index指定目录中默认显示文件，如果显示文件列表，则设置 autoindex on;</p>
+<h4 id="try-files"><a href="#try-files" class="headerlink" title="try_files"></a>try_files</h4><p> try_files用于检测指定的文件或者目录是否存在，如果不存在就做一个内部跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">        try_files $uri $uri/ $uri.html =404;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="nginx优化策略"><a href="#nginx优化策略" class="headerlink" title="nginx优化策略"></a>nginx优化策略</h3><ol>
+<li>开启sendfile: nginx 默认在发送文件的时候先缓存该文件，开启sendfile可以跳过这一步。同时可以通过设置sendfile_max_chunk限制每个sendfile()中数据传输量。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location /mp3 &#123;</span><br><span class="line">        sendfile           on;</span><br><span class="line">        sendfile_max_chunk 1m;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>开启tcp_nopush：这个选项是把http响应头跟数据放在一个数据包里面</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location /mp3 &#123;</span><br><span class="line">        sendfile   on;</span><br><span class="line">        tcp_nopush on;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>开启tcp_nodelay： 该选项用于保持连接场景</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location /mp3  &#123;</span><br><span class="line">        tcp_nodelay       on;</span><br><span class="line">        keepalive_timeout 65;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li><p>优化backlog队列：<br>Linux 系统设置：<br>sudo sysctl -w net.core.somaxconn=4096<br>echo “net.core.somaxconn = 4096” &gt;&gt; /etc/sysctl.conf</p>
+<p>Nginx设置：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen 80 backlog=4096;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-反向代理"><a href="#3-反向代理" class="headerlink" title="3. 反向代理"></a>3. 反向代理</h3><p>反向代理方式实际上就是一台负责转发的代理服务器，貌似充当了真正服务器的功能，但实际上并不是，代理服务器只是充当了转发的作用，并且从真正的服务器那里取得返回的数据。这样说，其实nginx完成的就是这样的工作。我们让nginx监听一个端口，譬如80端口，但实际上我们转发给在8080端口的tomcat，由它来处理真正的请求，当请求完成后，tomcat返回，但数据此时没直接返回，而是直接给nginx，由nginx进行返回，这里，我们会以为是nginx进行了处理，但实际上进行处理的是tomcat。</p>
+<p>反向代理支持的后端可以是http server，也可以是非http server，比如FastCGI， uwsgi， SCGI， memcached。</p>
+<h4 id="处理请求头部"><a href="#处理请求头部" class="headerlink" title="处理请求头部"></a>处理请求头部</h4><p>默认情况下，nginx会把转发的请求Host设置为$proxy_host, connection设置为close。<br>可以通过设置来修改其他的头部信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location /some/path/ &#123;</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_set_header Accept-Encoding &quot;&quot;;</span><br><span class="line">        proxy_pass http://localhost:8000;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="配置缓存"><a href="#配置缓存" class="headerlink" title="配置缓存"></a>配置缓存</h4><p>默认情况下，nginx会缓存来自后端服务器的响应，直到所有响应包收到之后再发给请求方。 如果要禁止缓存，设置proxy_buffering off; 缓存大小也可以设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location /some/path/ &#123;</span><br><span class="line">    proxy_buffers 16 4k;</span><br><span class="line">    proxy_buffer_size 2k;</span><br><span class="line">    proxy_pass http://localhost:8000;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>proxy_buffer_size设置响应头的缓存大小，一般比数据要小；proxy_buffers设置缓存响应数据的个数以及大小。</p>
+<h4 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h4><p>压缩响应包可以减少传输数据的大小，但是会影响nginx的性能。 开启压缩：<br>gzip on;<br>gzip_types text/plain application/xml;<br>gzip_proxied no-cache no-store private expired auth;<br>gzip_min_length 1k; //default is 20 bytes<br>gzip_buffers 4 16k;<br>gzip_comp_level 2;<br>gzip_types text/plain application/x-javascript application/javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;<br>gzip_vary off;</p>
+<h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h4><p>默认nginx会缓存所有的GET, HEAD请求<br>proxy_cache_key “$host$request_uri$cookie_user”; //改变缓存key<br>proxy_cache_min_uses 5; // 被调用5次之后才会被缓存<br>proxy_cache_methods GET HEAD POST;<br>proxy_cache_valid 200 302 10m; // 200, 302返回码10分钟有效<br>proxy_cache_valid 404      1m; // 404 返回码1分钟有效<br>proxy_cache_valid any 5m; //所有请求5分钟有效<br>proxy_cache_bypass $cookie_nocache $arg_nocache$arg_comment; // 如果其中一个变量不为空，就绕过缓存，直接转发至后端服务器<br>proxy_no_cache $http_pragma $http_authorization; // 如果其中一个变量不为空，则不缓存该URI</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">worker_processes  auto;        <span class="comment">#nginx worker 数量</span></span><br><span class="line">error_log /usr/<span class="built_in">local</span>/var/<span class="built_in">log</span>/nginx/error.log warn;   <span class="comment">#指定错误日志文件路径</span></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections 1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    charset utf-8,gbk;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 10699;</span><br><span class="line">        server_name localhost;</span><br><span class="line">        charset utf-8,gbk;</span><br><span class="line">        location / &#123;</span><br><span class="line">            default_type text/html;</span><br><span class="line"></span><br><span class="line">            content_by_lua_block &#123;</span><br><span class="line">                ngx.say(<span class="string">"Hello XiaoLin"</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#设定查看Nginx状态的地址</span></span><br><span class="line">        location /NginxStatus &#123;</span><br><span class="line">            stub_status           on;</span><br><span class="line">            access_log            on;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">### 反向代理例子：把 www.helloworld.com 映射到 127.0.0.1:8080 的 tomcat 上</span></span><br><span class="line">    upstream local_tomcat &#123;</span><br><span class="line">        server 127.0.0.1:8080;  <span class="comment"># nginx: [emerg] host not found in upstream "localhost:8080"，没办法换 127.0.0.1 了</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 8080; <span class="comment"># 这个端口号要跟上面定义的127.0.0.1:8080一模一样</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#使用www.helloworld.com访问</span></span><br><span class="line">        server_name  www.helloworld.com;</span><br><span class="line">       </span><br><span class="line">        location / &#123;</span><br><span class="line">            proxy_pass http://local_tomcat;  <span class="comment"># 配置反向代理</span></span><br><span class="line">            <span class="comment">#root /Users/xiaolin/Documents/html; # 配置静态文件代理</span></span><br><span class="line">            <span class="comment">#index index.html index.htm 01讲基础架构：一条SQL查询语句是如何执行的.html;</span></span><br><span class="line">            <span class="comment">#autoindex on;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="http-反向代理配置实战"><a href="#http-反向代理配置实战" class="headerlink" title="http 反向代理配置实战"></a>http 反向代理配置实战</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#运行用户</span></span><br><span class="line"><span class="comment">#user somebody;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启动进程,通常设置成和cpu的数量相等</span></span><br><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line"><span class="comment">#全局错误日志</span></span><br><span class="line">error_log  D:/Tools/nginx-1.10.1/logs/error.log;</span><br><span class="line">error_log  D:/Tools/nginx-1.10.1/logs/notice.log  notice;</span><br><span class="line">error_log  D:/Tools/nginx-1.10.1/logs/info.log  info;</span><br><span class="line"></span><br><span class="line"><span class="comment">#PID文件，记录当前启动的nginx的进程ID。reload、stop时会据此kill进程</span></span><br><span class="line">pid        D:/Tools/nginx-1.10.1/logs/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="comment">#工作模式及连接数上限</span></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections 1024;    <span class="comment">#单个后台worker process进程的最大并发链接数</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#设定http服务器，利用它的反向代理功能提供负载均衡支持</span></span><br><span class="line">http &#123;</span><br><span class="line">    <span class="comment">#设定mime类型(邮件支持类型),类型由mime.types文件定义</span></span><br><span class="line">    include       D:/Tools/nginx-1.10.1/conf/mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#设定日志</span></span><br><span class="line">    log_format  main  <span class="string">'[$remote_addr] - [$remote_user] [$time_local] "$request" '</span></span><br><span class="line">                      <span class="string">'$status $body_bytes_sent "$http_referer" '</span></span><br><span class="line">                      <span class="string">'"$http_user_agent" "$http_x_forwarded_for"'</span>;</span><br><span class="line"></span><br><span class="line">    access_log    D:/Tools/nginx-1.10.1/logs/access.log main;</span><br><span class="line">    rewrite_log     on;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件，对于普通应用，</span></span><br><span class="line">    <span class="comment">#必须设为 on,如果用来进行下载等应用磁盘IO重负载应用，可设置为 off，以平衡磁盘与网络I/O处理速度，降低系统的uptime.</span></span><br><span class="line">    sendfile        on;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#连接超时时间</span></span><br><span class="line">    keepalive_timeout  120;</span><br><span class="line">    tcp_nodelay        on;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip压缩开关</span></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#设定实际的服务器列表</span></span><br><span class="line">    upstream zp_server1&#123;</span><br><span class="line">        server 127.0.0.1:8089;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#HTTP服务器</span></span><br><span class="line">    server &#123;</span><br><span class="line">        <span class="comment">#监听80端口，80端口是知名端口号，用于HTTP协议</span></span><br><span class="line">        listen       80;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#定义使用www.xx.com访问</span></span><br><span class="line">        server_name  www.helloworld.com;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#首页</span></span><br><span class="line">        index index.html</span><br><span class="line"></span><br><span class="line">        <span class="comment">#指向webapp的目录</span></span><br><span class="line">        root D:\01_Workspace\Project\github\zp\SpringNotes\spring-security\spring-shiro\src\main\webapp;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#编码格式</span></span><br><span class="line">        charset utf-8;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#代理配置参数</span></span><br><span class="line">        proxy_connect_timeout 180;</span><br><span class="line">        proxy_send_timeout 180;</span><br><span class="line">        proxy_read_timeout 180;</span><br><span class="line">        proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">        proxy_set_header X-Forwarder-For <span class="variable">$remote_addr</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#反向代理的路径（和upstream绑定），location 后面设置映射的路径</span></span><br><span class="line">        location / &#123;</span><br><span class="line">            proxy_pass http://zp_server1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#静态文件，nginx自己处理</span></span><br><span class="line">        location ~ ^/(images|javascript|js|css|flash|media|static)/ &#123;</span><br><span class="line">            root D:\01_Workspace\Project\github\zp\SpringNotes\spring-security\spring-shiro\src\main\webapp\views;</span><br><span class="line">            <span class="comment">#过期30天，静态文件不怎么更新，过期可以设大一点，如果频繁更新，则可以设置得小一点。</span></span><br><span class="line">            expires 30d;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#设定查看Nginx状态的地址</span></span><br><span class="line">        location /NginxStatus &#123;</span><br><span class="line">            stub_status           on;</span><br><span class="line">            access_log            on;</span><br><span class="line">            auth_basic            <span class="string">"NginxStatus"</span>;</span><br><span class="line">            auth_basic_user_file  conf/htpasswd;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#禁止访问 .htxxx 文件</span></span><br><span class="line">        location ~ /\.ht &#123;</span><br><span class="line">            deny all;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#错误处理页面（可选择性配置）</span></span><br><span class="line">        <span class="comment">#error_page   404              /404.html;</span></span><br><span class="line">        <span class="comment">#error_page   500 502 503 504  /50x.html;</span></span><br><span class="line">        <span class="comment">#location = /50x.html &#123;</span></span><br><span class="line">        <span class="comment">#    root   html;</span></span><br><span class="line">        <span class="comment">#&#125;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>启动 webapp，注意启动绑定的端口要和 nginx 中的 upstream 设置的端口保持一致。</li>
+<li>127.0.0.1 <a href="http://www.helloworld.com" target="_blank" rel="noopener">www.helloworld.com</a></li>
+</ol>
+<h3 id="负载均衡配置实战"><a href="#负载均衡配置实战" class="headerlink" title="负载均衡配置实战"></a>负载均衡配置实战</h3><p>假设这样一个应用场景：将应用部署在 192.168.1.11:80、192.168.1.12:80、192.168.1.13:80 三台 linux 环境的服务器上。网站域名叫 <a href="http://www.helloworld.com，公网" target="_blank" rel="noopener">www.helloworld.com，公网</a> IP 为 192.168.1.11。在公网 IP 所在的服务器上部署 nginx，对所有请求做负载均衡处理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">     <span class="comment">#设定mime类型,类型由mime.type文件定义</span></span><br><span class="line">    include       /etc/nginx/mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line">    <span class="comment">#设定日志格式</span></span><br><span class="line">    access_log    /var/<span class="built_in">log</span>/nginx/access.log;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#设定负载均衡的服务器列表</span></span><br><span class="line">    upstream load_balance_server &#123;</span><br><span class="line">        <span class="comment">#weigth参数表示权值，权值越高被分配到的几率越大</span></span><br><span class="line">        server 192.168.1.11:80   weight=5;</span><br><span class="line">        server 192.168.1.12:80   weight=1;</span><br><span class="line">        server 192.168.1.13:80   weight=6;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">#HTTP服务器</span></span><br><span class="line">   server &#123;</span><br><span class="line">        <span class="comment">#侦听80端口</span></span><br><span class="line">        listen       80;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#定义使用www.xx.com访问</span></span><br><span class="line">        server_name  www.helloworld.com;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#对所有请求进行负载均衡请求</span></span><br><span class="line">        location / &#123;</span><br><span class="line">            root        /root;                 <span class="comment">#定义服务器的默认网站根目录位置</span></span><br><span class="line">            index       index.html index.htm;  <span class="comment">#定义首页索引文件的名称</span></span><br><span class="line">            proxy_pass  http://load_balance_server ;<span class="comment">#请求转向load_balance_server 定义的服务器列表</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">#以下是一些反向代理的配置(可选择性配置)</span></span><br><span class="line">            <span class="comment">#proxy_redirect off;</span></span><br><span class="line">            proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">            proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">            <span class="comment">#后端的Web服务器可以通过X-Forwarded-For获取用户真实IP</span></span><br><span class="line">            proxy_set_header X-Forwarded-For <span class="variable">$remote_addr</span>;</span><br><span class="line">            proxy_connect_timeout 90;          <span class="comment">#nginx跟后端服务器连接超时时间(代理连接超时)</span></span><br><span class="line">            proxy_send_timeout 90;             <span class="comment">#后端服务器数据回传时间(代理发送超时)</span></span><br><span class="line">            proxy_read_timeout 90;             <span class="comment">#连接成功后，后端服务器响应时间(代理接收超时)</span></span><br><span class="line">            proxy_buffer_size 4k;              <span class="comment">#设置代理服务器（nginx）保存用户头信息的缓冲区大小</span></span><br><span class="line">            proxy_buffers 4 32k;               <span class="comment">#proxy_buffers缓冲区，网页平均在32k以下的话，这样设置</span></span><br><span class="line">            proxy_busy_buffers_size 64k;       <span class="comment">#高负荷下缓冲大小（proxy_buffers*2）</span></span><br><span class="line">            proxy_temp_file_write_size 64k;    <span class="comment">#设定缓存文件夹大小，大于这个值，将从upstream服务器传</span></span><br><span class="line"></span><br><span class="line">            client_max_body_size 10m;          <span class="comment">#允许客户端请求的最大单文件字节数</span></span><br><span class="line">            client_body_buffer_size 128k;      <span class="comment">#缓冲区代理缓冲用户端请求的最大字节数</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="多模块部署配置实战"><a href="#多模块部署配置实战" class="headerlink" title="多模块部署配置实战"></a>多模块部署配置实战</h3><p>举个例子：假如 <a href="http://www.helloworld.com" target="_blank" rel="noopener">www.helloworld.com</a> 站点有好几个 webapp，finance（金融）、product（产品）、admin（用户中心）。访问这些应用的方式通过上下文(context)来进行区分:</p>
+<p><a href="http://www.helloworld.com/finance/" target="_blank" rel="noopener">www.helloworld.com/finance/</a></p>
+<p><a href="http://www.helloworld.com/product/" target="_blank" rel="noopener">www.helloworld.com/product/</a></p>
+<p><a href="http://www.helloworld.com/admin/" target="_blank" rel="noopener">www.helloworld.com/admin/</a></p>
+<p>我们知道，http 的默认端口号是 80，如果在一台服务器上同时启动这 3 个 webapp 应用，都用 80 端口，肯定是不成的。所以，这三个应用需要分别绑定不同的端口号。</p>
+<p>那么，问题来了，用户在实际访问 <a href="http://www.helloworld.com" target="_blank" rel="noopener">www.helloworld.com</a> 站点时，访问不同 webapp，总不会还带着对应的端口号去访问吧。所以，你再次需要用到反向代理来做处理。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    <span class="comment">#此处省略一些基本配置</span></span><br><span class="line"></span><br><span class="line">    upstream product_server&#123;</span><br><span class="line">        server www.helloworld.com:8081;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    upstream admin_server&#123;</span><br><span class="line">        server www.helloworld.com:8082;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    upstream finance_server&#123;</span><br><span class="line">        server www.helloworld.com:8083;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        <span class="comment">#此处省略一些基本配置</span></span><br><span class="line">        <span class="comment">#默认指向product的server</span></span><br><span class="line">        location / &#123;</span><br><span class="line">            proxy_pass http://product_server;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location /product/&#123;</span><br><span class="line">            proxy_pass http://product_server;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location /admin/ &#123;</span><br><span class="line">            proxy_pass http://admin_server;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location /finance/ &#123;</span><br><span class="line">            proxy_pass http://finance_server;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="https-反向代理配置"><a href="#https-反向代理配置" class="headerlink" title="https 反向代理配置"></a>https 反向代理配置</h3><ul>
+<li>HTTPS 的固定端口号是 443，不同于 HTTP 的 80 端口</li>
+<li>SSL 标准需要引入安全证书，所以在 nginx.conf 中你需要指定证书和它对应的 key</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#HTTP服务器</span></span><br><span class="line">  server &#123;</span><br><span class="line">      <span class="comment">#监听443端口。443为知名端口号，主要用于HTTPS协议</span></span><br><span class="line">      listen       443 ssl;</span><br><span class="line"></span><br><span class="line">      <span class="comment">#定义使用www.xx.com访问</span></span><br><span class="line">      server_name  www.helloworld.com;</span><br><span class="line"></span><br><span class="line">      <span class="comment">#ssl证书文件位置(常见证书文件格式为：crt/pem)</span></span><br><span class="line">      ssl_certificate      cert.pem;</span><br><span class="line">      <span class="comment">#ssl证书key位置</span></span><br><span class="line">      ssl_certificate_key  cert.key;</span><br><span class="line"></span><br><span class="line">      <span class="comment">#ssl配置参数（选择性配置）</span></span><br><span class="line">      ssl_session_cache    shared:SSL:1m;</span><br><span class="line">      ssl_session_timeout  5m;</span><br><span class="line">      <span class="comment">#数字签名，此处使用MD5</span></span><br><span class="line">      ssl_ciphers  HIGH:!aNULL:!MD5;</span><br><span class="line">      ssl_prefer_server_ciphers  on;</span><br><span class="line"></span><br><span class="line">      location / &#123;</span><br><span class="line">          root   /root;</span><br><span class="line">          index  index.html index.htm;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="静态站点配置实战"><a href="#静态站点配置实战" class="headerlink" title="静态站点配置实战"></a>静态站点配置实战</h3><p>举例来说：如果所有的静态资源都放在了 /app/dist 目录下，我们只需要在 nginx.conf 中指定首页以及这个站点的 host 即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">worker_processes  1;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line">    sendfile        on;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    gzip on;</span><br><span class="line">    gzip_types text/plain application/x-javascript text/css application/xml text/javascript application/javascript image/jpeg image/gif image/png;</span><br><span class="line">    gzip_vary on;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  static.zp.cn;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root /app/dist;</span><br><span class="line">            index index.html;</span><br><span class="line">            <span class="comment">#转发任何请求到 index.html</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="文件服务器搭建实战"><a href="#文件服务器搭建实战" class="headerlink" title="文件服务器搭建实战"></a>文件服务器搭建实战</h3><ul>
+<li>将 autoindex 开启可以显示目录，默认不开启。</li>
+<li>将 autoindex_exact_size 开启可以显示文件的大小。</li>
+<li>将 autoindex_localtime 开启可以显示文件的修改时间。</li>
+<li>root 用来设置开放为文件服务的根路径。</li>
+<li>charset 设置为 charset utf-8,gbk;，可以避免中文乱码问题（windows 服务器下设置后，依然乱码，本人暂时没有找到解决方法）。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">autoindex on;<span class="comment"># 显示目录</span></span><br><span class="line">autoindex_exact_size on;<span class="comment"># 显示文件大小</span></span><br><span class="line">autoindex_localtime on;<span class="comment"># 显示文件时间</span></span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    charset      utf-8,gbk; <span class="comment"># windows 服务器下设置后，依然乱码，暂时无解</span></span><br><span class="line">    listen       9050 default_server;</span><br><span class="line">    listen       [::]:9050 default_server;</span><br><span class="line">    server_name  _;</span><br><span class="line">    root         /share/fs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="跨域实战"><a href="#跨域实战" class="headerlink" title="跨域实战"></a>跨域实战</h3><p>web 领域开发中，经常采用前后端分离模式。这种模式下，前端和后端分别是独立的 web 应用程序，例如：后端是 Java 程序，前端是 React 或 Vue 应用。</p>
+<p>各自独立的 web app 在互相访问时，势必存在跨域问题。解决跨域问题一般有两种思路：</p>
+<ul>
+<li><p>CORS<br>在后端服务器设置 HTTP 响应头，把你需要运行访问的域名加入加入 Access-Control-Allow-Origin 中。</p>
+</li>
+<li><p>jsonp<br>把后端根据请求，构造 json 数据，并返回，前端用 jsonp 跨域。</p>
+</li>
+</ul>
+<p>需要说明的是，nginx 根据第一种思路，也提供了一种解决跨域的解决方案。</p>
+<p>举例：<a href="http://www.helloworld.com" target="_blank" rel="noopener">www.helloworld.com</a> 网站是由一个前端 app ，一个后端 app 组成的。前端端口号为 9000， 后端端口号为 8080。</p>
+<p>前端和后端如果使用 http 进行交互时，请求会被拒绝，因为存在跨域问题。来看看，nginx 是怎么解决的吧：</p>
+<p>首先，在 enable-cors.conf 文件中设置 cors ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># allow origin list</span></span><br><span class="line"><span class="built_in">set</span> <span class="variable">$ACAO</span> <span class="string">'*'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># set single origin</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$http_origin</span> ~* (www.helloworld.com)$) &#123;</span><br><span class="line">  <span class="built_in">set</span> <span class="variable">$ACAO</span> <span class="variable">$http_origin</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$cors</span> = <span class="string">"trueget"</span>) &#123;</span><br><span class="line">    add_header <span class="string">'Access-Control-Allow-Origin'</span> <span class="string">"<span class="variable">$http_origin</span>"</span>;</span><br><span class="line">    add_header <span class="string">'Access-Control-Allow-Credentials'</span> <span class="string">'true'</span>;</span><br><span class="line">    add_header <span class="string">'Access-Control-Allow-Methods'</span> <span class="string">'GET, POST, OPTIONS'</span>;</span><br><span class="line">    add_header <span class="string">'Access-Control-Allow-Headers'</span> <span class="string">'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$request_method</span> = <span class="string">'OPTIONS'</span>) &#123;</span><br><span class="line">  <span class="built_in">set</span> <span class="variable">$cors</span> <span class="string">"<span class="variable">$&#123;cors&#125;</span>options"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$request_method</span> = <span class="string">'GET'</span>) &#123;</span><br><span class="line">  <span class="built_in">set</span> <span class="variable">$cors</span> <span class="string">"<span class="variable">$&#123;cors&#125;</span>get"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$request_method</span> = <span class="string">'POST'</span>) &#123;</span><br><span class="line">  <span class="built_in">set</span> <span class="variable">$cors</span> <span class="string">"<span class="variable">$&#123;cors&#125;</span>post"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来，在你的服务器中 include enable-cors.conf 来引入跨域配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">upstream front_server&#123;</span><br><span class="line">  server www.helloworld.com:9000;</span><br><span class="line">&#125;</span><br><span class="line">upstream api_server&#123;</span><br><span class="line">  server www.helloworld.com:8080;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  listen       80;</span><br><span class="line">  server_name  www.helloworld.com;</span><br><span class="line"></span><br><span class="line">  location ~ ^/api/ &#123;</span><br><span class="line">    include <span class="built_in">enable</span>-cors.conf;</span><br><span class="line">    proxy_pass http://api_server;</span><br><span class="line">    rewrite <span class="string">"^/api/(.*)$"</span> /<span class="variable">$1</span> <span class="built_in">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  location ~ ^/ &#123;</span><br><span class="line">    proxy_pass http://front_server;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/06/feynman-technique/" rel="next" title="费曼技巧">
+                <i class="fa fa-chevron-left"></i> 费曼技巧
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/18/springboot-https/" rel="prev" title="Spring Boot 集成配置 HTTPS">
+                Spring Boot 集成配置 HTTPS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiaolin</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">2.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基础配置"><span class="nav-number">3.</span> <span class="nav-text">基础配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-web-server"><span class="nav-number">4.</span> <span class="nav-text">1. web server</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Server"><span class="nav-number">4.1.</span> <span class="nav-text">Server</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#location"><span class="nav-number">4.2.</span> <span class="nav-text">location</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#return"><span class="nav-number">4.3.</span> <span class="nav-text">return</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rewrite"><span class="nav-number">4.4.</span> <span class="nav-text">rewrite</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#error-page"><span class="nav-number">4.5.</span> <span class="nav-text">error_page</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-静态资源处理"><span class="nav-number">5.</span> <span class="nav-text">2. 静态资源处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#root"><span class="nav-number">5.1.</span> <span class="nav-text">root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#index"><span class="nav-number">5.2.</span> <span class="nav-text">index</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-files"><span class="nav-number">5.3.</span> <span class="nav-text">try_files</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx优化策略"><span class="nav-number">6.</span> <span class="nav-text">nginx优化策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-反向代理"><span class="nav-number">7.</span> <span class="nav-text">3. 反向代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理请求头部"><span class="nav-number">7.1.</span> <span class="nav-text">处理请求头部</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置缓存"><span class="nav-number">7.2.</span> <span class="nav-text">配置缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#压缩"><span class="nav-number">7.3.</span> <span class="nav-text">压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存"><span class="nav-number">7.4.</span> <span class="nav-text">缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http-反向代理配置实战"><span class="nav-number">8.</span> <span class="nav-text">http 反向代理配置实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡配置实战"><span class="nav-number">9.</span> <span class="nav-text">负载均衡配置实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多模块部署配置实战"><span class="nav-number">10.</span> <span class="nav-text">多模块部署配置实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#https-反向代理配置"><span class="nav-number">11.</span> <span class="nav-text">https 反向代理配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态站点配置实战"><span class="nav-number">12.</span> <span class="nav-text">静态站点配置实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件服务器搭建实战"><span class="nav-number">13.</span> <span class="nav-text">文件服务器搭建实战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跨域实战"><span class="nav-number">14.</span> <span class="nav-text">跨域实战</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiaolin</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PFMTM4Mbqnp9Spyor9nmYnLd-gzGzoHsz',
+        appKey: 'vpMubjnA7DHMEDaTnBtVGHyS',
+        placeholder: 'Welcome~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
